@@ -28,8 +28,11 @@
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
-              <caret line="406" column="34" lean-forward="false" selection-start-line="406" selection-start-column="34" selection-end-line="406" selection-end-column="34" />
-              <folding />
+              <caret line="476" column="34" lean-forward="false" selection-start-line="476" selection-start-column="34" selection-end-line="476" selection-end-column="34" />
+              <folding>
+                <element signature="e#3300#3304#0" expanded="true" />
+                <element signature="e#3310#3314#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -42,6 +45,13 @@
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+      </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -284,12 +294,12 @@
       <workItem from="1504823271495" duration="219000" />
       <workItem from="1504823552497" duration="312000" />
       <workItem from="1504824075180" duration="569000" />
-      <workItem from="1504983377111" duration="839000" />
+      <workItem from="1504983377111" duration="1477000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1939000" />
+    <option name="totallyTimeSpent" value="2577000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="960" y="0" width="960" height="1032" extended-state="4" />
@@ -308,7 +318,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.06680585" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -400,8 +410,11 @@
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="406" column="34" lean-forward="false" selection-start-line="406" selection-start-column="34" selection-end-line="406" selection-end-column="34" />
-          <folding />
+          <caret line="476" column="34" lean-forward="false" selection-start-line="476" selection-start-column="34" selection-end-line="476" selection-end-column="34" />
+          <folding>
+            <element signature="e#3300#3304#0" expanded="true" />
+            <element signature="e#3310#3314#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
