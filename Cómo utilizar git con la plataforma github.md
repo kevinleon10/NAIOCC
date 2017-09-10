@@ -9,7 +9,18 @@
 - Ubicarse en la carpeta o directorio donde desea descargar el repositorio por medio del comando cd.
 - utilizar el comando "git clone https://github.com/kevinleon10/NAIOCC-Repository" para descargar el repositorio.
 
-2. Subir cambios locales al servidor:
+2. Copiar una branch 
+
+- Ubicarse en el directorio que contiene el repositorio.
+- Si se hizo algún cambio en la branch actual hacer los siguientes comandos:
+	- git add -A
+	- git commit -m "Mensaje"
+	- Si se desea hacer push al repositorio remoto: git push , pero si no se quieren guardar los cambios no es necesario
+- Una vez todo está up to date, entonces se hace:
+	- git checkout branch-deseada
+	- git pull
+
+3. Subir cambios locales al servidor:
 
 - Desde la terminal ubicarse en el directorio que contiene el repositorio con cd.
 - Utilizar el comando "git status"  para identificar los cambios.
@@ -18,7 +29,7 @@
 - Utilizar el comando "git push" para guardar los cambios en el servidor.
 - Abrir el repositorio en github y comprobar los cambios.
 
-3. Descargar los cambios del servidor al medio local:
+4. Descargar los cambios del servidor al medio local:
 
 - Desde la temrinal ubicarse en el directorio que contiene el repositorio cn cd.
 - Utilizar el comando "git pull" que actualiza el repositorio local.
