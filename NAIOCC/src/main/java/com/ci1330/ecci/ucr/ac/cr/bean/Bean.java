@@ -9,7 +9,8 @@ public class Bean {
     private String initMethod;
     private String destroyMethod;
     private boolean lazyGen;
-    private String autowire;
+    private Scope scope;
+    private Autowire autowire;
 
     public String getId() {
         return id;
@@ -51,11 +52,19 @@ public class Bean {
         this.lazyGen = lazyGen;
     }
 
-    public String getAutowire() {
+    public Scope getScope() {
+        return scope;
+    }
+
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }
+
+    public Autowire getAutowire() {
         return autowire;
     }
 
-    public void setAutowire(String autowire) {
+    public void setAutowire(Autowire autowire) {
         this.autowire = autowire;
     }
 }
