@@ -3,10 +3,10 @@
 
     <bean     id = "beanId"
               class = "package.path.class"
-              scope="Singleton/Prototype"
+              scope="Singleton"
               init="methodName" destroy="methodName"
-              lazy-generation="true/false"
-              autowire="byName/byType/none">
+              lazy-generation="true"
+              autowire="byName">
 
         <constructor>
 

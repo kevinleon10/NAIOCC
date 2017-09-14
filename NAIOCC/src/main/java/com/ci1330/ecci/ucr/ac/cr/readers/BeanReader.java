@@ -20,6 +20,6 @@ public abstract class BeanReader {
      * Abstract method, that indicates the name of the input to read
      * @param inputName
      */
-    public abstract void readBeans (String inputName, BeanCreator beanCreator);
+    public abstract void readBeans (String inputName);
 
 }

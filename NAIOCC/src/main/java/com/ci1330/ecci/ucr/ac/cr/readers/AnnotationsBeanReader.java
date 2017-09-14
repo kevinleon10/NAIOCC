@@ -11,7 +11,7 @@ public class AnnotationsBeanReader extends BeanReader {
      * and calls a method to read it
      * @param inputName
      */
-    public void readBeans(String inputName, BeanCreator beanCreator) {
+    public void readBeans(String inputName) {
 
     }
 
