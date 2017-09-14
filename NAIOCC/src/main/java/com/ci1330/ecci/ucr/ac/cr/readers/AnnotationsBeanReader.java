@@ -1,5 +1,7 @@
 package com.ci1330.ecci.ucr.ac.cr.readers;
 
+import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
+
 import java.lang.reflect.Method;
 
 public class AnnotationsBeanReader extends BeanReader {
@@ -9,7 +11,7 @@ public class AnnotationsBeanReader extends BeanReader {
      * and calls a method to read it
      * @param inputName
      */
-    public void readBeans(String inputName) {
+    public void readBeans(String inputName, BeanCreator beanCreator) {
 
     }
 
@@ -36,4 +38,5 @@ public class AnnotationsBeanReader extends BeanReader {
     private void readBeanConstructor (Method beanConsMethod) {
 
     }
+
 }

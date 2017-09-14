@@ -5,14 +5,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import java.beans.beancontext.BeanContext;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class XmlBeanReader extends BeanReader {
@@ -26,9 +29,10 @@ public class XmlBeanReader extends BeanReader {
     /**
      * Constructor that inits the annotations reader
      */
-    public XmlBeanReader() {
+    public XmlBeanReader(String inputName, BeanCreator beanCreator) {
         super();
         this.annotationsBeanReader = new AnnotationsBeanReader();
+        this.readBeans(inputName, beanCreator);
     }
 
     /**
@@ -36,7 +40,7 @@ public class XmlBeanReader extends BeanReader {
      *
      * @param inputName
      */
-    public void readBeans(String inputName) {
+    public void readBeans(String inputName, BeanCreator beanCreator) {
 
         File fXmlFile = new File(inputName); //Crea un archivo
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance(); //Crea un doc factory, para crear el builder
@@ -76,14 +80,12 @@ public class XmlBeanReader extends BeanReader {
 
             Node node = nodeList.item(index); //Se obtiene el nodo actual
 
-            //System.out.println("\nElemento actual :" +  node.getNodeName());
-
-            if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
+            if ((node.getNodeType() == Node.ELEMENT_NODE) && node.getNodeName() == "bean") { //Si es un nodo elemento y si es un bean
 
                 Element element = (Element) node;
-                this.readBeanProperties(element);
-                this.readBeanConstructor(element);
-                this.readBeanAttribute(element);
+                this.readBeanProperties(element, beanCreator);
+                this.readBeanConstructor(element, beanCreator);
+                this.readBeanAttributes(element, beanCreator);
             }
         }
     }
@@ -102,15 +104,25 @@ public class XmlBeanReader extends BeanReader {
      *
      * @param beanElement
      */
-    private void readBeanProperties(Element beanElement) {
+    private void readBeanProperties(Element beanElement, BeanCreator beanCreator) {
 
-        System.out.println("\nId del Bean: " + beanElement.getAttribute("id")); //Obtengo los atributos del bean
-        System.out.println("Class del Bean: " + beanElement.getAttribute("class"));
-        System.out.println("Scope del Bean: " + beanElement.getAttribute("scope"));
-        System.out.println("Metodo init del Bean: " + beanElement.getAttribute("init"));
-        System.out.println("Metodo destroy del Bean: " + beanElement.getAttribute("destroy"));
-        System.out.println("Lazy-generation: " + beanElement.getAttribute("lazy-generation"));
-        System.out.println("Autowire del Bean: " + beanElement.getAttribute("autowire"));
+        String id = beanElement.getAttribute("id");
+        String className = beanElement.getAttribute("class");
+        String scope = beanElement.getAttribute("scope");
+        String initMethod = beanElement.getAttribute("init");
+        String destroyMethod = beanElement.getAttribute("destroy");
+        String lazyGen = beanElement.getAttribute("lazy-generation");
+        String autowire = beanElement.getAttribute("autowire");
+        if((scope.equalsIgnoreCase("Singleton") || scope.equalsIgnoreCase("Prototype")) &&
+                (lazyGen.equalsIgnoreCase("true") || lazyGen.equalsIgnoreCase("false")) &&
+                (autowire.equalsIgnoreCase("byName") || autowire.equalsIgnoreCase("byType")))
+        System.out.println("\nId del Bean: " + id); //Obtengo los atributos del bean
+        System.out.println("Class del Bean: " + className);
+        System.out.println("Scope del Bean: " + scope);
+        System.out.println("Metodo init del Bean: " + initMethod);
+        System.out.println("Metodo destroy del Bean: " + destroyMethod);
+        System.out.println("Lazy-generation: " + lazyGen);
+        System.out.println("Autowire del Bean: " + autowire);
     }
 
     /**
@@ -118,7 +130,7 @@ public class XmlBeanReader extends BeanReader {
      *
      * @param attributeElement
      */
-    private void readBeanAttribute(Element attributeElement) {
+    private void readBeanAttributes(Element attributeElement, BeanCreator beanCreator) {
         NodeList nodeList = attributeElement.getElementsByTagName("attribute");
         for (int index = 0; index < nodeList.getLength(); index++) { //Se itera sobre cada attribute
 
@@ -141,23 +153,18 @@ public class XmlBeanReader extends BeanReader {
      *
      * @param constructorElement
      */
-    private void readBeanConstructor(Element constructorElement) {
-        NodeList nodeList = constructorElement.getElementsByTagName("param");
-        for (int index = 0; index < nodeList.getLength(); index++) { //Se itera sobre los parametros del constructor
+    private void readBeanConstructor(Element constructorElement, BeanCreator beanCreator) {
+        Node node = constructorElement.getElementsByTagName("param").item(0);
+        System.out.println("Parametros del constructor:");
+        //System.out.println("\nElemento actual :" +  node.getNodeName());
 
-            Node node = nodeList.item(index); //Se obtiene el nodo actual
+        if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
 
-            System.out.println("Parametros del constructor:");
-            //System.out.println("\nElemento actual :" +  node.getNodeName());
-
-            if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
-
-                Element element = (Element) node; //Se convierte el nodo en un elemento
-                System.out.println("Tipo de parametro: " + element.getAttribute("type")); //Obtengo los atributos del bean
-                System.out.println("Index del parametro: " + element.getAttribute("index"));
-                System.out.println("Value del parametro: " + element.getAttribute("value"));
-                System.out.println("Id del Bean referenciado: " + element.getAttribute("ref"));
-            }
+            Element element = (Element) node; //Se convierte el nodo en un elemento
+            System.out.println("Tipo de parametro: " + element.getAttribute("type")); //Obtengo los atributos del bean
+            System.out.println("Index del parametro: " + element.getAttribute("index"));
+            System.out.println("Value del parametro: " + element.getAttribute("value"));
+            System.out.println("Id del Bean referenciado: " + element.getAttribute("ref"));
         }
     }
 
@@ -171,7 +178,8 @@ public class XmlBeanReader extends BeanReader {
     }
 
     public static void main(String[] args) {
-        BeanReader xmlBeanReader = new XmlBeanReader();
-        xmlBeanReader.readBeans("example.xml");
+        //Prueba
+        BeanCreator beanCreator = new BeanCreator();
+        BeanReader xmlBeanReader = new XmlBeanReader("example.xml", beanCreator);
     }
 }
