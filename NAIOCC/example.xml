@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans init="defaultInitMethod" destroy="defaultDestroyMethod">
+
+    <bean     id = "beanId"
+              class = "package.path.class"
+              scope="Singleton/Prototype"
+              init="methodName" destroy="methodName"
+              lazy-generation="true/false"
+              autowire="byName/byType/none">
+
+        <constructor>
+
+            <param type="package.path.class"
+                   index="numberIndex"
+                   value="valor"
+                    ref="beanId" />
+
+        </constructor>
+
+        <attribute name="nombreAtr" value="valor"
+                   ref="beanId" />
+
+    </bean>
+
+</beans>

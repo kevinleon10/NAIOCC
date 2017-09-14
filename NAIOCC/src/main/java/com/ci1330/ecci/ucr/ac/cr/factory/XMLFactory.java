@@ -7,5 +7,6 @@ public class XMLFactory {
     private String xmlFile;
     public XMLFactory(String xmlFile){
         this.xmlFile = xmlFile;
+
     }
 }
