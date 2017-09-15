@@ -4,31 +4,71 @@ import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
 
 import java.util.HashMap;
 
-public class BeanFactory extends BeanContainer {
+public abstract class BeanFactory {
 
-    public BeanFactory(HashMap<String,Bean> beansMap){
-        super(beansMap);
+    protected HashMap<String,Bean> beansMap;
+
+    public BeanFactory(){
+        beansMap = new HashMap<String,Bean>();
+    }
+
+    /**
+     * Adds a bean to the container before initializing it.
+     * @param bean
+     */
+    public void addBean(Bean bean){
+        this.getBeansMap().put(bean.getId(), bean);
+    }
+
+    /**
+     * Returns the instance of the bean, already injected
+     * @param id
+     * @return
+     */
+    public Object getBean(String id){
+        //si es singleton devuelve el unico, si es prototype crea una nueva instancia
+        // inyecta las dependencias
+        if(this.getBeansMap().get(id).getScope().equals("Singleton")){
+            return  this.getBeansMap().get(id).getInstance();
+        }
+        else {
+            this.getBeansMap().get(id).initializeNewBean(); //agrega la nueva instancia a la lista del bean
+            this.getBeansMap().get(id).injectBean();
+            return  this.getBeansMap().get(id).getInstance(); // devuelve la ultima instancia de la lista
+        }
+    }
+
+    /**
+     * Iterates through all beans and checks if they are Sigleton to initialize and inject its dependencies.
+     */
+    public void initContainer(){
+        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
+            if(beanEntry.getValue().getScope().equals("Singleton") && !beanEntry.getValue().isLazyGen()
+                    && beanEntry.getValue() == null){
+                beanEntry.getValue().initializeNewBean();
+                this.getBeansMap().get(id).injectBean();
+                beanEntry.getValue().getInstance().injectDependencies();
+            }
+        }
+    }
+
+    /**
+     * Destroys all beans of the container.
+     */
+    public void shutDownHook(){
+        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
+            beanEntry.getValue().destroyAll();
+        }
     }
 
     public HashMap<String, Bean> getBeansMap() {
-        return super.getBeansMap();
+        return this.getBeansMap();
     }
 
     public void setBeansMap(HashMap<String, Bean> beansMap) {
-        super.setBeansMap(beansMap);
+        this.beansMap = beansMap;
     }
 
-    public Object getBean(String id){
-        return super.getBean(id);
-    }
 
-    @Override
-    public void addBean(Bean bean){
-            super.addBean(bean);
-    }
-
-    public void shutDownHook(){
-        super.shutDownHook();
-    }
 
 }
