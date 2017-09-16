@@ -4,48 +4,35 @@ import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
 import com.ci1330.ecci.ucr.ac.cr.readers.AnnotationsBeanReader;
 
 import java.util.HashMap;
-import java.util.List;
 
+/**
+ * Created by Josue Leon on 13/09/2017
+ *
+ */
 public class AnnotationsFactory extends BeanFactory{
 
-    private List annotationsClasses;
+    private AnnotationsBeanReader annotationsBeanReader;
 
     public AnnotationsFactory() {
         super();
+        annotationsBeanReader = new AnnotationsBeanReader(super.getBeanCreator());
     }
 
     /**
-     * El usuario puede especificar una clase de configuracion al crear el AnnotationsFactory
+     * Constructor for the case in which the user specifies a configuration class.
      * @param classConfig
      */
     public AnnotationsFactory(String classConfig) {
         super();
-        this.registerAnnotations(classConfig);
+        annotationsBeanReader = new AnnotationsBeanReader(super.getBeanCreator());
+        this.registerConfig(classConfig);
     }
 
     /**
-     * Decirle al reader de cual clase debe leer la configuracion del bean
+     * The user may specify more configuration classes later using this method.
      */
-    public void registerAnnotations(String classConfig){
-        AnnotationsBeanReader.readBean(classConfig);
-    }
-
-    public List getAnnotationsClasses() {
-        return annotationsClasses;
-    }
-
-    public void setAnnotationsClasses(List annotationsClasses) {
-        this.annotationsClasses = annotationsClasses;
-    }
-
-    @Override
-    public HashMap<String, Bean> getBeansMap() {
-        return super.getBeansMap();
-    }
-
-    @Override
-    public void setBeansMap(HashMap<String, Bean> beansMap) {
-        super.setBeansMap(beansMap);
+    public void registerConfig(String classConfig){
+        AnnotationsBeanReader.readConfig(classConfig);
     }
 
     @Override
@@ -61,5 +48,27 @@ public class AnnotationsFactory extends BeanFactory{
     @Override
     public void shutDownHook() {
         super.shutDownHook();
+    }
+
+    //----------------------------------------------------------------
+    // Standard Setters and Getters section
+    //----------------------------------------------------------------
+
+    @Override
+    public HashMap<String, Bean> getBeansMap() {
+        return super.getBeansMap();
+    }
+
+    @Override
+    public void setBeansMap(HashMap<String, Bean> beansMap) {
+        super.setBeansMap(beansMap);
+    }
+
+    public AnnotationsBeanReader getAnnotationsBeanReader() {
+        return annotationsBeanReader;
+    }
+
+    public void setAnnotationsBeanReader(AnnotationsBeanReader annotationsBeanReader) {
+        this.annotationsBeanReader = annotationsBeanReader;
     }
 }

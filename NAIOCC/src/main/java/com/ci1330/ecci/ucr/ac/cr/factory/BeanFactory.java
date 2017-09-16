@@ -4,12 +4,19 @@ import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
 
 import java.util.HashMap;
 
+/**
+ * Created by Josue Leon on 13/09/2017
+ *
+ */
+
 public abstract class BeanFactory {
 
     protected HashMap<String,Bean> beansMap;
+    protected BeanCreator beanCreator;
 
     public BeanFactory(){
         beansMap = new HashMap<String,Bean>();
+        beanCreator = new BeanCreator(this);
     }
 
     /**
@@ -17,24 +24,31 @@ public abstract class BeanFactory {
      * @param bean
      */
     public void addBean(Bean bean){
-        this.getBeansMap().put(bean.getId(), bean);
+        this.beansMap.put(bean.getId(), bean);
     }
 
     /**
-     * Returns the instance of the bean, already injected
+     * Returns the instance of the bean, already injected. If it is singleton it
+     * returns the only instance, otherwise creates a new one (prototype).
      * @param id
      * @return
      */
-    public Object getBean(String id){
-        //si es singleton devuelve el unico, si es prototype crea una nueva instancia
-        // inyecta las dependencias
-        if(this.getBeansMap().get(id).getScope().equals("Singleton")){
-            return  this.getBeansMap().get(id).getInstance();
-        }
-        else {
-            this.getBeansMap().get(id).initializeNewBean(); //agrega la nueva instancia a la lista del bean
-            this.getBeansMap().get(id).injectBean();
-            return  this.getBeansMap().get(id).getInstance(); // devuelve la ultima instancia de la lista
+    public Object getBean(String id) throws IdNotFoundException{
+        try {
+            if(!this.getBeansMap().containsKey(id)){
+                throw new IdNotFoundException("Exception error: The id: " + id + " does not exist.");
+            }
+            if (this.getBeansMap().get(id).getScope().equals("Singleton")) {
+                return this.beansMap.get(id).getInstance();
+            } else {
+                this.beansMap.get(id).initializeNewBean(); //agrega la nueva instancia a la lista del bean
+                this.beansMap.get(id).injectBean();
+                return this.beansMap.get(id).getInstance(); // devuelve la ultima instancia de la lista
+            }
+        }catch(IdNotFoundException i){
+            i.printStackTrace();
+            System.exit(1);
+            return null;
         }
     }
 
@@ -46,7 +60,16 @@ public abstract class BeanFactory {
             if(beanEntry.getValue().getScope().equals("Singleton") && !beanEntry.getValue().isLazyGen()
                     && beanEntry.getValue() == null){
                 beanEntry.getValue().initializeNewBean();
-                this.getBeansMap().get(id).injectBean();
+                beanEntry.getValue().getInstance().injectDependencies();
+            }
+        }
+    }
+
+    public void beansReferencesChecker(){
+        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
+            if(beanEntry.getValue().getScope().equals("Singleton") && !beanEntry.getValue().isLazyGen()
+                    && beanEntry.getValue() == null){
+                beanEntry.getValue().initializeNewBean();
                 beanEntry.getValue().getInstance().injectDependencies();
             }
         }
@@ -61,14 +84,26 @@ public abstract class BeanFactory {
         }
     }
 
+    public void registerConfig(){}
+
+    //----------------------------------------------------------------
+    // Standard Setters and Getters section
+    //----------------------------------------------------------------
+
     public HashMap<String, Bean> getBeansMap() {
-        return this.getBeansMap();
+        return this.beansMap
     }
 
     public void setBeansMap(HashMap<String, Bean> beansMap) {
         this.beansMap = beansMap;
     }
 
+    public BeanCreator getBeanCreator() {
+        return beanCreator;
+    }
 
+    public void setBeanCreator(BeanCreator beanCreator) {
+        this.beanCreator = beanCreator;
+    }
 
 }

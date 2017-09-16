@@ -6,19 +6,26 @@ import com.ci1330.ecci.ucr.ac.cr.readers.XmlBeanReader;
 
 import java.util.HashMap;
 
+/**
+ * Created by Josue Leon on 13/09/2017
+ */
 public class XMLFactory extends BeanFactory{
+
+    private XmlBeanReader xmlBeanReader;
 
     private String xmlFile;
 
     public XMLFactory(String xmlFile){
         super();
         this.xmlFile = xmlFile;
-        this.startReader();
+        xmlBeanReader = new XmlBeanReader(super.getBeanCreator());
+        this.registerConfig();
+        super.initContainer();
     }
 
     @Override
-    public void startReader(){
-        XmlBeanReader.readBean(this.getXmlFile());
+    public void registerConfig(){
+        this.xmlBeanReader.readConfig(this.getXmlFile());
     }
 
     public String getXmlFile() {
@@ -52,5 +59,17 @@ public class XMLFactory extends BeanFactory{
     @Override
     public void shutDownHook() {
         super.shutDownHook();
+    }
+
+    //----------------------------------------------------------------
+    // Standard Setters and Getters section
+    //----------------------------------------------------------------
+
+    public XmlBeanReader getXmlBeanReader() {
+        return xmlBeanReader;
+    }
+
+    public void setXmlBeanReader(XmlBeanReader xmlBeanReader) {
+        this.xmlBeanReader = xmlBeanReader;
     }
 }
