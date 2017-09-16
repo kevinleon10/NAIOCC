@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class BeanCreator {
     private Bean bean;
-    private BeanContainer container;
     private Attribute attributeClass;
     private Constructor constructorClass;
     private List<Parameter> constructorParams;

@@ -13,13 +13,13 @@ public class XMLFactory extends BeanFactory{
     public XMLFactory(String xmlFile){
         super();
         this.xmlFile = xmlFile;
-        this.startReader();
+        //this.startReader();
     }
 
-    @Override
-    public void startReader(){
+    //@Override
+    /*public void startReader(){
         XmlBeanReader.readBean(this.getXmlFile());
-    }
+    }*/
 
     public String getXmlFile() {
         return xmlFile;

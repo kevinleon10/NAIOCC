@@ -27,7 +27,7 @@ public class AnnotationsFactory extends BeanFactory{
      * Decirle al reader de cual clase debe leer la configuracion del bean
      */
     public void registerAnnotations(String classConfig){
-        AnnotationsBeanReader.readBean(classConfig);
+        //AnnotationsBeanReader.readBean(classConfig);
     }
 
     public List getAnnotationsClasses() {
