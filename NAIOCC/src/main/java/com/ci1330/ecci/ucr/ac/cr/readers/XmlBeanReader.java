@@ -16,11 +16,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import java.beans.beancontext.BeanContext;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class XmlBeanReader extends BeanReader {
 
@@ -38,7 +35,6 @@ public class XmlBeanReader extends BeanReader {
      */
     public XmlBeanReader(BeanCreator beanCreator) {
         super();
-        this.annotationsBeanReader = new AnnotationsBeanReader();
         this.beanCreator = beanCreator;
         this.initMethod = "";
         this.destroyMethod = "";
@@ -256,7 +252,9 @@ public class XmlBeanReader extends BeanReader {
     public static void main(String[] args) {
         //Prueba
         BeanCreator beanCreator = new BeanCreator();
-        BeanReader xmlBeanReader = new XmlBeanReader(beanCreator);
-        xmlBeanReader.readBeans("example.xml");
+        /*BeanReader xmlBeanReader = new XmlBeanReader(beanCreator);
+        xmlBeanReader.readBeans("example.xml");*/
+        AnnotationsBeanReader annotationsBeanReader = new AnnotationsBeanReader(beanCreator);
+        annotationsBeanReader.readBeans("com.ci1330.ecci.ucr.ac.cr.readers.TestingAnnotations");
     }
 }
