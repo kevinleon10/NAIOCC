@@ -89,16 +89,12 @@ public class XmlBeanReader extends BeanReader {
 
             Node node = nodeList.item(index); //Se obtiene el nodo actual
 
-            if ((node.getNodeType() == Node.ELEMENT_NODE) && node.getNodeName().equals("bean")) { //Si es un nodo elemento y si es un bean
+            if ((node.getNodeType() == Node.ELEMENT_NODE)) { //Si es un nodo elemento
 
-                Element element = (Element) node;
-                this.readBeanProperties(element);
-                this.readBeanConstructor(element);
-                this.readBeanAttributes(element);
-            }
-            else{
-                System.out.println("Se espera leer un 'bean' del XML, no un " + node.getNodeName());
-                System.exit(1);
+                Element beanElement = (Element) node;
+                this.readBeanProperties(beanElement);
+                this.readBeanConstructor(beanElement);
+                this.readBeanAttributes(beanElement);
             }
         }
     }
@@ -110,7 +106,7 @@ public class XmlBeanReader extends BeanReader {
      */
         private Element readRoot(Document xmlRootFile) {
         Element rootElement = xmlRootFile.getDocumentElement();
-        if (rootElement.getTagName().equals("beans")) { //Si es un bean
+        if (rootElement.getTagName().equals("beans")) { //Si son beans
             if(rootElement.hasAttribute("init")){ //Si tiene init
                 this.initMethod = rootElement.getAttribute("init");
             }
@@ -174,48 +170,77 @@ public class XmlBeanReader extends BeanReader {
         }
         else{
             System.out.println("El Bean debe poseer 'id' y 'class'");
-        }
-    }
-
-    /**
-     * Reads an attribute of a bean from the attribute xml node
-     *
-     * @param attributeElement
-     */
-    private void readBeanAttributes(Element attributeElement) {
-        NodeList nodeList = attributeElement.getElementsByTagName("attribute");
-        for (int index = 0; index < nodeList.getLength(); index++) { //Se itera sobre cada attribute
-
-            Node node = nodeList.item(index); //Se obtiene el nodo actual
-            System.out.println("Attributes del Bean:");
-
-            if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
-
-                Element element = (Element) node;
-                System.out.println("Name del attribute: " + element.getAttribute("name")); //Obtengo los atributos del bean
-                System.out.println("Value del attribute: " + element.getAttribute("value"));
-                System.out.println("Id del Bean referenciado: " + element.getAttribute("ref"));
-            }
+            System.exit(1);
         }
     }
 
     /**
      * Reads the constructor of a bean from the constructor xml node
      *
-     * @param constructorElement
+     * @param beanElement
      */
-    private void readBeanConstructor(Element constructorElement) {
-        Node node = constructorElement.getElementsByTagName("param").item(0);
-        System.out.println("Parametros del constructor:");
-        //System.out.println("\nElemento actual :" +  node.getNodeName());
+    private void readBeanConstructor(Element beanElement) {
+        Element constructorElement = (Element) beanElement.getElementsByTagName("constructor").item(0);
+        NodeList nodeList = constructorElement.getElementsByTagName("param");
+        for (int i = 0; i < nodeList.getLength(); i++) { //Se itera sobre cada attribute
+            Node node = nodeList.item(i); //Se obtiene el nodo actual
+            System.out.println("Parametros del constructor:");
 
-        if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
+            if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
+                Element element = (Element) node; //Se convierte el nodo en un elemento
+                if((element.hasAttribute("type") || element.hasAttribute("index")) && (element.hasAttribute("value") ||
+                        element.hasAttribute("ref"))){
+                    String type = element.getAttribute("type");
+                    int index = Integer.parseInt(element.getAttribute("index"));
+                    String value = element.getAttribute("value");
+                    String ref = element.getAttribute("ref");
+                    this.beanCreator.registerConstructor(type, index, "value", ref);
 
-            Element element = (Element) node; //Se convierte el nodo en un elemento
-            System.out.println("Tipo de parametro: " + element.getAttribute("type")); //Obtengo los atributos del bean
-            System.out.println("Index del parametro: " + element.getAttribute("index"));
-            System.out.println("Value del parametro: " + element.getAttribute("value"));
-            System.out.println("Id del Bean referenciado: " + element.getAttribute("ref"));
+                    System.out.println("Tipo de parametro: " + type); //Obtengo los atributos del bean
+                    System.out.println("Index del parametro: " + index);
+                    System.out.println("Value del parametro: " + value);
+                    System.out.println("Id del Bean referenciado: " + ref);
+                }
+                else {
+                    System.out.println("El param debe poseer tipo y valor");
+                    System.exit(1);
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     * Reads an attribute of a bean from the attribute xml node
+     *
+     * @param beanElement
+     */
+    private void readBeanAttributes(Element beanElement) {
+        NodeList nodeList = beanElement.getElementsByTagName("attribute");
+        for (int index = 0; index < nodeList.getLength(); index++) { //Se itera sobre cada attribute
+
+            Node node = nodeList.item(index); //Se obtiene el nodo actual
+            System.out.println("Attributes del Bean:");
+
+            if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
+                Element element = (Element) node;
+                if(element.hasAttribute("name") && (element.hasAttribute("value") ||
+                        element.hasAttribute("ref"))){
+                    String name = element.getAttribute("name");
+                    Object value = element.getAttribute("value");
+                    String beanRef = element.getAttribute("ref");
+                    this.beanCreator.registerSetter(name, value, beanRef);
+
+                    System.out.println("Name del attribute: " + name); //Obtengo los atributos del bean
+                    System.out.println("Value del attribute: " + value);
+                    System.out.println("Id del Bean referenciado: " + beanRef);
+                }
+                else {
+                    System.out.println("El attribute debe poseer nombre y valor");
+                    System.exit(1);
+                }
+            }
         }
     }
 
