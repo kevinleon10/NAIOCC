@@ -30,8 +30,6 @@ public class XmlBeanReader extends BeanReader {
      */
     private BeanCreator beanCreator;
     private AnnotationsBeanReader annotationsBeanReader;
-    private boolean initAssigned;
-    private boolean destroyAssigned;
     private String initMethod;
     private String destroyMethod;
 
@@ -42,8 +40,8 @@ public class XmlBeanReader extends BeanReader {
         super();
         this.annotationsBeanReader = new AnnotationsBeanReader();
         this.beanCreator = beanCreator;
-        this.initAssigned = false;
-        this.destroyAssigned = false;
+        this.initMethod = "";
+        this.destroyMethod = "";
     }
 
     /**
@@ -91,7 +89,7 @@ public class XmlBeanReader extends BeanReader {
 
             Node node = nodeList.item(index); //Se obtiene el nodo actual
 
-            if ((node.getNodeType() == Node.ELEMENT_NODE) && node.getNodeName().equalsIgnoreCase("bean")) { //Si es un nodo elemento y si es un bean
+            if ((node.getNodeType() == Node.ELEMENT_NODE) && node.getNodeName().equals("bean")) { //Si es un nodo elemento y si es un bean
 
                 Element element = (Element) node;
                 this.readBeanProperties(element);
@@ -112,14 +110,13 @@ public class XmlBeanReader extends BeanReader {
      */
         private Element readRoot(Document xmlRootFile) {
         Element rootElement = xmlRootFile.getDocumentElement();
-        if (rootElement.getTagName().equalsIgnoreCase("beans")) { //Si es un nodo elemento y si es un bean
-            if(!(rootElement.getAttribute("init").equals(""))){ //Si tiene init
-                this.initAssigned = true;
+        if (rootElement.getTagName().equals("beans")) { //Si es un bean
+            if(rootElement.hasAttribute("init")){ //Si tiene init
+                this.initMethod = rootElement.getAttribute("init");
             }
-            if(!(rootElement.getAttribute("destroy").equals(""))){ //Si tiene destroy
-                this.initAssigned = true;
+            if(rootElement.hasAttribute("destroy")){ //Si tiene destroy
+                this.destroyMethod = rootElement.getAttribute("destroy");
             }
-            System.out.println("Init General: " + rootElement.getAttribute("init")); //Obtengo los atributos del bean
         }
         else {
             System.out.println("Se espera leer 'beans'del XML, no " + rootElement.getTagName());
@@ -135,38 +132,48 @@ public class XmlBeanReader extends BeanReader {
      */
     private void readBeanProperties(Element beanElement) {
 
-        String id = beanElement.getAttribute("id");
-        String className = beanElement.getAttribute("class");
-        String scope = beanElement.getAttribute("scope");
-        if(!initAssigned){
-            this.initMethod = beanElement.getAttribute("init");
-        }
-        if(!this.destroyAssigned){
-            this.destroyMethod = beanElement.getAttribute("destroy");
-        }
-        String lazyGen = beanElement.getAttribute("lazy-generation");
-        String autowire = beanElement.getAttribute("autowire");
-        if((scope.equalsIgnoreCase("Singleton") || scope.equalsIgnoreCase("Prototype")) &&
-                (lazyGen.equalsIgnoreCase("true") || lazyGen.equalsIgnoreCase("false")) &&
-                (autowire.equalsIgnoreCase("byName") || autowire.equalsIgnoreCase("byType"))){
-            boolean lazyGeneration = false;
-            if(lazyGen.equalsIgnoreCase("true")){
-                lazyGeneration = true;
+        if(beanElement.hasAttribute("id") && beanElement.hasAttribute("class")){
+            String id = beanElement.getAttribute("id");
+            String className = beanElement.getAttribute("class");
+            if(beanElement.hasAttribute("init")){
+                this.initMethod = beanElement.getAttribute("init");
             }
-            if(scope.equalsIgnoreCase("Singleton")){
-                beanCreator.createBean(id, className, Scope.Singleton, this.initMethod, this.destroyMethod, lazyGeneration,  autowire);
+            if(beanElement.hasAttribute("destroy")){
+                this.destroyMethod = beanElement.getAttribute("destroy");
+            }
+            String autowire = beanElement.getAttribute("autowire");
+            String scope = beanElement.getAttribute("scope");
+            String lazyGen = beanElement.getAttribute("lazy-generation");
+            if((autowire.equals("byName") || autowire.equals("byType") || autowire.equals("")) &&
+                    (lazyGen.equals("true") || lazyGen.equals("false") || lazyGen.equals(""))){ //Reviso si pasan los requisitos
+                boolean lazyGeneration = lazyGen.equals("true");
+                if(scope.equals("Prototype")){
+                    this.beanCreator.createBean(id, className, Scope.Prototype, initMethod, destroyMethod, lazyGeneration, autowire);
+                }
+                else if(scope.equals("Singleton") || scope.equals("")){
+                    this.beanCreator.createBean(id, className, Scope.Singleton, initMethod, destroyMethod, lazyGeneration, autowire);
+                }
+                else{
+                    System.out.println("El 'scope' del Bean debe ser Protoype o Singleton");
+                    System.exit(1);
+                }
+
+                //Se ven los resultados
+                System.out.println("\nId del Bean: " + id); //Obtengo los atributos del bean
+                System.out.println("Class del Bean: " + className);
+                System.out.println("Scope del Bean: " + scope);
+                System.out.println("Metodo init del Bean: " + initMethod);
+                System.out.println("Metodo destroy del Bean: " + destroyMethod);
+                System.out.println("Lazy-generation: " + lazyGen);
+                System.out.println("Autowire del Bean: " + autowire);
             }
             else{
-                beanCreator.createBean(id, className, Scope.Prototype, initMethod, destroyMethod, lazyGeneration,  autowire);
-
+                System.out.println("El valor de autowire o de lazyGen no es reconocido");
+                System.exit(1);
             }
-            System.out.println("\nId del Bean: " + id); //Obtengo los atributos del bean
-            System.out.println("Class del Bean: " + className);
-            System.out.println("Scope del Bean: " + scope);
-            System.out.println("Metodo init del Bean: " + initMethod);
-            System.out.println("Metodo destroy del Bean: " + destroyMethod);
-            System.out.println("Lazy-generation: " + lazyGen);
-            System.out.println("Autowire del Bean: " + autowire);
+        }
+        else{
+            System.out.println("El Bean debe poseer 'id' y 'class'");
         }
     }
 
@@ -181,7 +188,6 @@ public class XmlBeanReader extends BeanReader {
 
             Node node = nodeList.item(index); //Se obtiene el nodo actual
             System.out.println("Attributes del Bean:");
-            //System.out.println("\nElemento actual :" +  node.getNodeName());
 
             if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
 
