@@ -3,7 +3,9 @@ package com.ci1330.ecci.ucr.ac.cr.factory;
 import com.ci1330.ecci.ucr.ac.cr.bean.*;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,9 +15,9 @@ public class BeanCreator {
 
     private Bean bean;
     private BeanFactory beanFactory;
-    private Attribute attributeClass;
-    private Constructor constructorClass;
-    private List<Parameter> constructorParams;
+    private BeanAttribute attributeClass;
+    private BeanConstructor constructorClass;
+    private List<BeanParameter> constructorParams;
 
     /**
      *
@@ -29,7 +31,7 @@ public class BeanCreator {
     /**
      *
      * @param id
-     * @param classBean
+     * @param beanClass
      * @param scope
      * @param initMethod
      * @param destroyMethod
@@ -37,14 +39,18 @@ public class BeanCreator {
      * @param autowire
      * @throws RepeatedIdException
      */
-    public void createBean(String id, String classBean, Scope scope, String initMethod, String destroyMethod, boolean lazyGen, Autowire autowire) throws RepeatedIdException{
+    public void createBean(String id, String beanClass, Scope scope, String initMethod, String destroyMethod, boolean lazyGen, Autowire autowire) throws RepeatedIdException{
         try {
             if(this.beanFactory.getBeansMap().containsKey(id)){
                 throw new RepeatedIdException("Exception error: Bean id " + id + " is repeated.");
             }
             bean = new Bean();
             bean.setId(id);
-            bean.setClassBean(classBean);
+            try {
+                bean.setBeanClass(Class.forName(beanClass));    // AGREGAR CASOS DE TIPOS PRIMITIVOS
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             bean.setScope(scope);
             bean.setInitMethod(initMethod);
             bean.setDestroyMethod(destroyMethod);
@@ -67,8 +73,7 @@ public class BeanCreator {
         Method setterMethod;
 
         try {
-            Class reflectionClass = Class.forName(this.bean.getClassBean());
-            Method[] beanMethods = reflectionClass.getMethods();
+            Method[] beanMethods = this.bean.getBeanClass.getMethods();
 
             for(Method method: beanMethods){
                 if(method.getName().startsWith("set") && method.getName().contains(attributeName)){
@@ -84,7 +89,7 @@ public class BeanCreator {
             System.exit(1);
         }
 
-        Attribute beanAttribute = new Attribute(beanRef, this.beanFactory, value, setterMethod);
+        BeanAttribute beanAttribute = new BeanAttribute(beanRef, this.beanFactory, value, setterMethod);
         bean.appendAttribute(beanAttribute);
     }
 
@@ -96,16 +101,54 @@ public class BeanCreator {
      * @param beanRef
      */
     public void registerConstructorParameter(String paramType, int index, Object value, String beanRef){
-        Parameter beanConstructorParam = new Parameter(beanRef, this.beanFactory, value, paramType, index);
+        BeanParameter beanConstructorParam = new BeanParameter(beanRef, this.beanFactory, value, paramType, index);
         constructorParams.add(beanConstructorParam);
     }
 
     /**
      *
      */
-    public void registerConstructor(){
-        constructorClass = new Constructor();
-        constructorClass.setParameterList(constructorParams);
+    public void registerConstructor() {
+        int totalParametersOneType = 0;
+        int totalParametersMatched = 0;
+        int constructorMatches = 0;
+        int paramIndex = 0;
+        Constructor[] beanConstructors = this.bean.getBeanClass().getDeclaredConstructors();
+        Class[] beanConstructorParameters;
+        for (Constructor beanConstructor : beanConstructors) {
+            beanConstructorParameters = beanConstructor.getParameterTypes();
+            if (beanConstructorParameters.length == this.constructorParams.size()) {
+                for (BeanParameter p : this.constructorParams) {
+                    for (Class parameter : beanConstructorParameters) {
+                        paramIndex++;
+                        try {
+                            if (Class.forName(p.getType()).equals(parameter)) {
+                                totalParametersOneType++;
+                                totalParametersMatched++;
+                                p.setIndex(paramIndex);
+                            }
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(totalParametersOneType != 1) {
+                        System.exit(1); //EXCEPCION DE TENER VARIOS PARAMETROS CON EL MISMO TIPO EN EL CONSTRUCTOR
+                    }
+                    totalParametersOneType = 0;
+                }
+                if(totalParametersMatched == this.constructorParams.size()){
+                    constructorMatches++;
+                }
+            }
+            constructorClass = new BeanConstructor();
+            constructorClass.setParameterList(constructorParams);
+        }
+        if(constructorMatches == 0){
+            System.exit(1); // EXCEPCION DE QUE NO HAYA UN CONSTRUCTOR PARA ESOS PARAMETROS
+        }
+        if(constructorMatches > 1){
+            System.exit(1); // EXCEPCION DE QUE HAY DOS O MASCONSTRUCTORES CON LOS MISMOS TIPOS Y CANTIDAD
+        }
     }
 
     /**
@@ -139,27 +182,27 @@ public class BeanCreator {
         this.beanFactory = beanFactory;
     }
 
-    public Attribute getAttributeClass() {
+    public BeanAttribute getAttributeClass() {
         return attributeClass;
     }
 
-    public void setAttributeClass(Attribute attributeClass) {
+    public void setAttributeClass(BeanAttribute attributeClass) {
         this.attributeClass = attributeClass;
     }
 
-    public Constructor getConstructorClass() {
+    public BeanConstructor getConstructorClass() {
         return constructorClass;
     }
 
-    public void setConstructorClass(Constructor constructorClass) {
+    public void setConstructorClass(BeanConstructor constructorClass) {
         this.constructorClass = constructorClass;
     }
 
-    public List<Parameter> getConstructorParams() {
+    public List<BeanParameter> getConstructorParams() {
         return constructorParams;
     }
 
-    public void setConstructorParams(List<Parameter> constructorParams) {
+    public void setConstructorParams(List<BeanParameter> constructorParams) {
         this.constructorParams = constructorParams;
     }
 }

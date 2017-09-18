@@ -5,7 +5,7 @@ package com.ci1330.ecci.ucr.ac.cr.bean;
  */
 public class Bean {
     private String id;
-    private String classBean;
+    private Class beanClass;
     private String initMethod;
     private String destroyMethod;
     private boolean lazyGen;
@@ -20,12 +20,12 @@ public class Bean {
         this.id = id;
     }
 
-    public String getClassBean() {
-        return classBean;
+    public Class getBeanClass() {
+        return beanClass;
     }
 
-    public void setClassBean(String classBean) {
-        this.classBean = classBean;
+    public void setBeanClass(Class classBean) {
+        this.beanClass = classBean;
     }
 
     public String getInitMethod() {

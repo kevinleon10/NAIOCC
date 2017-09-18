@@ -65,14 +65,25 @@ public abstract class BeanFactory {
         }
     }
 
-    public void beansReferencesChecker(){
+    /**
+     * Finds a bean by its type for autowiring purposes. If theres no bean
+     * with this type in the container or if there are more than one, it returns null.
+     * @param beanType
+     * @return
+     */
+    public Bean findBean(Class beanType){
+        Bean bean = new Bean();
+        int totalBeans = 0;
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
-            if(beanEntry.getValue().getScope().equals("Singleton") && !beanEntry.getValue().isLazyGen()
-                    && beanEntry.getValue() == null){
-                beanEntry.getValue().initializeNewBean();
-                beanEntry.getValue().getInstance().injectDependencies();
+            if(beanEntry.getValue().getBeanClass().equals(beanType)){
+                totalBeans++;
+                bean = beanEntry.getValue();
             }
         }
+        if(totalBeans == 1){
+            return bean;
+        }
+        return null;
     }
 
     /**
