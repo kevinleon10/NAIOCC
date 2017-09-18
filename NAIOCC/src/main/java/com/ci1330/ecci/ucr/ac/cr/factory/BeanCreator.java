@@ -109,10 +109,12 @@ public class BeanCreator {
      *
      */
     public void registerConstructor() {
+        // CHEQUEAR SI YA TIENEN INDICES TODOS LOS PARAMETROS DE LA LISTA DEL BEAN, SI NO SE CORRE EL METODO
         int totalParametersOneType = 0;
         int totalParametersMatched = 0;
         int constructorMatches = 0;
         int paramIndex = 0;
+        boolean twoMatchesForOneParam = false;
         Constructor[] beanConstructors = this.bean.getBeanClass().getDeclaredConstructors();
         Class[] beanConstructorParameters;
         for (Constructor beanConstructor : beanConstructors) {
@@ -122,7 +124,7 @@ public class BeanCreator {
                     for (Class parameter : beanConstructorParameters) {
                         paramIndex++;
                         try {
-                            if (Class.forName(p.getType()).equals(parameter)) {
+                            if (Class.forName(p.getType()).equals(parameter)) {             // PONER CASOS PARA TIPOS PRIMITIVOS
                                 totalParametersOneType++;
                                 totalParametersMatched++;
                                 p.setIndex(paramIndex);
@@ -131,17 +133,18 @@ public class BeanCreator {
                             e.printStackTrace();
                         }
                     }
-                    if(totalParametersOneType != 1) {
-                        System.exit(1); //EXCEPCION DE TENER VARIOS PARAMETROS CON EL MISMO TIPO EN EL CONSTRUCTOR
+                    paramIndex = 0;
+                    if(totalParametersOneType > 1) {
+                        twoMatchesForOneParam = true;
                     }
                     totalParametersOneType = 0;
                 }
-                if(totalParametersMatched == this.constructorParams.size()){
+                if(totalParametersMatched == this.constructorParams.size() && !twoMatchesForOneParam){
                     constructorMatches++;
                 }
+                totalParametersMatched = 0;
             }
-            constructorClass = new BeanConstructor();
-            constructorClass.setParameterList(constructorParams);
+            twoMatchesForOneParam = false;
         }
         if(constructorMatches == 0){
             System.exit(1); // EXCEPCION DE QUE NO HAYA UN CONSTRUCTOR PARA ESOS PARAMETROS
@@ -149,6 +152,8 @@ public class BeanCreator {
         if(constructorMatches > 1){
             System.exit(1); // EXCEPCION DE QUE HAY DOS O MASCONSTRUCTORES CON LOS MISMOS TIPOS Y CANTIDAD
         }
+        constructorClass = new BeanConstructor();
+        constructorClass.setParameterList(constructorParams);
     }
 
     /**
