@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Scope {
-    String value() default "Singleton";
+    com.ci1330.ecci.ucr.ac.cr.bean.Scope value();
 }

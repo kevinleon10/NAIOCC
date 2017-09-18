@@ -133,22 +133,21 @@ public class XmlBeanReader extends BeanReader {
             if(beanElement.hasAttribute("destroy")){
                 this.destroyMethod = beanElement.getAttribute("destroy");
             }
+            String scopeS = beanElement.getAttribute("scope");
             String autowire = beanElement.getAttribute("autowire");
-            String scope = beanElement.getAttribute("scope");
+            if(autowire.equals("")){
+                autowire = "none";
+            }
             String lazyGen = beanElement.getAttribute("lazy-generation");
-            if((autowire.equals("byName") || autowire.equals("byType") || autowire.equals("")) &&
-                    (lazyGen.equals("true") || lazyGen.equals("false") || lazyGen.equals(""))){ //Reviso si pasan los requisitos
+            if((autowire.equals("byName") || autowire.equals("byType") || autowire.equals("none")) &&
+                    (lazyGen.equals("true") || lazyGen.equals("false") || lazyGen.equals("")) &&
+                    (scopeS.equals("Singleton") || scopeS.equals("Prototype") || scopeS.equals(""))){ //Reviso si pasan los requisitos
+                Scope scope = Scope.Singleton;
+                if(beanElement.getAttribute("scope").equals("Prototype")){
+                    scope = Scope.Prototype;
+                }
                 boolean lazyGeneration = lazyGen.equals("true");
-                if(scope.equals("Prototype")){
-                    this.beanCreator.createBean(id, className, Scope.Prototype, initMethod, destroyMethod, lazyGeneration, autowire);
-                }
-                else if(scope.equals("Singleton") || scope.equals("")){
-                    this.beanCreator.createBean(id, className, Scope.Singleton, initMethod, destroyMethod, lazyGeneration, autowire);
-                }
-                else{
-                    System.out.println("El 'scope' del Bean debe ser Protoype o Singleton");
-                    System.exit(1);
-                }
+                this.beanCreator.createBean(id, className, scope, initMethod, destroyMethod, lazyGeneration, autowire);
 
                 //Se ven los resultados
                 System.out.println("\nId del Bean: " + id); //Obtengo los atributos del bean
@@ -156,11 +155,11 @@ public class XmlBeanReader extends BeanReader {
                 System.out.println("Scope del Bean: " + scope);
                 System.out.println("Metodo init del Bean: " + initMethod);
                 System.out.println("Metodo destroy del Bean: " + destroyMethod);
-                System.out.println("Lazy-generation: " + lazyGen);
+                System.out.println("Lazy-generation: " + lazyGeneration);
                 System.out.println("Autowire del Bean: " + autowire);
             }
             else{
-                System.out.println("El valor de autowire o de lazyGen no es reconocido");
+                System.out.println("El valor de autowire o de lazy-generation no es reconocido");
                 System.exit(1);
             }
         }
@@ -221,8 +220,8 @@ public class XmlBeanReader extends BeanReader {
 
             if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
                 Element element = (Element) node;
-                if(element.hasAttribute("name") && (element.hasAttribute("value") ||
-                        element.hasAttribute("ref"))){
+                if((element.hasAttribute("name") && element.hasAttribute("value")) ||
+                        (element.hasAttribute("name") && element.hasAttribute("ref"))){
                     String name = element.getAttribute("name");
                     Object value = element.getAttribute("value");
                     String beanRef = element.getAttribute("ref");
@@ -233,7 +232,7 @@ public class XmlBeanReader extends BeanReader {
                     System.out.println("Id del Bean referenciado: " + beanRef);
                 }
                 else {
-                    System.out.println("El attribute debe poseer nombre y valor");
+                    System.out.println("El attribute debe poseer nombre y valor o nombre y ref");
                     System.exit(1);
                 }
             }

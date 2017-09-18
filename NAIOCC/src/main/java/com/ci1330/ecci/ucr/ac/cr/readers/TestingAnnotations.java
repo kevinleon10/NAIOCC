@@ -5,16 +5,18 @@ package com.ci1330.ecci.ucr.ac.cr.readers;
  */
 
 
-@Bean(id = "beanId")
-@Scope
+@Bean(id = "fuck")
+@Scope(com.ci1330.ecci.ucr.ac.cr.bean.Scope.Prototype)
 @Lazy
-@Autowire(value = "byType")
+@Autowire("byType")
 public class TestingAnnotations {
-    @Attribute(value = "FUCK", ref = "beanId")
+    @Attribute(value = "fuck", ref = "")
     private String test;
 
+    public int l;
+
     @Init
-    public void firstMethod(){
+    private void firstMethod(){
         System.out.println("Fuck on");
     }
 
@@ -24,6 +26,7 @@ public class TestingAnnotations {
         this.test = "";
     }
 
+    //@Init
     @Destroy
     public void lastMethod(){
         System.out.println("Fuck off");
