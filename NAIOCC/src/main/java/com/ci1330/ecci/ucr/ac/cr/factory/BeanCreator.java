@@ -1,6 +1,7 @@
 package com.ci1330.ecci.ucr.ac.cr.factory;
 
 import com.ci1330.ecci.ucr.ac.cr.bean.*;
+import com.sun.java.util.jar.pack.Instruction;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
@@ -89,7 +90,11 @@ public class BeanCreator {
             System.exit(1);
         }
         if(setterMethod == null){
-            throw new SetterMethodNotFoundException("Creation error: Bean attribute's setter method not found for attribute: " + attributeName + ".");
+            try {
+                throw new SetterMethodNotFoundException("Creation error: Bean attribute's setter method not found for attribute: " + attributeName + ".");
+            } catch (SetterMethodNotFoundException e) {
+                e.printStackTrace();
+            }
             System.exit(1);
         }
         BeanAttribute beanAttribute = new BeanAttribute(beanRef, this.beanFactory, value, setterMethod);
@@ -126,14 +131,74 @@ public class BeanCreator {
                 for (BeanParameter p : this.constructorParams) {
                     for (Class parameter : beanConstructorParameters) {
                         paramIndex++;
-                        try {
-                            if (Class.forName(p.getType()).equals(parameter)) {             // PONER CASOS PARA TIPOS PRIMITIVOS
-                                totalParametersOneType++;
-                                totalParametersMatched++;
-                                p.setIndex(paramIndex);
-                            }
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                        switch(p.getType()) {
+                            case "int":
+                                if (parameter.toString().equals("int")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            case "byte":
+                                if (parameter.toString().equals("byte")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            case "short":
+                                if (parameter.toString().equals("short")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            case "long":
+                                if (parameter.toString().equals("long")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            case "float":
+                                if (parameter.toString().equals("float")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            case "double":
+                                if (parameter.toString().equals("double")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            case "boolean":
+                                if (parameter.toString().equals("boolean")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            case "char":
+                                if (parameter.toString().equals("char")) {
+                                    totalParametersOneType++;
+                                    totalParametersMatched++;
+                                    p.setIndex(paramIndex);
+                                }
+                                break;
+                            default:
+                                try {
+                                    if (Class.forName(p.getType()).equals(parameter)) {
+                                        totalParametersOneType++;
+                                        totalParametersMatched++;
+                                        p.setIndex(paramIndex);
+                                    }
+                                } catch (ClassNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
                         }
                     }
                     paramIndex = 0;

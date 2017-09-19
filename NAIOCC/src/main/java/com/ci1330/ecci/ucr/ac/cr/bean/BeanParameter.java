@@ -5,7 +5,7 @@ import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 /**
  * Created by kevinleon10 on 09/09/17.
  */
-public class Parameter {
+public class BeanParameter {
     private String type;
     private int index;
     private Object value;

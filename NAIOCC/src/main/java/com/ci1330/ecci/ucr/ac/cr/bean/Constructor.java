@@ -6,13 +6,13 @@ import java.util.List;
  * Created by kevinleon10 on 09/09/17.
  */
 public class Constructor {
-    private List<Parameter> parameterList;
+    private List<BeanParameter> parameterList;
 
-    public List<Parameter> getParameterList() {
+    public List<BeanParameter> getParameterList() {
         return parameterList;
     }
 
-    public void setParameterList(List<Parameter> parameterList) {
+    public void setParameterList(List<BeanParameter> parameterList) {
         this.parameterList = parameterList;
     }
 }
