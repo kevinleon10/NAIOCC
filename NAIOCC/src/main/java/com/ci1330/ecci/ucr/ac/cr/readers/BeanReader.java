@@ -2,7 +2,7 @@ package com.ci1330.ecci.ucr.ac.cr.readers;
 
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
 
-public abstract class BeanReader {
+public abstract class BeanReader{
 
     /**
      * Object used to create the beans

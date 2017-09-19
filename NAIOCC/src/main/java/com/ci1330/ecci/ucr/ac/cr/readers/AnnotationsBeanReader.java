@@ -1,11 +1,11 @@
 package com.ci1330.ecci.ucr.ac.cr.readers;
 
-import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 public class AnnotationsBeanReader extends BeanReader {
 
@@ -29,6 +29,7 @@ public class AnnotationsBeanReader extends BeanReader {
         }
         if(reflectClass.isAnnotationPresent(com.ci1330.ecci.ucr.ac.cr.readers.Bean.class)){
                 this.readBeanProperties(reflectClass);
+                this.readBeanConstructor(reflectClass);
                 this.readBeanSetter(reflectClass);
         }
         else {
@@ -94,32 +95,66 @@ public class AnnotationsBeanReader extends BeanReader {
     }
 
     /**
-     * Reads the annotations of a specific method, if any.
+     * Reads the annotations of a constructor, if any.
      * @param beanClass
      */
-    private void readBeanSetter (Class beanClass) {
-        for(Field field : beanClass.getDeclaredFields()){
-            System.out.println(field.getName());
-            if(field.isAnnotationPresent(Attribute.class)){
-                Object value = ((Attribute)(beanClass.getAnnotation(Attribute.class))).value(); //Obtengo, casteo y obtengo
-                String ref = ((Attribute)(beanClass.getAnnotation(Attribute.class))).ref();
-                if((ref.equals("") && !(value.equals(""))) || (!(ref.equals("")) && value.equals(""))){ //Si solo uno esta
-                    this.beanCreator.registerSetter(field.getName(), value, ref);
-                }
-                else{
-                    System.out.println("El Attribute no fue reconocido, debe haber solo uno, no ambos o ninguno");
+    private void readBeanConstructor (Class beanClass) {
+        int countConstructor = 0;
+        for(Constructor constructor: beanClass.getDeclaredConstructors()){
+            System.out.println(constructor.getName());
+            if(constructor.isAnnotationPresent(com.ci1330.ecci.ucr.ac.cr.readers.Constructor.class)){
+                ++countConstructor;
+                if(countConstructor>1){
+                    System.out.println("El Constructor no fue reconocido, posee más de una definición");
                     System.exit(1);
+                }
+                if(constructor.isAnnotationPresent(Parameter.class)){
+                    for(Annotation annotation: constructor.getDeclaredAnnotations()){
+                        if(annotation.annotationType() == Parameter.class){
+                            String paramType = ((Parameter)annotation).type();
+                            int index = ((Parameter)annotation).index();
+                            Object value = ((Parameter)annotation).value();
+                            String beanRef = ((Parameter)annotation).ref();
+                            if (((paramType.equals("") && index!=0) || (!(paramType.equals("")) && index==0)) &&
+                                    ((value.equals("") && !(beanRef.equals(""))) || (!(paramType.equals("")) && beanRef.equals("")))) {
+                                this.beanCreator.registerConstructor(paramType, index, value, beanRef);
+                                System.out.println(paramType);
+                                System.out.println(index);
+                                System.out.println(value);
+                                System.out.println(beanRef);
+                            }
+                            else {
+                                System.out.println("El param debe poseer tipo y valor");
+                                System.exit(1);
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
     /**
-     * Reads the annotations of a constructor, if any.
-     * @param beanConsMethod
+     * Reads the annotations of a specific method, if any.
+     * @param beanClass
      */
-    private void readBeanConstructor (Method beanConsMethod) {
-
+    private void readBeanSetter (Class beanClass) {
+        for (Field field : beanClass.getDeclaredFields()) {
+            //System.out.println(field.getName());
+            if (field.isAnnotationPresent(Attribute.class)) {
+                Object value = field.getAnnotation(Attribute.class).value(); //Obtengo, casteo y obtengo
+                String ref = field.getAnnotation(Attribute.class).ref();
+                if ((ref.equals("") && !(value.equals(""))) || (!(ref.equals("")) && value.equals(""))) { //Si solo uno esta
+                    this.beanCreator.registerSetter(field.getName(), value, ref);
+                    /*System.out.println(field.getName());
+                    System.out.println(value);
+                    System.out.println(ref);*/
+                } else {
+                    System.out.println("El Attribute no fue reconocido, debe haber solo uno, no ambos o ninguno");
+                    System.exit(1);
+                }
+            }
+        }
     }
 
 }

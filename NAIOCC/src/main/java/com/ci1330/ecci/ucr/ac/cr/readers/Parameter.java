@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.CONSTRUCTOR)
 public @interface Parameter {
-    String type() default "String";
+    String type();
     String value() default "";
     String ref() default "";
     int index() default 0;

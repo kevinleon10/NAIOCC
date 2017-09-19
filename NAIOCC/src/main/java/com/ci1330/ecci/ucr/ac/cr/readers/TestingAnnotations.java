@@ -10,9 +10,10 @@ package com.ci1330.ecci.ucr.ac.cr.readers;
 @Lazy
 @Autowire("byType")
 public class TestingAnnotations {
-    @Attribute(value = "fuck", ref = "")
+    @Attribute(value = "fuck")
     private String test;
 
+    @Attribute(ref = "kkk")
     public int l;
 
     @Init
@@ -21,7 +22,7 @@ public class TestingAnnotations {
     }
 
     @Constructor
-    @Parameter
+    @Parameter(type = "String", value = "fuck")
     public TestingAnnotations(String test){
         this.test = "";
     }
