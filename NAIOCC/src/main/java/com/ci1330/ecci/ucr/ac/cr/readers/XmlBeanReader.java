@@ -103,6 +103,9 @@ public class XmlBeanReader extends BeanReader {
         private Element readRoot(Document xmlRootFile) {
         Element rootElement = xmlRootFile.getDocumentElement();
         if (rootElement.getTagName().equals("beans")) { //Si son beans
+            if(rootElement.hasAttribute("annotationsClass")){
+                this.readAnnotationsStatementFound(rootElement);
+            }
             if(rootElement.hasAttribute("init")){ //Si tiene init
                 this.initMethod = rootElement.getAttribute("init");
             }
@@ -150,13 +153,13 @@ public class XmlBeanReader extends BeanReader {
                 this.beanCreator.createBean(id, className, scope, initMethod, destroyMethod, lazyGeneration, autowire);
 
                 //Se ven los resultados
-                System.out.println("\nId del Bean: " + id); //Obtengo los atributos del bean
+                /*System.out.println("\nId del Bean: " + id); //Obtengo los atributos del bean
                 System.out.println("Class del Bean: " + className);
                 System.out.println("Scope del Bean: " + scope);
                 System.out.println("Metodo init del Bean: " + initMethod);
                 System.out.println("Metodo destroy del Bean: " + destroyMethod);
                 System.out.println("Lazy-generation: " + lazyGeneration);
-                System.out.println("Autowire del Bean: " + autowire);
+                System.out.println("Autowire del Bean: " + autowire);*/
             }
             else{
                 System.out.println("El valor de autowire o de lazy-generation no es reconocido");
@@ -175,33 +178,39 @@ public class XmlBeanReader extends BeanReader {
      * @param beanElement
      */
     private void readBeanConstructor(Element beanElement) {
-        Element constructorElement = (Element) beanElement.getElementsByTagName("constructor").item(0);
-        NodeList nodeList = constructorElement.getElementsByTagName("param");
-        for (int i = 0; i < nodeList.getLength(); i++) { //Se itera sobre cada attribute
-            Node node = nodeList.item(i); //Se obtiene el nodo actual
-            System.out.println("Parametros del constructor:");
+        NodeList nodeList = beanElement.getElementsByTagName("constructor");
+        if(nodeList.getLength()>1){
+            System.out.println("El Constructor no fue reconocido, posee más de una definición");
+            System.exit(1);
+        }
+        else{
+            Element constructorElement = (Element)nodeList.item(0);
+            nodeList = constructorElement.getElementsByTagName("param");
+            for (int i = 0; i < nodeList.getLength(); i++) { //Se itera sobre cada attribute
+                Node node = nodeList.item(i); //Se obtiene el nodo actual
+                System.out.println("Parametros del constructor:");
 
-            if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
-                Element element = (Element) node; //Se convierte el nodo en un elemento
-                if((element.hasAttribute("type") || element.hasAttribute("index")) && (element.hasAttribute("value") ||
-                        element.hasAttribute("ref"))){
-                    String type = element.getAttribute("type");
-                    int index = Integer.parseInt(element.getAttribute("index"));
-                    String value = element.getAttribute("value");
-                    String ref = element.getAttribute("ref");
-                    this.beanCreator.registerConstructor(type, index, "value", ref);
+                if (node.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
+                    Element element = (Element) node; //Se convierte el nodo en un elemento
+                    if(element.hasAttribute("value") || element.hasAttribute("ref")){
+                        String type = element.getAttribute("type");
+                        int index = Integer.parseInt(element.getAttribute("index"));
+                        String value = element.getAttribute("value");
+                        String ref = element.getAttribute("ref");
+                        this.beanCreator.registerConstructor(type, index, "value", ref);
 
-                    System.out.println("Tipo de parametro: " + type); //Obtengo los atributos del bean
-                    System.out.println("Index del parametro: " + index);
-                    System.out.println("Value del parametro: " + value);
-                    System.out.println("Id del Bean referenciado: " + ref);
+                        /*System.out.println("Tipo de parametro: " + type); //Obtengo los atributos del bean
+                        System.out.println("Index del parametro: " + index);
+                        System.out.println("Value del parametro: " + value);
+                        System.out.println("Id del Bean referenciado: " + ref);*/
+                    }
+                    else {
+                        System.out.println("El param debe poseer value o ref, no ambos");
+                        System.exit(1);
+                    }
                 }
-                else {
-                    System.out.println("El param debe poseer tipo y valor");
-                    System.exit(1);
-                }
+
             }
-
         }
 
     }
@@ -227,12 +236,12 @@ public class XmlBeanReader extends BeanReader {
                     String beanRef = element.getAttribute("ref");
                     this.beanCreator.registerSetter(name, value, beanRef);
 
-                    System.out.println("Name del attribute: " + name); //Obtengo los atributos del bean
+                    /*System.out.println("Name del attribute: " + name); //Obtengo los atributos del bean
                     System.out.println("Value del attribute: " + value);
-                    System.out.println("Id del Bean referenciado: " + beanRef);
+                    System.out.println("Id del Bean referenciado: " + beanRef);*/
                 }
                 else {
-                    System.out.println("El attribute debe poseer nombre y valor o nombre y ref");
+                    System.out.println("El Attribute no fue reconocido, debe poseer nombre y valor o nombre y ref");
                     System.exit(1);
                 }
             }
@@ -242,18 +251,21 @@ public class XmlBeanReader extends BeanReader {
     /**
      * The method tells the annotationsBeanReader to read a specific class.
      *
-     * @param statementNode
+     * @param rootElement
      */
-    private void readAnnotationsStatementFound(Node statementNode) {
-
+    private void readAnnotationsStatementFound(Element rootElement) {
+        String className = rootElement.getAttribute("annotationsClass");
+        System.out.println(className);
+        AnnotationsBeanReader annotationsBeanReader = new AnnotationsBeanReader(beanCreator);
+        annotationsBeanReader.readBeans(className);
     }
 
     public static void main(String[] args) {
         //Prueba
         BeanCreator beanCreator = new BeanCreator();
-        /*BeanReader xmlBeanReader = new XmlBeanReader(beanCreator);
-        xmlBeanReader.readBeans("example.xml");*/
-        AnnotationsBeanReader annotationsBeanReader = new AnnotationsBeanReader(beanCreator);
-        annotationsBeanReader.readBeans("com.ci1330.ecci.ucr.ac.cr.readers.TestingAnnotations");
+        BeanReader xmlBeanReader = new XmlBeanReader(beanCreator);
+        xmlBeanReader.readBeans("example.xml");
+        /*AnnotationsBeanReader annotationsBeanReader = new AnnotationsBeanReader(beanCreator);
+        annotationsBeanReader.readBeans("com.ci1330.ecci.ucr.ac.cr.readers.TestingAnnotations");*/
     }
 }

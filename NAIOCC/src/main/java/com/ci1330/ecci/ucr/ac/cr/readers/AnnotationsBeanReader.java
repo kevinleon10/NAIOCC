@@ -101,7 +101,7 @@ public class AnnotationsBeanReader extends BeanReader {
     private void readBeanConstructor (Class beanClass) {
         int countConstructor = 0;
         for(Constructor constructor: beanClass.getDeclaredConstructors()){
-            System.out.println(constructor.getName());
+            //System.out.println(constructor.getName());
             if(constructor.isAnnotationPresent(com.ci1330.ecci.ucr.ac.cr.readers.Constructor.class)){
                 ++countConstructor;
                 if(countConstructor>1){
@@ -115,16 +115,15 @@ public class AnnotationsBeanReader extends BeanReader {
                             int index = ((Parameter)annotation).index();
                             Object value = ((Parameter)annotation).value();
                             String beanRef = ((Parameter)annotation).ref();
-                            if (((paramType.equals("") && index!=0) || (!(paramType.equals("")) && index==0)) &&
-                                    ((value.equals("") && !(beanRef.equals(""))) || (!(paramType.equals("")) && beanRef.equals("")))) {
+                            if ((value.equals("") && !(beanRef.equals(""))) || (!(paramType.equals("")) && beanRef.equals(""))) {
                                 this.beanCreator.registerConstructor(paramType, index, value, beanRef);
-                                System.out.println(paramType);
+                                /*System.out.println(paramType);
                                 System.out.println(index);
                                 System.out.println(value);
-                                System.out.println(beanRef);
+                                System.out.println(beanRef);*/
                             }
                             else {
-                                System.out.println("El param debe poseer tipo y valor");
+                                System.out.println("El Param no fue reconocido, debe poseer value o ref, no ambos o ninguno");
                                 System.exit(1);
                             }
                         }
@@ -150,7 +149,7 @@ public class AnnotationsBeanReader extends BeanReader {
                     System.out.println(value);
                     System.out.println(ref);*/
                 } else {
-                    System.out.println("El Attribute no fue reconocido, debe haber solo uno, no ambos o ninguno");
+                    System.out.println("El Attribute no fue reconocido, debe poseer value o ref, no ambos o ninguno");
                     System.exit(1);
                 }
             }

@@ -1,5 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<beans init="defaultInitMethod" destroy="defaultDestroyMethod">
+<beans annotationsClass = "com.ci1330.ecci.ucr.ac.cr.readers.TestingAnnotations"
+       init="defaultInitMethod"
+       destroy="defaultDestroyMethod">
 
     <bean     id = "beanId"
               class = "package.path.class"
@@ -14,6 +16,15 @@
                    index="1"
                    value="valor"
                     ref="beanId" />
+
+        </constructor>
+
+        <constructor>
+
+            <param type="package.path.class"
+                   index="1"
+                   value="valor"
+                   ref="beanId" />
 
         </constructor>
 
