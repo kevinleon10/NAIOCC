@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Josue Leon on 13/09/2017
@@ -41,7 +42,7 @@ public class BeanCreator {
      */
     public void createBean(String id, String beanClass, Scope scope, String initMethod, String destroyMethod, boolean lazyGen, Autowire autowire) throws RepeatedIdException{
         try {
-            if(this.beanFactory.getBeansMap().containsKey(id)){
+            if(this.beanFactory.containsBean(id)){
                 throw new RepeatedIdException("Exception error: Bean id " + id + " is repeated.");
             }
             bean = new Bean();
@@ -70,8 +71,7 @@ public class BeanCreator {
      */
     public void registerSetter(String attributeName, Object value, String beanRef){
 
-        Method setterMethod;
-
+        Method setterMethod = null;
         try {
             Method[] beanMethods = this.bean.getBeanClass.getMethods();
 
@@ -88,7 +88,10 @@ public class BeanCreator {
             e.printStackTrace();
             System.exit(1);
         }
-
+        if(setterMethod == null){
+            throw new SetterMethodNotFoundException("Creation error: Bean attribute's setter method not found for attribute: " + attributeName + ".");
+            System.exit(1);
+        }
         BeanAttribute beanAttribute = new BeanAttribute(beanRef, this.beanFactory, value, setterMethod);
         bean.appendAttribute(beanAttribute);
     }

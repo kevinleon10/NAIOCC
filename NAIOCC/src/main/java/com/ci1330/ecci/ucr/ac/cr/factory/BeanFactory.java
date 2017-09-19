@@ -66,13 +66,13 @@ public abstract class BeanFactory {
     }
 
     /**
-     * Finds a bean by its type for autowiring purposes. If theres no bean
+     * Finds a bean by its type for autowiring purposes. If there's no bean
      * with this type in the container or if there are more than one, it returns null.
      * @param beanType
      * @return
      */
-    public Bean findBean(Class beanType){
-        Bean bean = new Bean();
+    public Bean findBean(Class beanType) throws BeanTypeConflictException{
+        Bean bean = null;
         int totalBeans = 0;
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
             if(beanEntry.getValue().getBeanClass().equals(beanType)){
@@ -80,10 +80,37 @@ public abstract class BeanFactory {
                 bean = beanEntry.getValue();
             }
         }
-        if(totalBeans == 1){
-            return bean;
+
+        if(totalBeans > 1){
+            throw new BeanTypeConflictException("Injection by type error: two or more beans share the same type.");
         }
-        return null;
+        return bean;
+    }
+
+    /**
+     * Finds a bean by its name for autowiring purposes. If there's no bean
+     * with this name in the container, it returns null.
+     * @param beanId
+     * @return
+     */
+    public Bean findBean(String beanId){
+        Bean bean = null;
+        if(this.beansMap.containsKey(beanId)){
+            bean = this.beansMap.get(beanId);
+        }
+        return bean;
+    }
+
+    /**
+     * Checks if the specified bean is in the container.
+     * @param beanId
+     * @return
+     */
+    public boolean containsBean(String beanId){
+        if(this.beansMap.containsKey(beanId)){
+            return true;
+        }
+        return false;
     }
 
     /**
