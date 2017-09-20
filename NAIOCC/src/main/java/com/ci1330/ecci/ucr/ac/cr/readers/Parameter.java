@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.CONSTRUCTOR)
 public @interface Parameter {
     String type();
-    int index() default 0;
+    int index() default -1;
     String value() default "";
     String ref() default "";
 }

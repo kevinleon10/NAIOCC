@@ -1,5 +1,6 @@
 package com.ci1330.ecci.ucr.ac.cr.readers;
 
+import com.ci1330.ecci.ucr.ac.cr.exception.AnnotationsBeanReaderException;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
 
 import java.lang.annotation.Annotation;
@@ -33,7 +34,12 @@ public class AnnotationsBeanReader extends BeanReader {
                 this.readBeanSetter(reflectClass);
         }
         else {
-            System.out.println("La clase " + inputName + " no posee la Annotation @Bean");
+            try {
+                throw new AnnotationsBeanReaderException("La clase " + inputName + " no posee la Annotation @Bean");
+            } catch (AnnotationsBeanReaderException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
         }
     }
 
@@ -57,8 +63,12 @@ public class AnnotationsBeanReader extends BeanReader {
         if(beanClass.isAnnotationPresent(Autowire.class)){
             autowire = ((Autowire)(beanClass.getAnnotation(Autowire.class))).value();
             if(!(autowire.equals("byName")) && !(autowire.equals("byType"))){ //Si no es byName o byType
-                System.out.println("El Autowire no fue reconocido, está mal escrito");
-                System.exit(1);
+                try {
+                    throw new AnnotationsBeanReaderException("El @Autowire no fue reconocido, está mal escrito");
+                } catch (AnnotationsBeanReaderException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
             }
         }
 
@@ -72,16 +82,24 @@ public class AnnotationsBeanReader extends BeanReader {
                 initMethod = method.getName();
                 ++countInit;
                 if(countInit>1){
-                    System.out.println("El Init no fue reconocido, posee más de una definición");
-                    System.exit(1);
+                    try {
+                        throw new AnnotationsBeanReaderException("El @Init no fue reconocido, posee más de una definición");
+                    } catch (AnnotationsBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
                 }
             }
             if(method.isAnnotationPresent(Destroy.class)){
                 destroyMethod = method.getName();
                 ++countDestroy;
                 if(countDestroy>1){
-                    System.out.println("El Destroy no fue reconocido, posee más de una definición");
-                    System.exit(1);
+                    try {
+                        throw new AnnotationsBeanReaderException("El @Destroy no fue reconocido, posee más de una definición");
+                    } catch (AnnotationsBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
                 }
             }
         }
@@ -105,8 +123,12 @@ public class AnnotationsBeanReader extends BeanReader {
             if(constructor.isAnnotationPresent(com.ci1330.ecci.ucr.ac.cr.readers.Constructor.class)){
                 ++countConstructor;
                 if(countConstructor>1){
-                    System.out.println("El Constructor no fue reconocido, posee más de una definición");
-                    System.exit(1);
+                    try {
+                        throw new AnnotationsBeanReaderException("El @Constructor no fue reconocido, posee más de una definición");
+                    } catch (AnnotationsBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
                 }
                 if(constructor.isAnnotationPresent(Parameter.class)){
                     for(Annotation annotation: constructor.getDeclaredAnnotations()){
@@ -123,8 +145,12 @@ public class AnnotationsBeanReader extends BeanReader {
                                 System.out.println(beanRef);*/
                             }
                             else {
-                                System.out.println("El Param no fue reconocido, debe poseer value o ref, no ambos o ninguno");
-                                System.exit(1);
+                                try {
+                                    throw new AnnotationsBeanReaderException("El @Param no fue reconocido, debe poseer value o ref, no ambos o ninguno");
+                                } catch (AnnotationsBeanReaderException e) {
+                                    e.printStackTrace();
+                                    System.exit(1);
+                                }
                             }
                         }
                     }
@@ -149,8 +175,12 @@ public class AnnotationsBeanReader extends BeanReader {
                     System.out.println(value);
                     System.out.println(ref);*/
                 } else {
-                    System.out.println("El Attribute no fue reconocido, debe poseer value o ref, no ambos o ninguno");
-                    System.exit(1);
+                    try {
+                        throw new AnnotationsBeanReaderException("El @Attribute no fue reconocido, debe poseer value o ref, no ambos o ninguno");
+                    } catch (AnnotationsBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
                 }
             }
         }

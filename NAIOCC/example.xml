@@ -14,21 +14,11 @@
 
             <param type="package.path.class"
                    index="1"
-                   value="valor"
-                    ref="beanId" />
+                   value="valor" />
 
         </constructor>
 
-        <constructor>
-
-            <param type="package.path.class"
-                   index="1"
-                   value="valor"
-                   ref="beanId" />
-
-        </constructor>
-
-        <attribute name="nombreAttr" value="valor"
+        <attribute name="nombreAttr"
                    ref="beanId" />
 
     </bean>
