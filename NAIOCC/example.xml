@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans
+       init="defaultInitMethod"
+       destroy="defaultDestroyMethod">
+
+    <bean     id = "beanId"
+              class = "package.path.class"
+              scope="Singleton"
+              init="methodName" destroy="methodName"
+              lazy-generation="true"
+              autowire="byName">
+
+        <constructor>
+
+            <param type="package.path.class"
+                   index="1"
+                   value="valor" />
+
+        </constructor>
+
+        <attribute name="nombreAttr"
+                   ref="beanId" />
+
+
+    </bean>
+
+    <annotationsClasses>
+        <class path="kevin.gay.com" />
+        <class path="kevin.gay.com" />
+    </annotationsClasses>
+</beans>
