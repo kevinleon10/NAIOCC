@@ -1,7 +1,6 @@
 package com.ci1330.ecci.ucr.ac.cr.factory;
 
 import com.ci1330.ecci.ucr.ac.cr.bean.*;
-import com.sun.java.util.jar.pack.Instruction;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
@@ -76,7 +75,7 @@ public class BeanCreator {
 
         Method setterMethod = null;
         try {
-            Method[] beanMethods = this.bean.getBeanClass.getMethods();
+            Method[] beanMethods = this.bean.getBeanClass().getMethods();
 
             for(Method method: beanMethods){
                 if(method.getName().startsWith("set") && method.getName().contains(attributeName)){
@@ -168,11 +167,11 @@ public class BeanCreator {
                         break;
                 }
             try {
-                parametersClassArray[parametersClassArrayIndex] = Class.forName(parameterClass);
+                parametersClassArray[p.getIndex()] = Class.forName(parameterClass);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            parametersClassArrayIndex++;
+            //parametersClassArrayIndex++;
             }
         return parametersClassArray;
     }
