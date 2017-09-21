@@ -1,25 +1,34 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <beans>
 
+    <bean     id = "persona"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Persona"
+              scope="Prototype"
+              lazy-generation="true">
+
+        <attribute name="nombre" value="Josue"/>
+
+        <constructor>
+
+            <param type="boolean"
+                   value="true"/>
+            <param type="java.lang.String"
+                   value="costarricense"/>
+            <param type="int"
+                   value="116760597"/>
+
+        </constructor>
+
+    </bean>
+
     <bean     id = "triangulo"
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle"
               scope="Singleton"
               lazy-generation="true">
 
-        <constructor>
-
-            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-                   index="0"
-                    ref="pointA"/>
-            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-                   index="1"
-                   ref="pointB"/>
-            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-                   index="2"
-                   ref="pointC"/>
-
-
-        </constructor>
+            <attribute name="a" ref="pointA"/>
+            <attribute name="b" ref="pointB"/>
+            <attribute name="c" ref="pointC"/>
 
     </bean>
 
@@ -27,11 +36,28 @@
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
               scope="Singleton">
 
+        <constructor>
+
+            <param type="int"
+                   value="2"/>
+
+        </constructor>
+
+        <attribute name="y" value="3"/>
+
     </bean>
 
     <bean     id = "pointB"
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
               scope="Singleton">
+
+        <constructor>
+
+            <param type="int"
+                   value="5"/>
+        </constructor>
+
+        <attribute name="y" value="7"/>
 
     </bean>
 
@@ -39,6 +65,14 @@
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
               scope="Singleton">
 
+        <constructor>
+
+            <param type="int"
+                   value="9"/>
+
+        </constructor>
+
+        <attribute name="y" value="11"/>
 
     </bean>
 

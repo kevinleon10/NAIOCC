@@ -141,7 +141,7 @@ public class AnnotationsBeanReader extends BeanReader {
                         if(annotation.annotationType() == Parameter.class){
                             String paramType = ((Parameter)annotation).type();
                             int index = ((Parameter)annotation).index();
-                            Object value = ((Parameter)annotation).value();
+                            String value = ((Parameter)annotation).value();
                             String beanRef = ((Parameter)annotation).ref();
                             if ((value.equals("") && !(beanRef.equals(""))) || (!(paramType.equals("")) && beanRef.equals(""))) {
                                 this.beanCreator.registerConstructorParameter(paramType, index, value, beanRef);
@@ -174,7 +174,7 @@ public class AnnotationsBeanReader extends BeanReader {
         for (Field field : beanClass.getDeclaredFields()) {
             //System.out.println(field.getName());
             if (field.isAnnotationPresent(Attribute.class)) {
-                Object value = field.getAnnotation(Attribute.class).value(); //Obtengo, casteo y obtengo
+                String value = field.getAnnotation(Attribute.class).value(); //Obtengo, casteo y obtengo
                 String ref = field.getAnnotation(Attribute.class).ref();
                 if ((ref.equals("") && !(value.equals(""))) || (!(ref.equals("")) && value.equals(""))) { //Si solo uno esta
                     this.beanCreator.registerSetter(field.getName(), value, ref);

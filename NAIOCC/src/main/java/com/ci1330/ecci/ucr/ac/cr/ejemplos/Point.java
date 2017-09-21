@@ -1,13 +1,25 @@
 package com.ci1330.ecci.ucr.ac.cr.ejemplos;
 
+import java.util.Random;
+
 public class Point {
 
     private int x;
     private int y;
 
     public Point() {
-        this.x = 12;
-        this.y = 20;
+        this.x = new Random(100).nextInt();
+        this.y = new Random(100).nextInt();
+    }
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+        System.out.println("Se creo el punto exitosamente.");
+    }
+
+    public Point(int x) {
+        this.x = x;
     }
 
     public int getX() {

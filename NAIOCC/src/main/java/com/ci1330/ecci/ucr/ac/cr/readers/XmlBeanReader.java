@@ -222,7 +222,12 @@ public class XmlBeanReader extends BeanReader {
                     if ((element.hasAttribute("value") && !(element.hasAttribute("ref"))) ||
                             (element.hasAttribute("ref") && !(element.hasAttribute("value")))) {
                         String type = element.getAttribute("type");
-                        int index = Integer.parseInt(element.getAttribute("index"));
+                        int index = -1;
+                        try{
+                            index = Integer.parseInt(element.getAttribute("index"));
+                        }catch(NumberFormatException e){
+                            //nulo
+                        }
                         String value = element.getAttribute("value");
                         if (value.equals("")) {
                             value = null;
@@ -275,7 +280,7 @@ public class XmlBeanReader extends BeanReader {
                 if ((element.hasAttribute("name") && element.hasAttribute("value") && !(element.hasAttribute("ref"))) ||
                         (element.hasAttribute("name") && element.hasAttribute("ref") && !(element.hasAttribute("value")))) {
                     String name = element.getAttribute("name");
-                    Object value = element.getAttribute("value");
+                    String value = element.getAttribute("value");
                     if (value.equals("")) {
                         value = null;
                     }

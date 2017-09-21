@@ -8,10 +8,14 @@ public class Triangle implements Shape{
     private Point b;
     private Point c;
 
+    public Triangle() {
+    }
+
     public Triangle(Point a, Point b, Point c) {
         this.a = a;
         this.b = b;
         this.c = c;
+        System.out.println("Se creo el triangulo exitosamente.");
     }
 
     @Override
