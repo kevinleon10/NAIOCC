@@ -38,8 +38,8 @@ public class XmlBeanReader extends BeanReader {
     public XmlBeanReader(BeanFactory beanFactory){
         super(beanFactory);
         this.beanFactory = beanFactory;
-        this.initMethod = "";
-        this.destroyMethod = "";
+        this.initMethod = null;
+        this.destroyMethod = null;
     }
 
     /**
@@ -210,7 +210,7 @@ public class XmlBeanReader extends BeanReader {
                 e.printStackTrace();
                 System.exit(1);
             }
-        } else {
+        } else if (nodeList.getLength() != 0){
             Element constructorElement = (Element) nodeList.item(0);
             nodeList = constructorElement.getElementsByTagName("param");
             for (int i = 0; i < nodeList.getLength(); i++) { //Se itera sobre cada attribute
@@ -224,8 +224,11 @@ public class XmlBeanReader extends BeanReader {
                         String type = element.getAttribute("type");
                         int index = Integer.parseInt(element.getAttribute("index"));
                         String value = element.getAttribute("value");
+                        if (value.equals("")) {
+                            value = null;
+                        }
                         String ref = element.getAttribute("ref");
-                        this.beanCreator.registerConstructor();
+                        this.beanCreator.registerConstructorParameter(type,index,value,ref);
 
                         /*System.out.println("Tipo de parametro: " + type); //Obtengo los atributos del bean
                         System.out.println("Index del parametro: " + index);
@@ -250,6 +253,7 @@ public class XmlBeanReader extends BeanReader {
                 }
 
             }
+            this.beanCreator.registerConstructor();
         }
 
     }
@@ -272,6 +276,9 @@ public class XmlBeanReader extends BeanReader {
                         (element.hasAttribute("name") && element.hasAttribute("ref") && !(element.hasAttribute("value")))) {
                     String name = element.getAttribute("name");
                     Object value = element.getAttribute("value");
+                    if (value.equals("")) {
+                        value = null;
+                    }
                     String beanRef = element.getAttribute("ref");
                     this.beanCreator.registerSetter(name, value, beanRef);
 
@@ -312,7 +319,7 @@ public class XmlBeanReader extends BeanReader {
                 e.printStackTrace();
                 System.exit(1);
             }
-        } else {
+        } else if(nodeList.getLength() != 0){
             Element annotationsElement = (Element) nodeList.item(0);
             nodeList = annotationsElement.getElementsByTagName("class");
             for(int i=0; i<nodeList.getLength(); ++i){

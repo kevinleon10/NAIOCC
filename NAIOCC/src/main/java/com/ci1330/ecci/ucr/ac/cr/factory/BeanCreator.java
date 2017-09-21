@@ -61,12 +61,12 @@ public class BeanCreator {
             Method destroyMethod = null;
             Method[] beanMethods = this.bean.getBeanClass().getMethods();
             for(Method method: beanMethods){
-                if(method.getName().contains(initMethodName)){
+                if(initMethodName != null && method.getName().contains(initMethodName)){
                     if(method.getParameterCount() == 0 ){
                         initMethod = method;
                     }
                 }
-                if(method.getName().contains(destroyMethodName)){
+                if(initMethodName != null && method.getName().contains(destroyMethodName)){
                     if(method.getParameterCount() == 0 ){
                         destroyMethod = method;
                     }
@@ -122,7 +122,7 @@ public class BeanCreator {
      */
     public void registerConstructorParameter(String paramType, int index, Object value, String beanRef){
         BeanParameter beanConstructorParam = new BeanParameter(beanRef, this.beanFactory, value, index, paramType);
-        constructorParams.add(beanConstructorParam);
+        this.constructorParams.add(beanConstructorParam);
     }
 
     /**
@@ -144,46 +144,47 @@ public class BeanCreator {
     }
 
     private Class[] obtainParametersClassArray(){
-        int parametersClassArrayIndex = 0;
+        //int parametersClassArrayIndex = 0;
         String parameterClass = null;
+        Class param = null;
         Class[] parametersClassArray = new Class[this.constructorParams.size()];
         for (BeanParameter p : this.constructorParams) {
-                switch (p.getType()) {
-                    case "int":
-                        parameterClass = "java.lang.Integer";
-                        break;
-                    case "byte":
-                        parameterClass = "java.lang.Byte";
-                        break;
-                    case "short":
-                        parameterClass = "java.lang.Short";
-                        break;
-                    case "long":
-                        parameterClass = "java.lang.Long";
-                        break;
-                    case "float":
-                        parameterClass = "java.lang.Float";
-                        break;
-                    case "double":
-                        parameterClass = "java.lang.Double";
-                        break;
-                    case "boolean":
-                        parameterClass = "java.lang.Boolean";
-                        break;
-                    case "char":
-                        parameterClass = "java.lang.Char";
-                        break;
-                    default:
-                        parameterClass = p.getType();
-                        break;
-                }
-            try {
-                parametersClassArray[p.getIndex()] = Class.forName(parameterClass);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            switch (p.getType()) {
+                case "int":
+                    param = int.class;
+                    break;
+                case "byte":
+                    param = byte.class;
+                    break;
+                case "short":
+                    param = short.class;
+                    break;
+                case "long":
+                    param = long.class;
+                    break;
+                case "float":
+                    param = float.class;
+                    break;
+                case "double":
+                    param = double.class;
+                    break;
+                case "boolean":
+                    param = boolean.class;
+                    break;
+                case "char":
+                    param = char.class;
+                    break;
+                default:
+                    parameterClass = p.getType();
+                    try {
+                        param = Class.forName(parameterClass);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
             }
-            //parametersClassArrayIndex++;
-            }
+                parametersClassArray[p.getIndex()] = param;
+        }
         return parametersClassArray;
     }
 
@@ -319,6 +320,7 @@ public class BeanCreator {
         }
         constructorClass = new BeanConstructor(matchedConstructor);
         constructorClass.setBeanParameterList(constructorParams);
+        this.bean.setBeanConstructor(constructorClass);
     }
 
     /**
@@ -329,7 +331,7 @@ public class BeanCreator {
         bean = null;
         attributeClass = null;
         constructorClass = null;
-        constructorParams = null;
+        this.constructorParams = new ArrayList<>();
     }
 
     //----------------------------------------------------------------

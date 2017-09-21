@@ -22,7 +22,7 @@ public class BeanConstructor {
      */
     public BeanConstructor (Constructor constructorMethod) {
         this.constructorMethod = constructorMethod;
-        this.beanParameterList = new ArrayList<BeanParameter>();
+        this.beanParameterList = new ArrayList<>();
     }
 
     /**
@@ -54,6 +54,12 @@ public class BeanConstructor {
                     + "\t" + this.constructorMethod.toString() + ".");
             e.printStackTrace();
             System.exit(1);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Construction Error: There was an exception trying to invoke the constructor method for:\n"
+                    + "\t" + this.constructorMethod.toString() + "\n"
+                    + " with " + parameterInstances[0].getClass() +".");
+            e.printStackTrace();
+            System.exit(1);
         }
 
         return beanInstance;
@@ -69,5 +75,9 @@ public class BeanConstructor {
 
     public void setBeanParameterList(List<BeanParameter> beanParameterList) {
         this.beanParameterList = beanParameterList;
+    }
+
+    public List<BeanParameter> getBeanParameterList() {
+        return beanParameterList;
     }
 }

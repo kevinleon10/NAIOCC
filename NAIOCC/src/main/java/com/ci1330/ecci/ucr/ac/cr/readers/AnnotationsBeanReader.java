@@ -79,8 +79,8 @@ public class AnnotationsBeanReader extends BeanReader {
         }
 
         //Busca los metodos
-        String initMethod = "";
-        String destroyMethod = "";
+        String initMethod = null;
+        String destroyMethod = null;
         int countInit = 0;
         int countDestroy = 0;
         for(Method method : beanClass.getDeclaredMethods()){

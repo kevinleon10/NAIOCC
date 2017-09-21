@@ -1,31 +1,49 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<beans
-       init="defaultInitMethod"
-       destroy="defaultDestroyMethod">
+<beans>
 
-    <bean     id = "beanId"
-              class = "package.path.class"
+    <bean     id = "triangulo"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle"
               scope="Singleton"
-              init="methodName" destroy="methodName"
-              lazy-generation="true"
-              autowire="byName">
+              lazy-generation="true">
 
         <constructor>
 
-            <param type="package.path.class"
+            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+                   index="0"
+                    ref="pointA"/>
+            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
                    index="1"
-                   value="valor" />
+                   ref="pointB"/>
+            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+                   index="2"
+                   ref="pointC"/>
+
 
         </constructor>
 
-        <attribute name="nombreAttr"
-                   ref="beanId" />
+    </bean>
+
+    <bean     id = "pointA"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+              scope="Singleton">
+
+    </bean>
+
+    <bean     id = "pointB"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+              scope="Singleton">
+
+    </bean>
+
+    <bean     id = "pointC"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+              scope="Singleton">
 
 
     </bean>
 
-    <annotationsClasses>
+<!--    <annotationsClasses>
         <class path="kevin.gay.com" />
         <class path="kevin.gay.com" />
-    </annotationsClasses>
+    </annotationsClasses>-->
 </beans>

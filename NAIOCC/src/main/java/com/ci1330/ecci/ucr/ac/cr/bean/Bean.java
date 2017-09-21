@@ -71,11 +71,11 @@ public class Bean {
                 currInstance = this.beanClass.newInstance();
 
             } catch (InstantiationException e) {
-                System.err.println("Instantiation Error: There was an exception trying to instantiate the bean.");
+                System.err.println("Instantiation Error: There was an exception trying to instantiate the bean " + this.beanClass.toString() + ".");
                 e.printStackTrace();
                 System.exit(1);
             } catch (IllegalAccessException e) {
-                System.err.println("Instantiation Error: There was an exception trying to access the instance bean.");
+                System.err.println("Instantiation Error: There was an exception trying to access the instance bean " + this.beanClass.toString() + ".");
                 e.printStackTrace();
                 System.exit(1);
             }
@@ -125,9 +125,11 @@ public class Bean {
      * the stack empty.
      */
     public void destroyAllInstances() {
+        Object currInstance;
         while (!this.beanInstanceStack.empty()) {
-            Object currInstance = this.beanInstanceStack.pop();
+            currInstance = this.beanInstanceStack.pop();
             if (this.destroyMethod != null) {
+                System.out.println(destroyMethod);
                 try {
 
                     this.destroyMethod.invoke(currInstance);
@@ -228,5 +230,9 @@ public class Bean {
 
     public List<BeanAttribute> getBeanAttributeList () {
         return beanAttributeList;
+    }
+
+    public BeanConstructor getBeanConstructor() {
+        return beanConstructor;
     }
 }
