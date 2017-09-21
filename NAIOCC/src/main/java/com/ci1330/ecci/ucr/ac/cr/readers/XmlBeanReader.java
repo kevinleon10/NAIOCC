@@ -94,7 +94,6 @@ public class XmlBeanReader extends BeanReader {
                 this.readBeanProperties(beanElement);
                 this.readBeanConstructor(beanElement);
                 this.readBeanAttributes(beanElement);
-                this.readAnnotationsStatementFound(beanElement);
                 super.beanCreator.addBeanToContainer();
             } else {
                 try {
@@ -105,6 +104,7 @@ public class XmlBeanReader extends BeanReader {
                 }
             }
         }
+        this.readAnnotationsStatementFound(rootElement);
     }
 
     /**

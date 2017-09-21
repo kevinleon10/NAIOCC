@@ -24,9 +24,17 @@ public class TestingAnnotations {
     }
 
     @Constructor
-    @Parameter(type = "String")
+    @Parameter(type = "java.lang.String", value = "fuck")
     public TestingAnnotations(String test){
-        this.test = "";
+        this.test = test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+
+    public void setL(int l) {
+        this.l = l;
     }
 
     //@Init
