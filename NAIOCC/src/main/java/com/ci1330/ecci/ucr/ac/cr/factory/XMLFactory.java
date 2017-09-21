@@ -2,6 +2,7 @@ package com.ci1330.ecci.ucr.ac.cr.factory;
 
 
 import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
+import com.ci1330.ecci.ucr.ac.cr.exception.IdNotFoundException;
 import com.ci1330.ecci.ucr.ac.cr.readers.XmlBeanReader;
 
 import java.util.HashMap;
@@ -18,14 +19,14 @@ public class XMLFactory extends BeanFactory{
     public XMLFactory(String xmlFile){
         super();
         this.xmlFile = xmlFile;
-        xmlBeanReader = new XmlBeanReader(super.getBeanCreator());
+        xmlBeanReader = new XmlBeanReader(this);
         this.registerConfig();
         super.initContainer();
     }
 
     @Override
     public void registerConfig(){
-        this.xmlBeanReader.readConfig(this.getXmlFile());
+        this.xmlBeanReader.readBeans(this.getXmlFile());
     }
 
     public String getXmlFile() {
@@ -48,7 +49,13 @@ public class XMLFactory extends BeanFactory{
 
     @Override
     public Object getBean(String id) {
-        return super.getBean(id);
+        try {
+            return super.getBean(id);
+        } catch (IdNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
     }
 
     @Override

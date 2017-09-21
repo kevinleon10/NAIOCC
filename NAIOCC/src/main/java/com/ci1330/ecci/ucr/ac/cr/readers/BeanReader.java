@@ -1,19 +1,24 @@
 package com.ci1330.ecci.ucr.ac.cr.readers;
 
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
+import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
-public abstract class BeanReader {
+public abstract class BeanReader{
 
     /**
      * Object used to create the beans
      */
-    private BeanCreator beanCreator;
+    protected BeanCreator beanCreator;
 
     /**
      * General constructor that initializes the creator
      */
-    public BeanReader () {
-        this.beanCreator = new BeanCreator();
+    public BeanReader (BeanFactory beanFactory) {
+        this.beanCreator = new BeanCreator(beanFactory);
+    }
+
+    public BeanReader(BeanCreator beanCreator) {
+        this.beanCreator = beanCreator;
     }
 
     /**

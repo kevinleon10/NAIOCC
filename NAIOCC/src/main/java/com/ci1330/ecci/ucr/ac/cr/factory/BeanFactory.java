@@ -1,6 +1,8 @@
 package com.ci1330.ecci.ucr.ac.cr.factory;
 
 import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
+import com.ci1330.ecci.ucr.ac.cr.exception.BeanTypeConflictException;
+import com.ci1330.ecci.ucr.ac.cr.exception.IdNotFoundException;
 
 import java.util.HashMap;
 
@@ -12,11 +14,9 @@ import java.util.HashMap;
 public abstract class BeanFactory {
 
     protected HashMap<String,Bean> beansMap;
-    protected BeanCreator beanCreator;
 
     public BeanFactory(){
         beansMap = new HashMap<String,Bean>();
-        beanCreator = new BeanCreator(this);
     }
 
     /**
@@ -33,16 +33,16 @@ public abstract class BeanFactory {
      * @param id
      * @return
      */
-    public Object getBean(String id) throws IdNotFoundException{
+    public Object getBean(String id) throws IdNotFoundException {
         try {
             if(!this.getBeansMap().containsKey(id)){
                 throw new IdNotFoundException("Exception error: The id: " + id + " does not exist.");
             }
-            if (this.getBeansMap().get(id).getScope().equals("Singleton")) {
+            if (this.getBeansMap().get(id).getBeanScope().equals("Singleton")) {
                 return this.beansMap.get(id).getInstance();
             } else {
-                this.beansMap.get(id).initializeNewBean(); //agrega la nueva instancia a la lista del bean
-                this.beansMap.get(id).injectBean();
+                this.beansMap.get(id).createNewInstance(); //agrega la nueva instancia a la lista del bean
+                this.beansMap.get(id).injectDependencies();
                 return this.beansMap.get(id).getInstance(); // devuelve la ultima instancia de la lista
             }
         }catch(IdNotFoundException i){
@@ -57,10 +57,10 @@ public abstract class BeanFactory {
      */
     public void initContainer(){
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
-            if(beanEntry.getValue().getScope().equals("Singleton") && !beanEntry.getValue().isLazyGen()
+            if(beanEntry.getValue().getBeanScope().equals("Singleton") && !beanEntry.getValue().isLazyGen()
                     && beanEntry.getValue() == null){
-                beanEntry.getValue().initializeNewBean();
-                beanEntry.getValue().getInstance().injectDependencies();
+                beanEntry.getValue().createNewInstance();
+                beanEntry.getValue().injectDependencies();
             }
         }
     }
@@ -71,7 +71,7 @@ public abstract class BeanFactory {
      * @param beanType
      * @return
      */
-    public Bean findBean(Class beanType) throws BeanTypeConflictException{
+    public Bean findBean(Class beanType) throws BeanTypeConflictException {
         Bean bean = null;
         int totalBeans = 0;
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
@@ -118,7 +118,7 @@ public abstract class BeanFactory {
      */
     public void shutDownHook(){
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
-            beanEntry.getValue().destroyAll();
+            beanEntry.getValue().destroyAllInstances();
         }
     }
 
@@ -129,19 +129,11 @@ public abstract class BeanFactory {
     //----------------------------------------------------------------
 
     public HashMap<String, Bean> getBeansMap() {
-        return this.beansMap
+        return this.beansMap;
     }
 
     public void setBeansMap(HashMap<String, Bean> beansMap) {
         this.beansMap = beansMap;
-    }
-
-    public BeanCreator getBeanCreator() {
-        return beanCreator;
-    }
-
-    public void setBeanCreator(BeanCreator beanCreator) {
-        this.beanCreator = beanCreator;
     }
 
 }

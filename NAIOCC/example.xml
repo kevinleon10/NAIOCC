@@ -1,25 +1,83 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<beans init="defaultInitMethod" destroy="defaultDestroyMethod">
+<beans>
 
-    <bean     id = "beanId"
-              class = "package.path.class"
-              scope="Singleton/Prototype"
-              init="methodName" destroy="methodName"
-              lazy-generation="true/false"
-              autowire="byName/byType/none">
+    <bean     id = "persona"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Persona"
+              scope="Prototype"
+              lazy-generation="true">
+
+        <attribute name="nombre" value="Josue"/>
 
         <constructor>
 
-            <param type="package.path.class"
-                   index="numberIndex"
-                   value="valor"
-                    ref="beanId" />
+            <param type="boolean"
+                   value="true"/>
+            <param type="java.lang.String"
+                   value="costarricense"/>
+            <param type="int"
+                   value="116760597"/>
 
         </constructor>
 
-        <attribute name="nombreAtr" value="valor"
-                   ref="beanId" />
+    </bean>
+
+    <bean     id = "triangulo"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle"
+              scope="Singleton"
+              lazy-generation="true">
+
+            <attribute name="a" ref="pointA"/>
+            <attribute name="b" ref="pointB"/>
+            <attribute name="c" ref="pointC"/>
 
     </bean>
 
+    <bean     id = "pointA"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+              scope="Singleton">
+
+        <constructor>
+
+            <param type="int"
+                   value="2"/>
+
+        </constructor>
+
+        <attribute name="y" value="3"/>
+
+    </bean>
+
+    <bean     id = "pointB"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+              scope="Singleton">
+
+        <constructor>
+
+            <param type="int"
+                   value="5"/>
+        </constructor>
+
+        <attribute name="y" value="7"/>
+
+    </bean>
+
+    <bean     id = "pointC"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+              scope="Singleton">
+
+        <constructor>
+
+            <param type="int"
+                   value="9"/>
+
+        </constructor>
+
+        <attribute name="y" value="11"/>
+
+    </bean>
+
+<!--    <annotationsClasses>
+        <class path="kevin.gay.com" />
+        <class path="kevin.gay.com" />
+    </annotationsClasses>-->
 </beans>

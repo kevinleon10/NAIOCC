@@ -1,6 +1,7 @@
 package com.ci1330.ecci.ucr.ac.cr.factory;
 
 import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
+import com.ci1330.ecci.ucr.ac.cr.exception.IdNotFoundException;
 import com.ci1330.ecci.ucr.ac.cr.readers.AnnotationsBeanReader;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class AnnotationsFactory extends BeanFactory{
 
     public AnnotationsFactory() {
         super();
-        annotationsBeanReader = new AnnotationsBeanReader(super.getBeanCreator());
+        annotationsBeanReader = new AnnotationsBeanReader(this);
     }
 
     /**
@@ -24,7 +25,8 @@ public class AnnotationsFactory extends BeanFactory{
      */
     public AnnotationsFactory(String classConfig) {
         super();
-        annotationsBeanReader = new AnnotationsBeanReader(super.getBeanCreator());
+        annotationsBeanReader = new AnnotationsBeanReader(this);
+        annotationsBeanReader.readBeans(classConfig);
         this.registerConfig(classConfig);
     }
 
@@ -32,12 +34,18 @@ public class AnnotationsFactory extends BeanFactory{
      * The user may specify more configuration classes later using this method.
      */
     public void registerConfig(String classConfig){
-        AnnotationsBeanReader.readConfig(classConfig);
+        annotationsBeanReader.readBeans(classConfig);
     }
 
     @Override
     public Object getBean(String id) {
-        return super.getBean(id);
+        try {
+            return super.getBean(id);
+        } catch (IdNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
     }
 
     @Override
