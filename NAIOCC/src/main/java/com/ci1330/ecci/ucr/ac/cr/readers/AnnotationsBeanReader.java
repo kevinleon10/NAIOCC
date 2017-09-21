@@ -13,6 +13,8 @@ import java.lang.reflect.Constructor;
 
 public class AnnotationsBeanReader extends BeanReader {
 
+    private String id;
+
     public AnnotationsBeanReader(BeanFactory beanFactory) {
         super(beanFactory);
     }
@@ -41,7 +43,7 @@ public class AnnotationsBeanReader extends BeanReader {
         }
         else {
             try {
-                throw new AnnotationsBeanReaderException("La clase " + inputName + " no posee la Annotation @Bean");
+                throw new AnnotationsBeanReaderException("Annotations Reader error: The 'class' " + inputName + " does not have the annotation '@Bean'");
             } catch (AnnotationsBeanReaderException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -57,6 +59,7 @@ public class AnnotationsBeanReader extends BeanReader {
         Annotation beanAnnotation = beanClass.getAnnotation(Bean.class); //Obtengo el beanAnnotation
         Bean bean =(Bean)beanAnnotation; //Lo casteo
         String id = bean.id(); //Obtengo el id
+        this.id = id;
         com.ci1330.ecci.ucr.ac.cr.bean.Scope scope = com.ci1330.ecci.ucr.ac.cr.bean.Scope.Singleton; //declaro y defino el scope
         if(beanClass.isAnnotationPresent(Scope.class)){ //si hay lo cambio
             scope = ((Scope)(beanClass.getAnnotation(Scope.class))).value(); //obtengo la anotation, la casteo y obtengo el value
@@ -70,7 +73,7 @@ public class AnnotationsBeanReader extends BeanReader {
             autowire = ((Autowire)(beanClass.getAnnotation(Autowire.class))).value();
             if(autowire != AutowireEnum.byName && autowire != AutowireEnum.byType){ //Si no es byName o byType
                 try {
-                    throw new AnnotationsBeanReaderException("El @AutowireEnum no fue reconocido, está mal escrito");
+                    throw new AnnotationsBeanReaderException("Annotations Reader error: The '@AutowireEnum' in the 'bean' "+ this.id + " was not recognized. It is misspelled.");
                 } catch (AnnotationsBeanReaderException e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -89,7 +92,7 @@ public class AnnotationsBeanReader extends BeanReader {
                 ++countInit;
                 if(countInit>1){
                     try {
-                        throw new AnnotationsBeanReaderException("El @Init no fue reconocido, posee más de una definición");
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Init' in the 'bean' "+ this.id + " was not recognized. It has more than a definition");
                     } catch (AnnotationsBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -101,7 +104,7 @@ public class AnnotationsBeanReader extends BeanReader {
                 ++countDestroy;
                 if(countDestroy>1){
                     try {
-                        throw new AnnotationsBeanReaderException("El @Destroy no fue reconocido, posee más de una definición");
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Destroy' in the 'bean' "+ this.id + " was not recognized. It has more than a definition");
                     } catch (AnnotationsBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -130,7 +133,7 @@ public class AnnotationsBeanReader extends BeanReader {
                 ++countConstructor;
                 if(countConstructor>1){
                     try {
-                        throw new AnnotationsBeanReaderException("El @Constructor no fue reconocido, posee más de una definición");
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Constructor' in the 'bean' "+ this.id + " was not recognized. It has more than a definition");
                     } catch (AnnotationsBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -152,7 +155,7 @@ public class AnnotationsBeanReader extends BeanReader {
                             }
                             else {
                                 try {
-                                    throw new AnnotationsBeanReaderException("El @Param no fue reconocido, debe poseer value o ref, no ambos o ninguno");
+                                    throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Parameter' was not recognized in the 'bean' "+ this.id + ". It has 'value' and 'ref', or neither.");
                                 } catch (AnnotationsBeanReaderException e) {
                                     e.printStackTrace();
                                     System.exit(1);
@@ -183,7 +186,7 @@ public class AnnotationsBeanReader extends BeanReader {
                     System.out.println(ref);*/
                 } else {
                     try {
-                        throw new AnnotationsBeanReaderException("El @Attribute no fue reconocido, debe poseer value o ref, no ambos o ninguno");
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Attribute' was not recognized in the 'bean' "+ this.id + ". It has 'value' and 'ref', or neither.");
                     } catch (AnnotationsBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);

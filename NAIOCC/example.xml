@@ -76,8 +76,7 @@
 
     </bean>
 
-<!--    <annotationsClasses>
-        <class path="kevin.gay.com" />
-        <class path="kevin.gay.com" />
-    </annotationsClasses>-->
+    <annotationsClasses>
+        <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations" />
+    </annotationsClasses>
 </beans>

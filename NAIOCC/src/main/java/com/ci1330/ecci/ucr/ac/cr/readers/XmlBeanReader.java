@@ -31,6 +31,7 @@ public class XmlBeanReader extends BeanReader {
     private BeanFactory beanFactory;
     private String initMethod;
     private String destroyMethod;
+    private String id;
 
     /**
      * Constructor that inits the annotations reader
@@ -97,7 +98,7 @@ public class XmlBeanReader extends BeanReader {
                 super.beanCreator.addBeanToContainer();
             } else {
                 try {
-                    throw new XmlBeanReaderException("Un 'bean' no fue reconocido");
+                    throw new XmlBeanReaderException("Xml Reader error: A 'bean' was not recognized.");
                 } catch (XmlBeanReaderException e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -122,7 +123,7 @@ public class XmlBeanReader extends BeanReader {
             }
         } else {
             try {
-                throw new XmlBeanReaderException("Se espera leer 'beans'del XML, no '" + rootElement.getTagName() + "'");
+                throw new XmlBeanReaderException("Xml Reader error: The root of the XML document is " + rootElement.getTagName() + " instead of 'beans'.");
             } catch (XmlBeanReaderException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -140,6 +141,7 @@ public class XmlBeanReader extends BeanReader {
 
         if (beanElement.hasAttribute("id") && beanElement.hasAttribute("class")) {
             String id = beanElement.getAttribute("id");
+            this.id = id;
             String className = beanElement.getAttribute("class");
             if (beanElement.hasAttribute("init")) {
                 this.initMethod = beanElement.getAttribute("init");
@@ -180,7 +182,7 @@ public class XmlBeanReader extends BeanReader {
                 System.out.println("AutowireEnum del Bean: " + autowire);*/
             } else {
                 try {
-                    throw new XmlBeanReaderException("El valor de 'autowire', 'lazy-generation' o 'scope' no es reconocido");
+                    throw new XmlBeanReaderException("Xml Reader error: 'scope', 'lazy-generation' or 'autowire' were not recognized in the 'bean' "+this.id+". It is misspelled.");
                 } catch (XmlBeanReaderException e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -188,7 +190,7 @@ public class XmlBeanReader extends BeanReader {
             }
         } else {
             try {
-                throw new XmlBeanReaderException("El 'bean' debe poseer 'id' y 'class'");
+                throw new XmlBeanReaderException("Xml Reader error: A 'bean' does not have an 'id', 'class' or both.");
             } catch (XmlBeanReaderException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -205,7 +207,7 @@ public class XmlBeanReader extends BeanReader {
         NodeList nodeList = beanElement.getElementsByTagName("constructor");
         if (nodeList.getLength() > 1) {
             try {
-                throw new XmlBeanReaderException("El 'constructor' no fue reconocido, posee más de una definición");
+                throw new XmlBeanReaderException("Xml Reader error: The 'constructor' was not recognized in the 'bean' "+this.id+". It has more than a definition.");
             } catch (XmlBeanReaderException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -241,7 +243,7 @@ public class XmlBeanReader extends BeanReader {
                         System.out.println("Id del Bean referenciado: " + ref);*/
                     } else {
                         try {
-                            throw new XmlBeanReaderException("El 'param' debe poseer value o ref, no ambos o ninguno");
+                            throw new XmlBeanReaderException("Xml Reader error: A 'param' was not recognized in the 'bean' "+ this.id + ". It has 'value' and 'ref', or neither.");
                         } catch (XmlBeanReaderException e) {
                             e.printStackTrace();
                             System.exit(1);
@@ -250,7 +252,7 @@ public class XmlBeanReader extends BeanReader {
                     }
                 } else {
                     try {
-                        throw new XmlBeanReaderException("Un 'param' no fue reconocido");
+                        throw new XmlBeanReaderException("Xml Reader error: A 'param' was not recognized in the 'bean' "+this.id+".");
                     } catch (XmlBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -292,7 +294,7 @@ public class XmlBeanReader extends BeanReader {
                     System.out.println("Id del Bean referenciado: " + beanRef);*/
                 } else {
                     try {
-                        throw new XmlBeanReaderException("El 'attribute' no fue reconocido, debe poseer nombre y valor o nombre y ref");
+                        throw new XmlBeanReaderException("Xml Reader error: An 'attribute' was not recognized in the 'bean' "+this.id + ". It must has 'name' and 'value' or 'name' and 'ref'.");
                     } catch (XmlBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -300,7 +302,7 @@ public class XmlBeanReader extends BeanReader {
                 }
             } else {
                 try {
-                    throw new XmlBeanReaderException("Un 'attribute' no fue reconocido");
+                    throw new XmlBeanReaderException("Xml Reader error: An 'attribute' was not recognized in the 'bean' " + this.id +".");
                 } catch (XmlBeanReaderException e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -319,7 +321,7 @@ public class XmlBeanReader extends BeanReader {
         NodeList nodeList = beanElement.getElementsByTagName("annotationsClasses");
         if (nodeList.getLength() > 1) {
             try {
-                throw new XmlBeanReaderException("El 'annotationsClasses' no fue reconocido, posee más de una definición");
+                throw new XmlBeanReaderException("Xml Reader error: The 'annotationClasses' was not recognized. It has more than a definition.");
             } catch (XmlBeanReaderException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -336,7 +338,7 @@ public class XmlBeanReader extends BeanReader {
                         annotationsBeanReader.readBeans(element.getAttribute("path"));
                     } else {
                         try {
-                            throw new XmlBeanReaderException("El 'class' debe poseer 'path'");
+                            throw new XmlBeanReaderException("Xml Reader error: A class in 'annotationClasses' does not have a 'path'");
                         } catch (XmlBeanReaderException e) {
                             e.printStackTrace();
                             System.exit(1);
@@ -345,7 +347,7 @@ public class XmlBeanReader extends BeanReader {
                     }
                 } else {
                     try {
-                        throw new XmlBeanReaderException("Un 'class' no fue reconocido");
+                        throw new XmlBeanReaderException("Xml Reader error: A 'class' in 'annotationClasses' was not recognized");
                     } catch (XmlBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);

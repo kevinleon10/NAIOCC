@@ -8,6 +8,8 @@ public class main {
         XMLFactory factory = new XMLFactory("example.xml");
         Triangle t = (Triangle) factory.getBean("triangulo");
         t.print();
+        TestingAnnotations testingAnnotations = (TestingAnnotations) factory.getBean("fuck");
+        testingAnnotations.fuck();
         factory.shutDownHook();
     }
 }
