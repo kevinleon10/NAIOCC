@@ -14,16 +14,16 @@ import java.util.List;
 
 public class BeanAutowireModule {
 
-    public void autowireBean (Bean bean) {
+    public static void autowireBean (Bean bean) {
         switch (bean.getAutowireEnum()) {
             case byName:
-                this.autowireByName(bean);
+                autowireByName(bean);
                 break;
             case byType:
-                this.autowireByType(bean);
+                autowireByType(bean);
                 break;
             case constructor:
-                this.autowireConstructor(bean);
+                autowireConstructor(bean);
                 break;
             default:
                 System.err.println("Autowire error: Unexpected value.");
@@ -31,7 +31,7 @@ public class BeanAutowireModule {
         }
     }
 
-    private void autowireByName (Bean bean) {
+    private static void autowireByName (Bean bean) {
         Class currInstanceClass = bean.getClass();
         BeanFactory beanFactory = bean.getBeanFactory();
         List<BeanAttribute> registeredAttributes = bean.getBeanAttributeList();
@@ -44,9 +44,9 @@ public class BeanAutowireModule {
 
             if(beanFactory.findBean(currAttributeName) != null){
 
-                currAttributeSetter = this.findSetter(currAttributeName, currAttribute.getClass(), bean);
+                currAttributeSetter = findSetter(currAttributeName, currAttribute.getClass(), bean);
 
-                if (!this.attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
+                if (!attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
                     BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, beanFactory, null, currAttributeSetter);
                     bean.appendAttribute(beanAttribute);
                 }
@@ -55,7 +55,7 @@ public class BeanAutowireModule {
         }
     }
 
-    private Method findSetter (String attributeName, Class attributeClass, Bean bean) {
+    private static Method findSetter (String attributeName, Class attributeClass, Bean bean) {
         Method[] beanMethods;
         Class[] methodParameterTypes;
 
@@ -81,7 +81,7 @@ public class BeanAutowireModule {
         return null; //Keep the compiler happy
     }
 
-    private boolean attributeIsAlreadyRegistered (List<BeanAttribute> registeredAttributes, String beanRef) {
+    private static boolean attributeIsAlreadyRegistered (List<BeanAttribute> registeredAttributes, String beanRef) {
         for (BeanAttribute registeredAttribute : registeredAttributes) {
             if (registeredAttribute.getBeanRef().equals(beanRef)) {
                 return true;
@@ -90,7 +90,7 @@ public class BeanAutowireModule {
         return false;
     }
 
-    private void autowireByType (Bean bean) {
+    private static void autowireByType (Bean bean) {
         Class currInstanceClass = bean.getClass();
         BeanFactory beanFactory = bean.getBeanFactory();
         List<BeanAttribute> registeredAttributes = bean.getBeanAttributeList();
@@ -111,9 +111,9 @@ public class BeanAutowireModule {
             if(typeLikeBean != null){
 
                 currAttributeName = typeLikeBean.getId();
-                currAttributeSetter = this.findSetter(currAttributeName, currAttribute.getClass(), bean);
+                currAttributeSetter = findSetter(currAttributeName, currAttribute.getClass(), bean);
 
-                if (!this.attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
+                if (!attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
                     BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, beanFactory, null, currAttributeSetter);
                     bean.appendAttribute(beanAttribute);
                 }
@@ -122,7 +122,7 @@ public class BeanAutowireModule {
         }
     }
 
-    private void autowireConstructor (Bean bean) {
+    private static void autowireConstructor (Bean bean) {
         if (bean.getBeanConstructor() == null) { //If the user already defined the constructor explicitly this process is omitted
             Constructor[] classConstructors = bean.getBeanClass().getDeclaredConstructors();
             BeanFactory beanFactory = bean.getBeanFactory();
@@ -180,7 +180,7 @@ public class BeanAutowireModule {
         }
 
     }
-    private boolean checkParametersTypes(Bean bean, Parameter[] constuctorParameters, List<BeanParameter> beanParameterList) {
+    private static boolean checkParametersTypes(Bean bean, Parameter[] constuctorParameters, List<BeanParameter> beanParameterList) {
         boolean allParamsClassesMatched = true;
         int parameterIndex = 0;
         BeanFactory beanFactory = bean.getBeanFactory();
