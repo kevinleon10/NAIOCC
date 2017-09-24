@@ -39,8 +39,8 @@ public class Bean {
      * Constructor of the class, initializes the Instances Stack and the BeanAttribute List.
      */
     public Bean (BeanFactory beanFactory) {
-        this.beanInstanceStack = new Stack<Object>();
-        this.beanAttributeList = new ArrayList<BeanAttribute>();
+        this.beanInstanceStack = new Stack<>();
+        this.beanAttributeList = new ArrayList<>();
         this.beanFactory = beanFactory;
     }
 
@@ -53,6 +53,8 @@ public class Bean {
             System.err.println("Invalid initialization: The Singleton Bean has already been initialized.");
             System.exit(1);
         }
+
+        BeanAutowireModule.autowireBean(this);
 
         Object currInstance = this.newInstance();
         this.beanInstanceStack.push(currInstance);
@@ -157,7 +159,7 @@ public class Bean {
 
     /**
      * Appends an attribute to the end of the attribute list.
-     * @param beanAttributeToAppend
+     * @param beanAttributeToAppend bean attribte to apend
      */
     public void appendAttribute (BeanAttribute beanAttributeToAppend) {
         this.beanAttributeList.add(beanAttributeToAppend);
