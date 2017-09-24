@@ -54,7 +54,10 @@ public class Bean {
             System.exit(1);
         }
 
-        BeanAutowireModule.autowireBean(this);
+        //If this is the first instance, autowire the bean
+        if (this.beanInstanceStack.size() == 0) {
+            BeanAutowireModule.autowireBean(this);
+        }
 
         Object currInstance = this.newInstance();
         this.beanInstanceStack.push(currInstance);
@@ -154,7 +157,11 @@ public class Bean {
      * @return Returns the current bean.
      */
     public Object getInstance () {
-        return this.beanInstanceStack.peek();
+        if (this.beanInstanceStack.empty()) {
+            return null;
+        } else {
+            return this.beanInstanceStack.peek();
+        }
     }
 
     /**

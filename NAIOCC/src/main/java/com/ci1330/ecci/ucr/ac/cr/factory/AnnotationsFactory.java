@@ -28,6 +28,7 @@ public class AnnotationsFactory extends BeanFactory{
         annotationsBeanReader = new AnnotationsBeanReader(this);
         annotationsBeanReader.readBeans(classConfig);
         this.registerConfig(classConfig);
+        super.initContainer();
     }
 
     /**
@@ -35,17 +36,12 @@ public class AnnotationsFactory extends BeanFactory{
      */
     public void registerConfig(String classConfig){
         annotationsBeanReader.readBeans(classConfig);
+        super.initContainer();
     }
 
     @Override
     public Object getBean(String id) {
-        try {
-            return super.getBean(id);
-        } catch (IdNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
-            return null;
-        }
+        return super.getBean(id);
     }
 
     @Override

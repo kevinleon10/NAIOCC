@@ -19,7 +19,7 @@ public class XMLFactory extends BeanFactory{
     public XMLFactory(String xmlFile){
         super();
         this.xmlFile = xmlFile;
-        xmlBeanReader = new XmlBeanReader(this);
+        this.xmlBeanReader = new XmlBeanReader(this);
         this.registerConfig();
         super.initContainer();
     }
@@ -27,14 +27,6 @@ public class XMLFactory extends BeanFactory{
     @Override
     public void registerConfig(){
         this.xmlBeanReader.readBeans(this.getXmlFile());
-    }
-
-    public String getXmlFile() {
-        return xmlFile;
-    }
-
-    public void setXmlFile(String xmlFile) {
-        this.xmlFile = xmlFile;
     }
 
     @Override
@@ -49,13 +41,7 @@ public class XMLFactory extends BeanFactory{
 
     @Override
     public Object getBean(String id) {
-        try {
-            return super.getBean(id);
-        } catch (IdNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
-            return null;
-        }
+        return super.getBean(id);
     }
 
     @Override
@@ -71,6 +57,10 @@ public class XMLFactory extends BeanFactory{
     //----------------------------------------------------------------
     // Standard Setters and Getters section
     //----------------------------------------------------------------
+
+    public String getXmlFile() {
+        return xmlFile;
+    }
 
     public XmlBeanReader getXmlBeanReader() {
         return xmlBeanReader;

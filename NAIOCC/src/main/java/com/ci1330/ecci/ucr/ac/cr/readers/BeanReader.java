@@ -17,7 +17,11 @@ public abstract class BeanReader{
         this.beanCreator = new BeanCreator(beanFactory);
     }
 
-    public BeanReader(BeanCreator beanCreator) {
+    /**
+     * This constructor receives the bean creator
+     * @param beanCreator
+     */
+    public BeanReader (BeanCreator beanCreator) {
         this.beanCreator = beanCreator;
     }
 

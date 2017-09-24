@@ -17,7 +17,7 @@ public abstract class BeanFactory {
     protected HashMap<String,Bean> beansMap;
 
     public BeanFactory(){
-        beansMap = new HashMap<String,Bean>();
+        beansMap = new HashMap<>();
     }
 
     /**
@@ -34,35 +34,42 @@ public abstract class BeanFactory {
      * @param id
      * @return
      */
-    public Object getBean(String id) throws IdNotFoundException {
+    public Object getBean(String id) {
         try {
-            if(!this.getBeansMap().containsKey(id)){
+
+            if (!this.getBeansMap().containsKey(id)) {
                 throw new IdNotFoundException("Exception error: The id: " + id + " does not exist.");
             }
-            if (this.getBeansMap().get(id).getBeanScope() == Scope.Singleton) {
+
+            if (this.getBeansMap().get(id).getBeanScope() == Scope.Singleton && !this.getBeansMap().get(id).isLazyGen()) {
                 return this.beansMap.get(id).getInstance();
             } else {
                 this.beansMap.get(id).createNewInstance(); //agrega la nueva instancia a la lista del bean
                 this.beansMap.get(id).injectDependencies();
                 return this.beansMap.get(id).getInstance(); // devuelve la ultima instancia de la lista
             }
-        }catch(IdNotFoundException i){
+        } catch (IdNotFoundException i) {
             i.printStackTrace();
             System.exit(1);
-            return null;
         }
+        return null;
     }
 
     /**
      * Iterates through all beans and checks if they are Sigleton to initialize and inject its dependencies.
      */
-    public void initContainer(){
+    protected void initContainer(){
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
-            if(beanEntry.getValue().getBeanScope() == Scope.Singleton && !beanEntry.getValue().isLazyGen()
-                    && beanEntry.getValue() == null){
-                beanEntry.getValue().createNewInstance();
-                beanEntry.getValue().injectDependencies();
+            Bean currBean = beanEntry.getValue();
+
+            if(currBean.getBeanScope() == Scope.Singleton && !currBean.isLazyGen()
+                    && currBean.getInstance() == null){
+                currBean.createNewInstance();
+                currBean.injectDependencies();
+                currBean.initialize();
+                System.out.println(currBean.getInstance());
             }
+
         }
     }
 

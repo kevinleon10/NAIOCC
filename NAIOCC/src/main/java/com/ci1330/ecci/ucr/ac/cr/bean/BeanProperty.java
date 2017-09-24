@@ -34,13 +34,7 @@ public abstract class BeanProperty {
      */
     public Object getInstance () {
         if (this.value == null) {
-            try {
-                return this.beanFactory.getBean(this.beanRef);
-            } catch (IdNotFoundException e) {
-                e.printStackTrace();
-                System.exit(1);
-                return null;
-            }
+            return this.beanFactory.getBean(this.beanRef);
         } else {
             return this.value;
         }

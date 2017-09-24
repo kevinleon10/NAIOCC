@@ -25,6 +25,8 @@ public class BeanAutowireModule {
             case constructor:
                 autowireConstructor(bean);
                 break;
+            case none:
+                break;
             default:
                 System.err.println("Autowire error: Unexpected value.");
                 System.exit(1);
@@ -186,17 +188,14 @@ public class BeanAutowireModule {
         BeanFactory beanFactory = bean.getBeanFactory();
 
         for (Parameter constructorParameter : constuctorParameters) {
-            try {
-                if (beanFactory.getBean(constructorParameter.getName()).getClass() == constructorParameter.getClass()) {
-                    beanParameterList.add(new BeanParameter(constructorParameter.getName(), beanFactory, null, parameterIndex, constructorParameter.getClass().toString()));
-                } else {
-                    allParamsClassesMatched = false;
-                    break;
-                }
-            } catch (IdNotFoundException e) {
-                e.printStackTrace();
-                System.exit(1);
+            if (beanFactory.getBean(constructorParameter.getName()).getClass() == constructorParameter.getClass()) {
+                beanParameterList.add(new BeanParameter(constructorParameter.getName(), beanFactory, null, parameterIndex, constructorParameter.getClass().toString()));
+            } else {
+                allParamsClassesMatched = false;
+                break;
             }
+
+
             parameterIndex++;
         }
 
