@@ -1,6 +1,7 @@
 package com.ci1330.ecci.ucr.ac.cr.factory;
 
 import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
+import com.ci1330.ecci.ucr.ac.cr.bean.Scope;
 import com.ci1330.ecci.ucr.ac.cr.exception.BeanTypeConflictException;
 import com.ci1330.ecci.ucr.ac.cr.exception.IdNotFoundException;
 
@@ -38,7 +39,7 @@ public abstract class BeanFactory {
             if(!this.getBeansMap().containsKey(id)){
                 throw new IdNotFoundException("Exception error: The id: " + id + " does not exist.");
             }
-            if (this.getBeansMap().get(id).getBeanScope().equals("Singleton")) {
+            if (this.getBeansMap().get(id).getBeanScope() == Scope.Singleton) {
                 return this.beansMap.get(id).getInstance();
             } else {
                 this.beansMap.get(id).createNewInstance(); //agrega la nueva instancia a la lista del bean
@@ -57,7 +58,7 @@ public abstract class BeanFactory {
      */
     public void initContainer(){
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
-            if(beanEntry.getValue().getBeanScope().equals("Singleton") && !beanEntry.getValue().isLazyGen()
+            if(beanEntry.getValue().getBeanScope() == Scope.Singleton && !beanEntry.getValue().isLazyGen()
                     && beanEntry.getValue() == null){
                 beanEntry.getValue().createNewInstance();
                 beanEntry.getValue().injectDependencies();
