@@ -65,7 +65,7 @@ public class BeanCreator {
                         initMethod = method;
                     }
                 }
-                if(initMethodName != null && method.getName().contains(destroyMethodName)){
+                if(destroyMethodName != null && method.getName().contains(destroyMethodName)){
                     if(method.getParameterCount() == 0 ){
                         destroyMethod = method;
                     }
@@ -88,72 +88,59 @@ public class BeanCreator {
         try {
             value = Integer.valueOf(stringValue);
             parsed = true;
-            // System.out.print("es un int");
         } catch (NumberFormatException e) {
             //No es un int.
-            //System.out.print("excepcion int");
         }
         if (!parsed) {
             try {
                 value = Byte.valueOf(stringValue);
                 parsed = true;
-                //System.out.print("es un byte");
             } catch (NumberFormatException e) {
                 //No es un byte.
-                // System.out.print("excepcion byte");
             }
         }
         if (!parsed) {
             try {
                 value = Short.valueOf(stringValue);
                 parsed = true;
-                //System.out.print("es un short");
             } catch (NumberFormatException e) {
                 //No es un byte.
-                // System.out.print("excepcion short");
             }
         }
         if (!parsed) {
             try {
                 value = Long.valueOf(stringValue);
                 parsed = true;
-                //System.out.print("es un long");
             } catch (NumberFormatException e) {
                 //No es un byte.
-                // System.out.print("excepcion long");
             }
         }
         if (!parsed) {
             try {
                 value = Float.valueOf(stringValue);
                 parsed = true;
-                //System.out.print("es un float");
             } catch (NumberFormatException e) {
                 //No es un byte.
-                //System.out.print("excepcion float");
             }
         }
         if (!parsed) {
             try {
                 value = Double.valueOf(stringValue);
                 parsed = true;
-                //System.out.print("es un double");
             } catch (NumberFormatException e) {
                 //No es un byte.
-                //System.out.print("excepcion double");
             }
         }
         if (!parsed) {
-            try {
-                value = Boolean.valueOf(stringValue);
+            if ((stringValue.toLowerCase()).equals("true")) {
+                value = true;
                 parsed = true;
-                //System.out.print("es un boolean");
-            } catch (NumberFormatException e) {
-                //No es un byte.
-                //System.out.print("excepcion boolean");
+            } else if ((stringValue.toLowerCase()).equals("false")) {
+                value = false;
+                parsed = true;
             }
         }
-        if (stringValue.length() > 1 && !parsed) {
+        if (stringValue.length() == 1 && !parsed) {
             try {
                 value = stringValue.charAt(0);
                 parsed = true;
@@ -162,15 +149,11 @@ public class BeanCreator {
             }
         }
         if (!parsed) {
-            try {
-                value = stringValue;
-                parsed = true;
-            } catch (NumberFormatException e) {
-                //No es string
-            }
+            value = stringValue;
         }
         return value;
     }
+
     /**
      *
      * @param attributeName

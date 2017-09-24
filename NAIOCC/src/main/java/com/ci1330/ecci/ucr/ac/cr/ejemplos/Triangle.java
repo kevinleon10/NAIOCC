@@ -25,6 +25,10 @@ public class Triangle implements Shape{
         c = new Point();
     }
 
+    public void init() {
+        System.out.println("Bean init of triangle");
+    }
+
     @Override
     public void print() {
             System.out.print("Imprimiendo triangulo.");

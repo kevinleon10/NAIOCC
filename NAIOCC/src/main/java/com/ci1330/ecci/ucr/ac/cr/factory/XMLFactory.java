@@ -24,7 +24,6 @@ public class XMLFactory extends BeanFactory{
         super.initContainer();
     }
 
-    @Override
     public void registerConfig(){
         this.xmlBeanReader.readBeans(this.getXmlFile());
     }

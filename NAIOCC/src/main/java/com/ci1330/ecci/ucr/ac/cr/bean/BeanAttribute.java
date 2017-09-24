@@ -4,6 +4,7 @@ import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 /**
  * Created by Elias Calderon on 14/09/2017
@@ -38,7 +39,6 @@ public class BeanAttribute extends BeanProperty {
         Object dependency = super.getInstance();
 
         try {
-
             this.setterMethod.invoke(objectToInject, dependency);
 
         } catch (IllegalAccessException e) {

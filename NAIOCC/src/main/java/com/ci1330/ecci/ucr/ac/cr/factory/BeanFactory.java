@@ -37,21 +37,26 @@ public abstract class BeanFactory {
     public Object getBean(String id) {
         try {
 
-            if (!this.getBeansMap().containsKey(id)) {
+            if (!this.beansMap.containsKey(id)) {
                 throw new IdNotFoundException("Exception error: The id: " + id + " does not exist.");
             }
 
-            if (this.getBeansMap().get(id).getBeanScope() == Scope.Singleton && !this.getBeansMap().get(id).isLazyGen()) {
-                return this.beansMap.get(id).getInstance();
-            } else {
-                this.beansMap.get(id).createNewInstance(); //agrega la nueva instancia a la lista del bean
-                this.beansMap.get(id).injectDependencies();
-                return this.beansMap.get(id).getInstance(); // devuelve la ultima instancia de la lista
+            Bean currBean = this.beansMap.get(id);
+            if (currBean.getBeanScope() == Scope.Prototype || currBean.getInstance() == null) {
+
+                currBean.createNewInstance(); //agrega la nueva instancia a la lista del bean
+                currBean.injectDependencies();
+                currBean.initialize();
+
             }
-        } catch (IdNotFoundException i) {
-            i.printStackTrace();
+
+            return currBean.getInstance(); // devuelve la ultima instancia de la lista
+
+        } catch (IdNotFoundException e) {
+            e.printStackTrace();
             System.exit(1);
         }
+
         return null;
     }
 
@@ -59,6 +64,7 @@ public abstract class BeanFactory {
      * Iterates through all beans and checks if they are Sigleton to initialize and inject its dependencies.
      */
     protected void initContainer(){
+
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
             Bean currBean = beanEntry.getValue();
 
@@ -67,10 +73,10 @@ public abstract class BeanFactory {
                 currBean.createNewInstance();
                 currBean.injectDependencies();
                 currBean.initialize();
-                System.out.println(currBean.getInstance());
             }
 
         }
+
     }
 
     /**
@@ -81,17 +87,19 @@ public abstract class BeanFactory {
      */
     public Bean findBean(Class beanType) throws BeanTypeConflictException {
         Bean bean = null;
-        int totalBeans = 0;
+
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
+
             if(beanEntry.getValue().getBeanClass().equals(beanType)){
-                totalBeans++;
-                bean = beanEntry.getValue();
+                if (bean == null) {
+                    bean = beanEntry.getValue();
+                } else {
+                    throw new BeanTypeConflictException("Injection by type error: two or more beans share the same type.");
+                }
             }
+
         }
 
-        if(totalBeans > 1){
-            throw new BeanTypeConflictException("Injection by type error: two or more beans share the same type.");
-        }
         return bean;
     }
 
@@ -129,8 +137,6 @@ public abstract class BeanFactory {
             beanEntry.getValue().destroyAllInstances();
         }
     }
-
-    public void registerConfig(){}
 
     //----------------------------------------------------------------
     // Standard Setters and Getters section

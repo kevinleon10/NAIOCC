@@ -9,9 +9,9 @@ public class Main {
 
         Triangle t = (Triangle) factory.getBean("triangulo");
         t.print();
-        /*
+
         TestingAnnotations testingAnnotations = (TestingAnnotations) factory.getBean("fuck");
         testingAnnotations.fuck();
-        factory.shutDownHook();*/
+        factory.shutDownHook();
     }
 }

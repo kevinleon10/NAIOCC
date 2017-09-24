@@ -24,7 +24,8 @@
     <bean     id = "triangulo"
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle"
               scope="Singleton"
-              lazy-generation="true">
+              lazy-generation="true"
+                init = "init">
 
             <attribute name="a" ref="pointA"/>
             <attribute name="b" ref="pointB"/>

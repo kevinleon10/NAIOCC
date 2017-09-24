@@ -26,9 +26,7 @@ public class AnnotationsFactory extends BeanFactory{
     public AnnotationsFactory(String classConfig) {
         super();
         annotationsBeanReader = new AnnotationsBeanReader(this);
-        annotationsBeanReader.readBeans(classConfig);
         this.registerConfig(classConfig);
-        super.initContainer();
     }
 
     /**

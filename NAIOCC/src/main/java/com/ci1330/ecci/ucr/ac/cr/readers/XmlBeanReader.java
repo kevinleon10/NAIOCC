@@ -27,7 +27,6 @@ public class XmlBeanReader extends BeanReader {
      * The annotations reader is used if in the xml file, a read annotations
      * statement is found.
      */
-    private BeanFactory beanFactory;
     private String defaultInitMethod;
     private String defaultDestroyMethod;
     private String currID;
@@ -37,9 +36,6 @@ public class XmlBeanReader extends BeanReader {
      */
     public XmlBeanReader(BeanFactory beanFactory){
         super(beanFactory);
-        this.beanFactory = beanFactory;
-        this.defaultInitMethod = null;
-        this.defaultDestroyMethod = null;
     }
 
     /**
@@ -113,10 +109,14 @@ public class XmlBeanReader extends BeanReader {
         Element rootElement = xmlRootFile.getDocumentElement();
         if (rootElement.getTagName().equals("beans")) { //Si son beans
             if (rootElement.hasAttribute("init")) { //Si tiene init
-                this.defaultInitMethod = rootElement.getAttribute("init");
+                if (!rootElement.getAttribute("init").equals("")) {
+                    this.defaultInitMethod = rootElement.getAttribute("init");
+                }
             }
             if (rootElement.hasAttribute("destroy")) { //Si tiene destroy
-                this.defaultDestroyMethod = rootElement.getAttribute("destroy");
+                if (!rootElement.getAttribute("destroy").equals("")) {
+                    this.defaultDestroyMethod = rootElement.getAttribute("destroy");
+                }
             }
         } else {
             try {
@@ -140,16 +140,21 @@ public class XmlBeanReader extends BeanReader {
 
             this.currID = beanElement.getAttribute("id");
             String className = beanElement.getAttribute("class");
-            String initMethod, destroyMethod;
+            String initMethod = null;
+            String destroyMethod = null;
 
             if (beanElement.hasAttribute("init")) {
-                initMethod = beanElement.getAttribute("init");
+                if (!beanElement.getAttribute("init").equals("")) {
+                    initMethod = beanElement.getAttribute("init");
+                }
             } else {
                 initMethod = this.defaultInitMethod;
             }
 
             if (beanElement.hasAttribute("destroy")) {
-                destroyMethod = beanElement.getAttribute("destroy");
+                if (!beanElement.getAttribute("destroy").equals("")) {
+                    destroyMethod = beanElement.getAttribute("destroy");
+                }
             } else {
                 destroyMethod = this.defaultDestroyMethod;
             }
