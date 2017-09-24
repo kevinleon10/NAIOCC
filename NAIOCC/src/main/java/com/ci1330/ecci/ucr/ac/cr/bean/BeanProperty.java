@@ -57,6 +57,6 @@ public abstract class BeanProperty {
     }
 
     public String getBeanRef() {
-        return beanRef;
+        return this.beanRef;
     }
 }
