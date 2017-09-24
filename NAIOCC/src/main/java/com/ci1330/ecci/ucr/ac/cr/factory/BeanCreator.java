@@ -81,85 +81,92 @@ public class BeanCreator {
         }
     }
 
-    private Object obtainValueType(String stringValue){
+    private Object obtainValueType(String stringValue) {
         boolean parsed = false;
         Object value = null;
         System.out.println(stringValue);
-        if(parsed == false) {
-            try {
-                value = Integer.valueOf(stringValue);
-                parsed = true;
-               // System.out.print("es un int");
-            } catch (NumberFormatException e) {
-                //No es un int.
-                //System.out.print("excepcion int");
-            }
+        try {
+            value = Integer.valueOf(stringValue);
+            parsed = true;
+            // System.out.print("es un int");
+        } catch (NumberFormatException e) {
+            //No es un int.
+            //System.out.print("excepcion int");
         }
-        if(parsed = false) {
+        if (!parsed) {
             try {
                 value = Byte.valueOf(stringValue);
+                parsed = true;
                 //System.out.print("es un byte");
             } catch (NumberFormatException e) {
                 //No es un byte.
-               // System.out.print("excepcion byte");
+                // System.out.print("excepcion byte");
             }
         }
-        if(parsed = false) {
+        if (!parsed) {
             try {
                 value = Short.valueOf(stringValue);
+                parsed = true;
                 //System.out.print("es un short");
             } catch (NumberFormatException e) {
                 //No es un byte.
-               // System.out.print("excepcion short");
+                // System.out.print("excepcion short");
             }
         }
-        if(parsed = false) {
+        if (!parsed) {
             try {
                 value = Long.valueOf(stringValue);
+                parsed = true;
                 //System.out.print("es un long");
             } catch (NumberFormatException e) {
                 //No es un byte.
-               // System.out.print("excepcion long");
+                // System.out.print("excepcion long");
             }
         }
-        if(parsed = false) {
+        if (!parsed) {
             try {
                 value = Float.valueOf(stringValue);
+                parsed = true;
                 //System.out.print("es un float");
             } catch (NumberFormatException e) {
                 //No es un byte.
                 //System.out.print("excepcion float");
             }
         }
-        if(parsed = false) {
+        if (!parsed) {
             try {
                 value = Double.valueOf(stringValue);
+                parsed = true;
                 //System.out.print("es un double");
             } catch (NumberFormatException e) {
                 //No es un byte.
                 //System.out.print("excepcion double");
             }
         }
-        if(parsed = false) {
+        if (!parsed) {
             try {
                 value = Boolean.valueOf(stringValue);
+                parsed = true;
                 //System.out.print("es un boolean");
             } catch (NumberFormatException e) {
                 //No es un byte.
                 //System.out.print("excepcion boolean");
             }
         }
-        if(stringValue.length() > 1 && parsed == false) {
+        if (stringValue.length() > 1 && !parsed) {
             try {
                 value = stringValue.charAt(0);
+                parsed = true;
             } catch (Exception e) {
                 //No es un char.
             }
         }
-        if(parsed = false) {
+        if (!parsed) {
             try {
                 value = stringValue;
-            }catch(NumberFormatException e){
+                parsed = true;
+            } catch (NumberFormatException e) {
+                //No es string
             }
         }
         return value;
