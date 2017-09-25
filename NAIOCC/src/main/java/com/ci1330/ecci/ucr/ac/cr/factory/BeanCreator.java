@@ -307,17 +307,17 @@ public class BeanCreator {
                     for (BeanParameter p : this.constructorParams) {
                         //System.out.println("iterando lista parametros propios:" + p.getType());
                         for (Class parameter : beanConstructorParameters) {
-                           // System.out.println("iterando lista parametros constructor:" + p.getType());
+                            // System.out.println("iterando lista parametros constructor:" + p.getType());
                             //System.out.println("clase del param:" + parameter.toString());
                             switch (p.getType()) {
                                 case "int":
-                                   // System.out.println("se metio en case int");
+                                    // System.out.println("se metio en case int");
                                     if (parameter.toString().equals("int")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
                                         //System.out.println("parametro hizo match con int");
                                         p.setIndex(paramIndex);
-                                        System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
+                                        //System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
                                     }
                                     break;
                                 case "java.lang.Integer":
@@ -325,7 +325,7 @@ public class BeanCreator {
                                     if (parameter.toString().equals("int")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                       // System.out.println("parametro hizo match con int");
+                                        // System.out.println("parametro hizo match con int");
                                         p.setIndex(paramIndex);
                                     }
                                     break;
@@ -404,13 +404,13 @@ public class BeanCreator {
                                     if (parameter.toString().equals("boolean")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                       // System.out.println("parametro hizo match con boolean");
+                                        // System.out.println("parametro hizo match con boolean");
                                         p.setIndex(paramIndex);
-                                        System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
+                                        //System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
                                     }
                                     break;
                                 case "java.lang.Boolean":
-                                   // System.out.println("se metio en case boolean");
+                                    // System.out.println("se metio en case boolean");
                                     if (parameter.toString().equals("boolean")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
@@ -438,9 +438,9 @@ public class BeanCreator {
                                         if (Class.forName(p.getType()).equals(parameter)) {
                                             totalParametersOneType++;
                                             totalParametersMatched++;
-                                           // System.out.println("parametro hizo match con default");
+                                            // System.out.println("parametro hizo match con default");
                                             p.setIndex(paramIndex);
-                                            System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
+                                           // System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
                                         }
                                     } catch (ClassNotFoundException e) {
                                         e.printStackTrace();

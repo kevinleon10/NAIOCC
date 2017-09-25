@@ -19,7 +19,7 @@ public class TestingAnnotations {
     public int l;
 
     @Init
-    private void firstMethod(){
+    public void firstMethod(){
         System.out.println("Example Annotaions");
     }
 

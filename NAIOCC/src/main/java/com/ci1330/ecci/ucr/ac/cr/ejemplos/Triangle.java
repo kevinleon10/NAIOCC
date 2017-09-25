@@ -29,6 +29,10 @@ public class Triangle implements Shape{
         System.out.println("Bean init of triangle");
     }
 
+    public void destroy(){
+        System.out.println("Bean destroy of triangle");
+    }
+
     @Override
     public void print() {
             System.out.print("Imprimiendo triangulo.");

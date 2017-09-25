@@ -4,65 +4,31 @@ import java.util.Random;
 
 public class Square implements Shape{
 
-    private Point a;
-    private Point b;
-    private Point c;
-    private Point d;
+    public Colour c;
 
     public Square() {
 
     }
 
-    public Square(Point a, Point b, Point c, Point d) {
-        this.a = a;
-        this.b = b;
+    public Square(Colour c) {
         this.c = c;
-        this.d = d;
     }
 
     @Override
     public void draw() {
-        a = new Point();
-        b = new Point();
-        c = new Point();
-        d = new Point();
+        this.c = new Colour();
     }
 
     @Override
     public void print() {
-        System.out.print("Imprimiendo cuadrado.");
+        System.out.print("Imprimiendo cuadrado de color: " + this.c.getName());
     }
 
-    public Point getA() {
-        return a;
-    }
-
-    public void setA(Point a) {
-        this.a = a;
-    }
-
-    public Point getB() {
-        return b;
-    }
-
-    public void setB(Point b) {
-        this.b = b;
-    }
-
-    public Point getC() {
+    public Colour getC() {
         return c;
     }
 
-    public void setC(Point c) {
+    public void setC(Colour c) {
         this.c = c;
     }
-
-    public Point getD() {
-        return d;
-    }
-
-    public void setD(Point d) {
-        this.d = d;
-    }
-
 }
