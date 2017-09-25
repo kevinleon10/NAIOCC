@@ -3,6 +3,8 @@ package com.ci1330.ecci.ucr.ac.cr.ejemplos;
 import com.ci1330.ecci.ucr.ac.cr.factory.AnnotationsFactory;
 import com.ci1330.ecci.ucr.ac.cr.factory.XMLFactory;
 
+import javax.swing.*;
+
 public class Main {
 
     public static void main(String[] args) {

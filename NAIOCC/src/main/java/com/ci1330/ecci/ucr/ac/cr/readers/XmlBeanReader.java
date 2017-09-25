@@ -27,9 +27,9 @@ public class XmlBeanReader extends BeanReader {
      * The annotations reader is used if in the xml file, a read annotations
      * statement is found.
      */
-    private String defaultInitMethod;
-    private String defaultDestroyMethod;
-    private String currID;
+    private String defaultInitMethod; //The init method
+    private String defaultDestroyMethod; //The destroy method
+    private String currID; //The bean ID
 
     /**
      * Constructor that inits the annotations reader
@@ -45,12 +45,12 @@ public class XmlBeanReader extends BeanReader {
      */
     public void readBeans(String inputName) {
 
-        File fXmlFile = new File(inputName); //Crea un archivo
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance(); //Crea un doc factory, para crear el builder
+        File fXmlFile = new File(inputName);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 
         DocumentBuilder dBuilder = null;
         try {
-            dBuilder = dbFactory.newDocumentBuilder(); //Crea un doc builder para construir el doc
+            dBuilder = dbFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
             System.exit(1);
@@ -58,7 +58,7 @@ public class XmlBeanReader extends BeanReader {
 
         Document doc = null;
         try {
-            doc = dBuilder.parse(fXmlFile); //Se parsea el doc creado
+            doc = dBuilder.parse(fXmlFile);
         } catch (SAXException e) {
             e.printStackTrace();
             System.exit(1);
@@ -67,20 +67,19 @@ public class XmlBeanReader extends BeanReader {
             System.exit(1);
         }
 
-        //Normalize document
         doc.getDocumentElement().normalize();
-
-        //Se llama a read root para obtener la raiz
         Element rootElement = this.readRoot(doc);
 
-        //Se crea una lista con los beans de la raiz
+        //Get all the beans in the XML
         NodeList nodeList = rootElement.getElementsByTagName("bean");
 
-        for (int index = 0; index < nodeList.getLength(); index++) { //Se itera sobre cada bean
+        //Travel by every bean
+        for (int index = 0; index < nodeList.getLength(); index++) {
 
-            Node node = nodeList.item(index); //Se obtiene el nodo actual
+            Node node = nodeList.item(index);
 
-            if ((node.getNodeType() == Node.ELEMENT_NODE)) { //Si es un nodo elemento
+            //Check if it is an Element
+            if ((node.getNodeType() == Node.ELEMENT_NODE)) {
 
                 Element beanElement = (Element) node;
                 this.readBeanProperties(beanElement);
@@ -104,16 +103,22 @@ public class XmlBeanReader extends BeanReader {
      * Starts reading the root of the xml
      *
      * @param xmlRootFile
+     * @return rootElement
      */
     private Element readRoot(Document xmlRootFile) {
         Element rootElement = xmlRootFile.getDocumentElement();
-        if (rootElement.getTagName().equals("beans")) { //Si son beans
-            if (rootElement.hasAttribute("init")) { //Si tiene init
+        //Check if there is a correct root
+        if (rootElement.getTagName().equals("beans")) {
+            //Check if there is an init property in the root
+            if (rootElement.hasAttribute("init")) {
+                //Check if there is an init method in the root
                 if (!rootElement.getAttribute("init").equals("")) {
                     this.defaultInitMethod = rootElement.getAttribute("init");
                 }
             }
-            if (rootElement.hasAttribute("destroy")) { //Si tiene destroy
+            //Check if there is a destroy property in the root
+            if (rootElement.hasAttribute("destroy")) {
+                //Check if there is a destroy method
                 if (!rootElement.getAttribute("destroy").equals("")) {
                     this.defaultDestroyMethod = rootElement.getAttribute("destroy");
                 }
@@ -136,6 +141,7 @@ public class XmlBeanReader extends BeanReader {
      */
     private void readBeanProperties(Element beanElement) {
 
+        //Check if the bean has ID and class
         if (beanElement.hasAttribute("id") && beanElement.hasAttribute("class")) {
 
             this.currID = beanElement.getAttribute("id");
@@ -143,7 +149,9 @@ public class XmlBeanReader extends BeanReader {
             String initMethod = null;
             String destroyMethod = null;
 
+            //Check if there is an init property in the current bean
             if (beanElement.hasAttribute("init")) {
+                //Check if there is an init method
                 if (!beanElement.getAttribute("init").equals("")) {
                     initMethod = beanElement.getAttribute("init");
                 }
@@ -151,7 +159,9 @@ public class XmlBeanReader extends BeanReader {
                 initMethod = this.defaultInitMethod;
             }
 
+            //Check if there is an init property in the current bean
             if (beanElement.hasAttribute("destroy")) {
+                //Check if there is a destroy method
                 if (!beanElement.getAttribute("destroy").equals("")) {
                     destroyMethod = beanElement.getAttribute("destroy");
                 }
@@ -159,10 +169,10 @@ public class XmlBeanReader extends BeanReader {
                 destroyMethod = this.defaultDestroyMethod;
             }
 
-
-
             AutowireEnum autowire;
             Scope scope;
+
+            //Check if there is not a scope and autowire
 
             String scopeString = beanElement.getAttribute("scope");
             if(scopeString.equals("")){
@@ -174,10 +184,13 @@ public class XmlBeanReader extends BeanReader {
                 autowireString = "none";
             }
 
+            //Get the lazy-generation
             String lazyGen = beanElement.getAttribute("lazy-generation");
+
+            //Check if the properties are not misspelled
             if ( (autowireString.equals("byName") || autowireString.equals("byType") || autowireString.equals("none") || autowireString.equals("constructor")) &&
                     (lazyGen.equals("true") || lazyGen.equals("false") || lazyGen.equals("")) &&
-                    (scopeString.equals("Singleton") || scopeString.equals("Prototype")) ) { //Reviso si pasan los requisitos
+                    (scopeString.equals("Singleton") || scopeString.equals("Prototype")) ) {
 
                 scope = Scope.Singleton;
                 autowire = AutowireEnum.none;
@@ -224,7 +237,10 @@ public class XmlBeanReader extends BeanReader {
      * @param beanElement
      */
     private void readBeanConstructor(Element beanElement) {
+        //Get all the constructor in the current bean
         NodeList constructorList = beanElement.getElementsByTagName("constructor");
+
+        //Check if there is more than a constructor definition
         if (constructorList.getLength() > 1) {
             try {
                 throw new XmlBeanReaderException("Xml Reader error: Multiple constructors tags in bean " + this.currID + ".");
@@ -237,12 +253,15 @@ public class XmlBeanReader extends BeanReader {
             Element constructorElement = (Element) constructorList.item(0);
             NodeList constructorArgs = constructorElement.getElementsByTagName("param");
 
-            for (int index = 0; index < constructorArgs.getLength(); index++) { //Se itera sobre cada attribute
-                Node parameterNode = constructorArgs.item(index); //Se obtiene el nodo actual
+            //Travel by every param
+            for (int index = 0; index < constructorArgs.getLength(); index++) {
+                Node parameterNode = constructorArgs.item(index);
 
-                if (parameterNode.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
-                    Element parameterElement = (Element) parameterNode; //Se convierte el nodo en un elemento
+                //Check if it is an Element
+                if (parameterNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element parameterElement = (Element) parameterNode;
 
+                    //Check if there is value or ref
                     if ((parameterElement.hasAttribute("value") && !(parameterElement.hasAttribute("ref"))) ||
                             (parameterElement.hasAttribute("ref") && !(parameterElement.hasAttribute("value")))) {
 
@@ -250,6 +269,7 @@ public class XmlBeanReader extends BeanReader {
 
                         int argIndex = -1;
                         try {
+                            //Tries to get the index
                             if ( !(parameterElement.getAttribute("index").equals("")) ) {
                                 argIndex = Integer.parseInt(parameterElement.getAttribute("index"));
                             }
@@ -302,12 +322,15 @@ public class XmlBeanReader extends BeanReader {
     private void readBeanAttributes(Element beanElement) {
 
         NodeList attributeList = beanElement.getElementsByTagName("attribute");
-        for (int index = 0; index < attributeList.getLength(); index++) { //Se itera sobre cada attribute
-            Node attributeNode = attributeList.item(index); //Se obtiene el nodo actual
+        for (int index = 0; index < attributeList.getLength(); index++) {
+            Node attributeNode = attributeList.item(index);
 
-            if (attributeNode.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
+            //Check if it is an Element
+            if (attributeNode.getNodeType() == Node.ELEMENT_NODE) {
 
                 Element attributeElement = (Element) attributeNode;
+
+                //Check if there is a value or ref
                 if ((attributeElement.hasAttribute("name") && attributeElement.hasAttribute("value") && !(attributeElement.hasAttribute("ref"))) ||
                         (attributeElement.hasAttribute("name") && attributeElement.hasAttribute("ref") && !(attributeElement.hasAttribute("value")))) {
 
@@ -362,8 +385,10 @@ public class XmlBeanReader extends BeanReader {
      */
     private void readAnnotationsStatement(Element beanElement) {
 
+        //Get all the annotationsClasses in the root
         NodeList annotationsList = beanElement.getElementsByTagName("annotationsClasses");
 
+        //Check if there is more than a annotationClasses definition
         if (annotationsList.getLength() > 1) {
             try {
                 throw new XmlBeanReaderException("Xml Reader error: 'annotationClasses' has more than one definition.");
@@ -377,14 +402,16 @@ public class XmlBeanReader extends BeanReader {
             Element annotationsElement = (Element) annotationsList.item(0);
             NodeList classList = annotationsElement.getElementsByTagName("class");
 
+            //Travel by every class
             for(int index = 0; index < classList.getLength(); ++index){
-                Node classNode = classList.item(index); //Se obtiene el nodo actual
+                Node classNode = classList.item(index);
 
-                if (classNode.getNodeType() == Node.ELEMENT_NODE) { //Si es un nodo elemento
-                    Element classElement = (Element) classNode; //Se convierte el nodo en un elemento
+                //Check if it is an Element
+                if (classNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element classElement = (Element) classNode;
 
+                    //If the annotation has a path
                     if (!(classElement.getAttribute("path").equals(""))) {
-
                         annotationsBeanReader.readBeans(classElement.getAttribute("path"));
 
                     } else {
