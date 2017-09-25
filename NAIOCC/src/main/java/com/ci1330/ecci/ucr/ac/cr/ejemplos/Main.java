@@ -12,12 +12,15 @@ public class Main {
 
         Triangle t = (Triangle) factory.getBean("triangulo");
         t.print();
+
+        System.exit(1);
         Carro c = (Carro) factory.getBean("carro");
         Square s = (Square) factory.getBean("square");
        //String x = c.getTres().getMarca();
         //System.out.println(x);
         c.print();
         s.print();
+
         AnnotationsFactory annotationsFactory = new AnnotationsFactory("com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations");
         TestingAnnotations testingAnnotations = (TestingAnnotations) annotationsFactory.getBean("fuck");
        // TestingAnnotations testingAnnotations = (TestingAnnotations) factory.getBean("fuck");

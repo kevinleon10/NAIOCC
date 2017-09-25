@@ -11,10 +11,10 @@ public class Triangle implements Shape{
     public Triangle() {
     }
 
-    public Triangle(Point a, Point b, Point c) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
+    public Triangle(Point pointA, Point pointB, Point pointC) {
+        this.a = pointA;
+        this.b = pointB;
+        this.c = pointC;
         System.out.println("Se creo el triangulo exitosamente.");
     }
 

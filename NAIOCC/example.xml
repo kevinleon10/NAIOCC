@@ -6,11 +6,8 @@
               scope="Singleton"
               lazy-generation="true"
                 init = "init"
-                destroy="destroy">
-
-            <attribute name="a" ref="pointA"/>
-            <attribute name="b" ref="pointB"/>
-            <attribute name="c" ref="pointC"/>
+                destroy="destroy"
+                autowire="constructor">
 
     </bean>
 
