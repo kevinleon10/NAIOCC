@@ -1,5 +1,7 @@
 package com.ci1330.ecci.ucr.ac.cr.ejemplos;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 public class Persona {
 
     private String nombre;
@@ -14,6 +16,14 @@ public class Persona {
         this.cedula = cedula;
         this.nacionalidad = nacionalidad;
         this.estadoCivil = estadoCivil;
+    }
+
+    public void defaultInitMethod(){
+        System.out.println("Printing default init method for Persona");
+    }
+
+    public void defaultDestroyMethod(){
+        System.out.println("Printing default destroy method for Persona");
     }
 
     public String getNombre() {

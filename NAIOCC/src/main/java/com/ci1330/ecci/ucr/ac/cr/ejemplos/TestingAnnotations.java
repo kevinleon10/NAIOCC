@@ -8,18 +8,18 @@ import com.ci1330.ecci.ucr.ac.cr.bean.AutowireEnum;
  */
 
 
-@Bean(id = "fuck")
+@Repository("fuck")
 @Scope(com.ci1330.ecci.ucr.ac.cr.bean.Scope.Prototype)
 @Lazy
 public class TestingAnnotations {
-    @Attribute(value = "sarkis es puto")
+    @Attribute("sarkis es puto")
     private String test;
 
-    @Attribute(value = "12")
+    @Attribute("12")
     public int l;
 
     @Init
-    private void firstMethod(){
+    public void firstMethod(){
         System.out.println("Example Annotaions");
     }
 

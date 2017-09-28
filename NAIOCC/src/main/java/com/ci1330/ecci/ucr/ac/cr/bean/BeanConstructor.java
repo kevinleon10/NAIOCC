@@ -33,7 +33,7 @@ public class BeanConstructor {
         Object[] parameterInstances = new Object[this.beanParameterList.size()];
         Object beanInstance = null;
         for (BeanParameter currBeanParameter : this.beanParameterList) {
-            System.out.println("indice del parametroo:" + currBeanParameter.getIndex());
+            //System.out.println("indice del parametroo:" + currBeanParameter.getIndex());
             parameterInstances[currBeanParameter.getIndex()] = currBeanParameter.getInstance();
         }
         try {

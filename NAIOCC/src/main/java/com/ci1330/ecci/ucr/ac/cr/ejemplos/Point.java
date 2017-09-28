@@ -20,6 +20,14 @@ public class Point {
         System.out.println("Se creo el punto exitosamente.");
     }
 
+    public void defaultInitMethod(){
+        System.out.println("Printing default init method for Point");
+    }
+
+    public void defaultDestroyMethod(){
+        System.out.println("Printing default destroy method for Point");
+    }
+
     public Point(int x) {
         this.x = x;
     }

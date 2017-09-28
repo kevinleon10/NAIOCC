@@ -1,35 +1,13 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<beans>
-
-    <bean     id = "persona"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Persona"
-              scope="Prototype"
-              lazy-generation="true">
-
-        <attribute name="nombre" value="Josue"/>
-
-        <constructor>
-
-            <param type="boolean"
-                   value="true"/>
-            <param type="java.lang.String"
-                   value="costarricense"/>
-            <param type="int"
-                   value="116760597"/>
-
-        </constructor>
-
-    </bean>
+<beans init="defaultInitMethod" destroy="defaultDestroyMethod">
 
     <bean     id = "triangulo"
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle"
               scope="Singleton"
               lazy-generation="true"
-                init = "init">
-
-            <attribute name="a" ref="pointA"/>
-            <attribute name="b" ref="pointB"/>
-            <attribute name="c" ref="pointC"/>
+                init = "init"
+                destroy="destroy"
+                autowire="constructor">
 
     </bean>
 
@@ -92,7 +70,91 @@
 
     </bean>
 
-    <annotationsClasses>
+    <bean     id = "carro"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Carro"
+              scope="Singleton"
+              lazy-generation="true"
+              autowire="byName">
+    </bean>
+
+    <bean     id = "uno"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
+              scope="Singleton"
+              lazy-generation="true">
+
+    <attribute name="marca" value="Firestone"/>
+    </bean>
+
+    <bean     id = "dos"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
+              scope="Singleton"
+              lazy-generation="true">
+
+    <attribute name="marca" value="Firestone"/>
+    </bean>
+
+    <bean     id = "tres"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
+              scope="Singleton"
+              lazy-generation="true">
+
+    <attribute name="marca" value="Firestone"/>
+    </bean>
+
+    <bean     id = "cuatro"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
+              scope="Singleton"
+              lazy-generation="true">
+
+    <attribute name="marca" value="Firestone"/>
+    </bean>
+
+    <bean     id = "dueno"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Persona"
+              scope="Prototype"
+              lazy-generation="true">
+
+        <attribute name="nombre" value="Josue"/>
+
+        <constructor>
+
+            <param type="boolean"
+                   value="true"/>
+            <param type="java.lang.String"
+                   value="costarricense"/>
+            <param type="int"
+                   value="116760597"/>
+
+        </constructor>
+
+    </bean>
+
+    <bean     id = "square"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Square"
+              scope="Singleton"
+              lazy-generation="true"
+              autowire="byType">
+
+    </bean>
+
+    <bean     id = "colour"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Colour"
+              scope="Singleton"
+              lazy-generation="true"
+                autowire="constructor">
+    </bean>
+
+    <bean     id = "t"
+              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Tone"
+              scope="Singleton"
+              lazy-generation="true">
+
+    <attribute name="tonalidad" value="fuerte"/>
+    </bean>
+
+
+
+<!--    <annotationsClasses>
         <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations" />
-    </annotationsClasses>
+    </annotationsClasses>-->
 </beans>

@@ -6,11 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by lskev on 17-Sep-17.
+ * Created by lskev on 25-Sep-17.
  */
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Bean {
+public @interface Repository {
     String value();
 }
