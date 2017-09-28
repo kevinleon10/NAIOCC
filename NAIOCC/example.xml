@@ -19,6 +19,10 @@
 
             <param type="int"
                    value="2"/>
+            <param type="int"
+                   value="2"/>
+            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+                   ref="pointB"/>
 
         </constructor>
 
@@ -34,6 +38,12 @@
 
             <param type="int"
                    value="5"/>
+            <param type="int"
+                   value="2"/>
+            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+                   ref="pointC"/>
+
+
         </constructor>
 
         <attribute name="y" value="7"/>
@@ -48,6 +58,11 @@
 
             <param type="int"
                    value="9"/>
+            <param type="int"
+                   value="2"/>
+            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
+                   ref="pointA"/>
+
 
         </constructor>
 
