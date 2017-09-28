@@ -42,17 +42,19 @@ public class BeanAutowireModule {
 
         Method currAttributeSetter;
         String currAttributeName;
+        Class currAttributeType;
        // System.out.println("autowireByName de: " +  bean.getId());
        // System.out.println("obteniendo lista de fields de: " + currInstanceClass.toString() + " tamano: " + currInstanceClass.getFields().length);
         for (Field currAttribute: currInstanceClass.getFields()) {
             currAttributeName = currAttribute.getName();
+            currAttributeType = currAttribute.getType();
 
             //System.out.println("chequeando si atributo: " + currAttributeName + " existe en el mapa");
             if(beanFactory.findBean(currAttributeName) != null){
-                currAttributeSetter = findSetter(currAttributeName, currAttribute.getType(), bean);
+                currAttributeSetter = findSetter(currAttributeName, currAttributeType, bean);
                // System.out.println("chequeando si atributo: " + currAttributeName + " ya fue registrado");
                 if (!attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
-                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, beanFactory, null, currAttributeSetter);
+                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, currAttributeType, beanFactory, null, currAttributeSetter);
                     bean.appendAttribute(beanAttribute);
                    // System.out.println("se agrego el atributo ya autowireado de: " + bean.getId() + " : " + beanAttribute.getBeanRef());
                 }
@@ -104,9 +106,11 @@ public class BeanAutowireModule {
         Method currAttributeSetter;
         String currAttributeName;
         Class currAttributeClass;
+
         Bean typeLikeBean = null;
 
         for (Field currAttribute: currInstanceClass.getFields()) {
+
             currAttributeClass = currAttribute.getType();
             try {
                 typeLikeBean = beanFactory.findBean(currAttributeClass);
@@ -117,10 +121,10 @@ public class BeanAutowireModule {
             if(typeLikeBean != null){
 
                 currAttributeName = typeLikeBean.getId();
-                currAttributeSetter = findSetter(currAttribute.getName(), currAttribute.getType(), bean);
+                currAttributeSetter = findSetter(currAttributeName, currAttribute.getType(), bean);
 
                 if (!attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
-                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, beanFactory, null, currAttributeSetter);
+                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, currAttributeClass, beanFactory, null, currAttributeSetter);
                     bean.appendAttribute(beanAttribute);
                 }
 
@@ -195,9 +199,12 @@ public class BeanAutowireModule {
         int parameterIndex = 0;
         BeanFactory beanFactory = bean.getBeanFactory();
 
+        Class currBeanClass;
+
         for (Parameter constructorParameter : constuctorParameters) {
-            if (beanFactory.getBean(constructorParameterNames[parameterIndex]).getClass() == constructorParameter.getType()) {
-                beanParameterList.add(new BeanParameter(constructorParameterNames[parameterIndex], beanFactory, null, parameterIndex, constructorParameter.getType().toString()));
+            currBeanClass = beanFactory.getBean(constructorParameterNames[parameterIndex]).getClass();
+            if ( currBeanClass == constructorParameter.getType()) {
+                beanParameterList.add(new BeanParameter(constructorParameterNames[parameterIndex], currBeanClass, beanFactory, null, parameterIndex, constructorParameter.getType().toString()));
             } else {
                 allParamsClassesMatched = false;
                 break;

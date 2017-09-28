@@ -3,10 +3,9 @@ package com.ci1330.ecci.ucr.ac.cr.factory;
 import com.ci1330.ecci.ucr.ac.cr.bean.*;
 import com.ci1330.ecci.ucr.ac.cr.exception.*;
 
-import java.io.CharConversionException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,18 +164,20 @@ public class BeanCreator {
         if(stringValue != null){
             value = this.obtainValueType(stringValue);
         }
+
         Method setterMethod = null;
         Method[] beanMethods = this.bean.getBeanClass().getMethods();
+        Class beanRefType = null;
 
         for(Method method: beanMethods){
             //System.out.println( method.getName().toLowerCase() + " contiene:??? " + attributeName.toLowerCase());
             if(method.getName().startsWith("set") && method.getName().toLowerCase().contains(attributeName.toLowerCase())){
-                Class[] methodParameterType = method.getParameterTypes();
                 if(method.getParameterCount() == 1){
                     setterMethod = method;
                 }
             }
         }
+
         if(setterMethod == null){
             try {
                 throw new SetterMethodNotFoundException("Creation error: Bean attribute's setter method not found for attribute: " + attributeName + ".");
@@ -186,16 +187,17 @@ public class BeanCreator {
             }
         }
 
-        if(value == null && beanRef == null){
-            try {
-                throw new InvalidPropertyException("Bean creation error: attribute's type or reference is invalid.");
-            } catch (InvalidPropertyException e) {
-                e.printStackTrace();
-                System.exit(1);
+        //If the value is null, the user is using beans, so search for the type that the bean should have
+        if(value == null) {
+            Field[] beanFields = this.bean.getBeanClass().getDeclaredFields();
+            for(Field field: beanFields){
+                if(field.getName().equals(attributeName)) {
+                    beanRefType = field.getType();
+                }
             }
         }
 
-        BeanAttribute beanAttribute = new BeanAttribute(beanRef, this.beanFactory, value, setterMethod);
+        BeanAttribute beanAttribute = new BeanAttribute(beanRef, beanRefType, this.beanFactory, value, setterMethod);
         bean.appendAttribute(beanAttribute);
     }
 
@@ -219,8 +221,23 @@ public class BeanCreator {
                 System.exit(1);
             }
         }
-        BeanParameter beanConstructorParam = new BeanParameter(beanRef, this.beanFactory, value, index, paramType);
+
+        Class beanRefClass = null;
+
+        //If the value is null, the user is using beans, so search for the type that the bean should have
+        //But because this is a constructor parameter, only search for it if we have at least the type
+        if (value == null && paramType != null) {
+            try {
+                beanRefClass = Class.forName(paramType);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
+        BeanParameter beanConstructorParam = new BeanParameter(beanRef, beanRefClass, this.beanFactory, value, index, paramType);
         this.constructorParams.add(beanConstructorParam);
+
     }
 
     /**
@@ -247,7 +264,7 @@ public class BeanCreator {
         Class param = null;
         Class[] parametersClassArray = new Class[this.constructorParams.size()];
         for (BeanParameter p : this.constructorParams) {
-            switch (p.getType()) {
+            switch (p.getExplicitTypeName()) {
                 case "int":
                     param = int.class;
                     break;
@@ -273,7 +290,7 @@ public class BeanCreator {
                     param = char.class;
                     break;
                 default:
-                    parameterClass = p.getType();
+                    parameterClass = p.getExplicitTypeName();
                     try {
                         param = Class.forName(parameterClass);
                     } catch (ClassNotFoundException e) {
@@ -291,6 +308,7 @@ public class BeanCreator {
      *
      */
     public void registerConstructor() {
+        System.out.println();
         Constructor matchedConstructor = null;
         if(!this.checkParametersIndexes()) {
             int totalParametersOneType = 0;
@@ -298,26 +316,26 @@ public class BeanCreator {
             int constructorMatches = 0;
             int paramIndex = 0;
             boolean twoMatchesForOneParam = false;
-            Constructor[] beanConstructors = this.bean.getBeanClass().getDeclaredConstructors();
-            Class[] beanConstructorParameters;
-            for (Constructor beanConstructor : beanConstructors) {
+            Constructor[] classConstructors = this.bean.getBeanClass().getDeclaredConstructors();
+            Class[] classConstructorParameters;
+            for (Constructor classConstructor : classConstructors) {
                 //System.out.println("hciendo loop de un constructor");
-                beanConstructorParameters = beanConstructor.getParameterTypes();
-                if (beanConstructorParameters.length == this.constructorParams.size()) {
-                    for (BeanParameter p : this.constructorParams) {
-                        //System.out.println("iterando lista parametros propios:" + p.getType());
-                        for (Class parameter : beanConstructorParameters) {
-                            // System.out.println("iterando lista parametros constructor:" + p.getType());
+                classConstructorParameters = classConstructor.getParameterTypes();
+                if (classConstructorParameters.length == this.constructorParams.size()) {
+                    for (BeanParameter beanParameter : this.constructorParams) {
+                        //System.out.println("iterando lista parametros propios:" + p.getExplicitTypeName());
+                        for (Class parameter : classConstructorParameters) {
+                            //System.out.println("iterando lista parametros constructor:" + p.getExplicitTypeName());
                             //System.out.println("clase del param:" + parameter.toString());
-                            switch (p.getType()) {
+                            switch (beanParameter.getExplicitTypeName()) {
                                 case "int":
-                                    // System.out.println("se metio en case int");
+                                    //System.out.println("se metio en case int");
                                     if (parameter.toString().equals("int")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
                                         //System.out.println("parametro hizo match con int");
-                                        p.setIndex(paramIndex);
-                                        //System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
+                                        beanParameter.setIndex(paramIndex);
+                                        //System.out.println("indice del parametro tipo: " + p.getExplicitTypeName() + " = " + paramIndex);
                                     }
                                     break;
                                 case "java.lang.Integer":
@@ -325,78 +343,78 @@ public class BeanCreator {
                                     if (parameter.toString().equals("int")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        // System.out.println("parametro hizo match con int");
-                                        p.setIndex(paramIndex);
+                                        System.out.println("parametro hizo match con integer");
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "byte":
                                     if (parameter.toString().equals("byte")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "java.lang.Byte":
                                     if (parameter.toString().equals("byte")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "short":
                                     if (parameter.toString().equals("short")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "java.lang.Short":
                                     if (parameter.toString().equals("short")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "long":
                                     if (parameter.toString().equals("long")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "java.lang.Long":
                                     if (parameter.toString().equals("long")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "float":
                                     if (parameter.toString().equals("float")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "java.lang.Float":
                                     if (parameter.toString().equals("float")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "double":
                                     if (parameter.toString().equals("double")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "java.lang.Double":
                                     if (parameter.toString().equals("double")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "boolean":
@@ -405,8 +423,8 @@ public class BeanCreator {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
                                         // System.out.println("parametro hizo match con boolean");
-                                        p.setIndex(paramIndex);
-                                        //System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
+                                        beanParameter.setIndex(paramIndex);
+                                        //System.out.println("indice del parametro tipo: " + p.getExplicitTypeName() + " = " + paramIndex);
                                     }
                                     break;
                                 case "java.lang.Boolean":
@@ -415,35 +433,36 @@ public class BeanCreator {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
                                         //System.out.println("parametro hizo match con boolean");
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "char":
                                     if (parameter.toString().equals("char")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 case "java.lang.Character":
                                     if (parameter.toString().equals("char")) {
                                         totalParametersOneType++;
                                         totalParametersMatched++;
-                                        p.setIndex(paramIndex);
+                                        beanParameter.setIndex(paramIndex);
                                     }
                                     break;
                                 default:
-                                    //System.out.println("se metio a default con:" + p.getType() + " y de parametro del const: " + parameter);
+                                    System.out.println("se metio a default con:" + beanParameter.getExplicitTypeName() + " y de parametro del const: " + parameter);
                                     try {
-                                        if (Class.forName(p.getType()).equals(parameter)) {
+                                        if (Class.forName(beanParameter.getExplicitTypeName()).equals(parameter)) {
                                             totalParametersOneType++;
                                             totalParametersMatched++;
-                                            // System.out.println("parametro hizo match con default");
-                                            p.setIndex(paramIndex);
-                                           // System.out.println("indice del parametro tipo: " + p.getType() + " = " + paramIndex);
+                                            System.out.println("parametro hizo match con default");
+                                            beanParameter.setIndex(paramIndex);
+                                            System.out.println("indice del parametro tipo: " + beanParameter.getExplicitTypeName() + " = " + paramIndex);
                                         }
                                     } catch (ClassNotFoundException e) {
                                         e.printStackTrace();
+                                        System.exit(1);
                                     }
                                     break;
                             }
@@ -455,9 +474,10 @@ public class BeanCreator {
                         }
                         totalParametersOneType = 0;
                     }
+                    System.err.println(totalParametersMatched);
                     if (totalParametersMatched == this.constructorParams.size() && !twoMatchesForOneParam) {
                         constructorMatches++;
-                        matchedConstructor = beanConstructor;
+                        matchedConstructor = classConstructor;
                     }
                     totalParametersMatched = 0;
                 }

@@ -11,7 +11,7 @@ import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 public class BeanParameter extends BeanProperty {
 
     private int index; //The position of the parameter in the constructor.
-    private String type;
+    private String explicitTypeName;
 
     /**
      * Constructor of the class, initializes the class and super-class attributes.
@@ -20,10 +20,10 @@ public class BeanParameter extends BeanProperty {
      * @param value init value for the super's value attribute
      * @param index init value for the parameter's index.
      */
-    public BeanParameter(String beanRef, BeanFactory beanFactory, Object value, int index, String type) {
-        super(beanRef, beanFactory, value);
+    public BeanParameter(String beanRef, Class beanRefClass, BeanFactory beanFactory, Object value, int index, String explicitTypeName) {
+        super(beanRef, beanRefClass, beanFactory, value);
         this.index = index;
-        this.type = type;
+        this.explicitTypeName = explicitTypeName;
     }
 
     //----------------------------------------------------------------
@@ -38,11 +38,11 @@ public class BeanParameter extends BeanProperty {
         return index;
     }
 
-    public String getType() {
-        return type;
+    public String getExplicitTypeName() {
+        return explicitTypeName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setExplicitTypeName(String explicitTypeName) {
+        this.explicitTypeName = explicitTypeName;
     }
 }

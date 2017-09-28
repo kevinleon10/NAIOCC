@@ -262,10 +262,10 @@ public class XmlBeanReader extends BeanReader {
                     Element parameterElement = (Element) parameterNode;
 
                     //Check if there is value or ref
-                    if ((parameterElement.hasAttribute("value") && !(parameterElement.hasAttribute("ref"))) ||
-                            (parameterElement.hasAttribute("ref") && !(parameterElement.hasAttribute("value")))) {
-
-                        String type = parameterElement.getAttribute("type");
+                    //Or if it only has type, in that case, the autowire byType will take action
+                    if ( ( parameterElement.hasAttribute("type") && !(parameterElement.hasAttribute("ref")) && !(parameterElement.hasAttribute("value")) ) ||
+                            ( parameterElement.hasAttribute("value") && !(parameterElement.hasAttribute("ref")) ) ||
+                            ( parameterElement.hasAttribute("ref") && !(parameterElement.hasAttribute("value")) ) ) {
 
                         int argIndex = -1;
                         try {
@@ -276,6 +276,11 @@ public class XmlBeanReader extends BeanReader {
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                             System.exit(1);
+                        }
+
+                        String type = parameterElement.getAttribute("type");
+                        if (type.equals("")) {
+                            type = null;
                         }
 
                         String value = parameterElement.getAttribute("value");
@@ -331,7 +336,8 @@ public class XmlBeanReader extends BeanReader {
                 Element attributeElement = (Element) attributeNode;
 
                 //Check if there is a value or ref
-                if ((attributeElement.hasAttribute("name") && attributeElement.hasAttribute("value") && !(attributeElement.hasAttribute("ref"))) ||
+                if ((attributeElement.hasAttribute("name") && !attributeElement.hasAttribute("value") && !(attributeElement.hasAttribute("ref"))) ||
+                        (attributeElement.hasAttribute("name") && attributeElement.hasAttribute("value") && !(attributeElement.hasAttribute("ref"))) ||
                         (attributeElement.hasAttribute("name") && attributeElement.hasAttribute("ref") && !(attributeElement.hasAttribute("value")))) {
 
                     String name = attributeElement.getAttribute("name");

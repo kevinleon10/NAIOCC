@@ -18,11 +18,11 @@
         <constructor>
 
             <param type="int"
-                   value="2"/>
+                   index="0" value="2"/>
             <param type="int"
-                   value="2"/>
+                   index="1" value="2"/>
             <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-                   ref="pointB"/>
+                   index="2" ref="pointB"/>
 
         </constructor>
 
@@ -34,18 +34,6 @@
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
               scope="Singleton">
 
-        <constructor>
-
-            <param type="int"
-                   value="5"/>
-            <param type="int"
-                   value="2"/>
-            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-                   ref="pointC"/>
-
-
-        </constructor>
-
         <attribute name="y" value="7"/>
 
     </bean>
@@ -53,18 +41,6 @@
     <bean     id = "pointC"
               class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
               scope="Singleton">
-
-        <constructor>
-
-            <param type="int"
-                   value="9"/>
-            <param type="int"
-                   value="2"/>
-            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-                   ref="pointA"/>
-
-
-        </constructor>
 
         <attribute name="y" value="11"/>
 

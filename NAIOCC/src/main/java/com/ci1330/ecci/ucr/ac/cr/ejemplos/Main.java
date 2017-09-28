@@ -13,7 +13,6 @@ public class Main {
         Triangle t = (Triangle) factory.getBean("triangulo");
         t.print();
 
-        System.exit(1);
         Carro c = (Carro) factory.getBean("carro");
         Square s = (Square) factory.getBean("square");
        //String x = c.getTres().getMarca();
