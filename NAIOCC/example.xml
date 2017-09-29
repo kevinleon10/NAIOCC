@@ -6,8 +6,7 @@
               scope="Singleton"
               lazy-generation="true"
                 init = "init"
-                destroy="destroy"
-                autowire="constructor">
+                destroy="destroy">
 
     </bean>
 

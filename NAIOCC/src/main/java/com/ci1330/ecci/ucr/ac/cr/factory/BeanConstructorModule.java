@@ -1,7 +1,6 @@
 package com.ci1330.ecci.ucr.ac.cr.factory;
 
 import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
-import com.ci1330.ecci.ucr.ac.cr.bean.BeanConstructor;
 import com.ci1330.ecci.ucr.ac.cr.bean.BeanParameter;
 import com.ci1330.ecci.ucr.ac.cr.exception.BeanConstructorConflictException;
 import com.ci1330.ecci.ucr.ac.cr.exception.BeanConstructorNotFoundException;

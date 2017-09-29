@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.ci1330.ecci.ucr.ac.cr.annotations.Autowire;
 import com.ci1330.ecci.ucr.ac.cr.bean.AutowireEnum;
 import com.ci1330.ecci.ucr.ac.cr.bean.Scope;
 import com.ci1330.ecci.ucr.ac.cr.exception.XmlBeanReaderException;
@@ -89,7 +90,7 @@ public class XmlBeanReader extends BeanReader {
 
             } else {
                 try {
-                    throw new XmlBeanReaderException("Xml Reader error: A 'bean' was not recognized.");
+                    throw new XmlBeanReaderException("Xml Reader Error: A 'bean' was not recognized.");
                 } catch (XmlBeanReaderException e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -125,7 +126,7 @@ public class XmlBeanReader extends BeanReader {
             }
         } else {
             try {
-                throw new XmlBeanReaderException("Xml Reader error: The root of the XML document is " + rootElement.getTagName() + " instead of 'beans'.");
+                throw new XmlBeanReaderException("Xml Reader Error: The root of the XML document is " + rootElement.getTagName() + " instead of 'beans'.");
             } catch (XmlBeanReaderException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -141,7 +142,7 @@ public class XmlBeanReader extends BeanReader {
      */
     private void readBeanProperties(Element beanElement) {
 
-        //Check if the bean has ID and class
+        //Check if the bean has both ID and class
         if (beanElement.hasAttribute("id") && beanElement.hasAttribute("class")) {
 
             this.currID = beanElement.getAttribute("id");
@@ -156,6 +157,7 @@ public class XmlBeanReader extends BeanReader {
                     initMethod = beanElement.getAttribute("init");
                 }
             } else {
+                //If not, put the init method as the default one
                 initMethod = this.defaultInitMethod;
             }
 
@@ -166,64 +168,101 @@ public class XmlBeanReader extends BeanReader {
                     destroyMethod = beanElement.getAttribute("destroy");
                 }
             } else {
+                //If not, put the destroy method as the default one
                 destroyMethod = this.defaultDestroyMethod;
             }
 
-            AutowireEnum autowire;
-            Scope scope;
+            //-----------------------------------------------------------------------------------
 
-            //Check if there is not a scope and autowire
-
+            //Check the scope value
             String scopeString = beanElement.getAttribute("scope");
-            if(scopeString.equals("")){
-                scopeString = "Singleton";
+            if (scopeString.equals("")) {
+                scopeString = "singleton";
             }
+            scopeString = scopeString.toLowerCase();
 
+            //Check the autowire value
             String autowireString = beanElement.getAttribute("autowire");
-            if(autowireString.equals("")){
+            if (autowireString.equals("")) {
                 autowireString = "none";
             }
+            autowireString = autowireString.toLowerCase();
 
             //Get the lazy-generation
-            String lazyGen = beanElement.getAttribute("lazy-generation");
-
-            //Check if the properties are not misspelled
-            if ( (autowireString.equals("byName") || autowireString.equals("byType") || autowireString.equals("none") || autowireString.equals("constructor")) &&
-                    (lazyGen.equals("true") || lazyGen.equals("false") || lazyGen.equals("")) &&
-                    (scopeString.equals("Singleton") || scopeString.equals("Prototype")) ) {
-
-                scope = Scope.Singleton;
-                autowire = AutowireEnum.none;
-
-                //If prototype wasn't specified it is assumed to be Singleton
-                if (scopeString.equals("Prototype")) {
-                    scope = Scope.Prototype;
-                }
-
-                //If none of those was specified, it is assumed to be none
-                if (autowireString.equals("byName")){
-                    autowire = AutowireEnum.byName;
-                } else if(autowireString.equals("byType")){
-                    autowire = AutowireEnum.byType;
-                } else if(autowireString.equals("constructor")){
-                    autowire = AutowireEnum.constructor;
-                }
-
-                boolean lazyGeneration = lazyGen.equals("true");
-
-                this.beanCreator.createBean(this.currID, className, scope, initMethod, destroyMethod, lazyGeneration, autowire);
-
-            } else {
-                try {
-                    throw new XmlBeanReaderException("Xml Reader error: 'scope', 'lazy-generation' or 'autowire' were not recognized in the 'bean' "+this.currID +". It is misspelled.");
-                } catch (XmlBeanReaderException e) {
-                    e.printStackTrace();
-                    System.exit(1);
-                }
+            String lazyGenString = beanElement.getAttribute("lazy-generation");
+            if (lazyGenString.equals("")) {
+                lazyGenString = "false";
             }
-        } else {
+            lazyGenString = lazyGenString.toLowerCase();
+
+            //-----------------------------------------------------------------------------------
+
+            AutowireEnum autowire = null;
+            Scope scope = null;
+            boolean lazyGeneration = false;
+
+            //If prototype wasn't specified it is assumed to be Singleton
+            switch (scopeString) {
+                case "prototype":
+                    scope = Scope.Prototype;
+                    break;
+                case "singleton":
+                    scope = Scope.Singleton;
+                    break;
+                default:
+                    try {
+                        throw new XmlBeanReaderException("XML Reader Error: The value for scope '" + scopeString + "' was not recognized.");
+                    } catch (XmlBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+            }
+
+            //If none of those was specified, it is assumed to be none
+            switch (autowireString) {
+                case "byname":
+                    autowire = AutowireEnum.byName;
+                    break;
+                case "bytype":
+                    autowire = AutowireEnum.byType;
+                    break;
+                case "constructor":
+                    autowire = AutowireEnum.constructor;
+                    break;
+                case "none":
+                    autowire = AutowireEnum.none;
+                    break;
+                default:
+                    try {
+                        throw new XmlBeanReaderException("XML Reader Error: The value for autowire '" + autowireString + "' was not recognized.");
+                    } catch (XmlBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+            }
+
+            switch (lazyGenString) {
+                case "true":
+                    lazyGeneration = true;
+                    break;
+                case "false":
+                    lazyGeneration = false;
+                    break;
+                default:
+                    try {
+                        throw new XmlBeanReaderException("XML Reader Error: The value for lazy generation '" + lazyGenString + "' was not recognized.");
+                    } catch (XmlBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+            }
+
+            this.beanCreator.createBean(this.currID, className, scope, initMethod, destroyMethod, lazyGeneration, autowire);
+
+        } //if (beanElement.hasAttribute("id") && beanElement.hasAttribute("class"))
+        else {
             try {
-                throw new XmlBeanReaderException("Xml Reader error: A 'bean' does not have tags for 'id', 'class' or both.");
+                throw new XmlBeanReaderException("Xml Reader error: ID and Class value for all tags must be entered.");
             } catch (XmlBeanReaderException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -248,32 +287,41 @@ public class XmlBeanReader extends BeanReader {
                 e.printStackTrace();
                 System.exit(1);
             }
-        } else if (constructorList.getLength() != 0) {
+        } else if (constructorList.getLength() > 0) {
 
             Element constructorElement = (Element) constructorList.item(0);
             NodeList constructorArgs = constructorElement.getElementsByTagName("param");
 
-            //Travel by every param
+            //Travel every param
             for (int index = 0; index < constructorArgs.getLength(); index++) {
                 Node parameterNode = constructorArgs.item(index);
 
-                //Check if it is an Element
+                //Check if it is an Element so we can cast it
                 if (parameterNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element parameterElement = (Element) parameterNode;
 
+                    final boolean autowireByTypeCombination = parameterElement.hasAttribute("type")  && !(parameterElement.hasAttribute("atomic-autowire"))
+                            && !(parameterElement.hasAttribute("ref")) && !(parameterElement.hasAttribute("value"));
+
+                    final boolean autowireByNameCombination = parameterElement.hasAttribute("ref")  && !(parameterElement.hasAttribute("atomic-autowire"))
+                            && !(parameterElement.hasAttribute("type")) && !(parameterElement.hasAttribute("value"));
+
+                    final boolean normalCombination = (parameterElement.hasAttribute("type") && parameterElement.hasAttribute("ref") && !(parameterElement.hasAttribute("value")))
+                            || (parameterElement.hasAttribute("type") &&  parameterElement.hasAttribute("value") && !(parameterElement.hasAttribute("value")));
+
                     //Check if there is value or ref
                     //Or if it only has type, in that case, the autowire byType will take action
-                    if ( ( parameterElement.hasAttribute("type") && !(parameterElement.hasAttribute("ref")) && !(parameterElement.hasAttribute("value")) ) ||
-                            ( parameterElement.hasAttribute("value") && !(parameterElement.hasAttribute("ref")) ) ||
-                            ( parameterElement.hasAttribute("ref") && !(parameterElement.hasAttribute("value")) ) ) {
+                    if ( autowireByTypeCombination || autowireByNameCombination || normalCombination ) {
 
                         int argIndex = -1;
                         try {
                             //Tries to get the index
                             if ( !(parameterElement.getAttribute("index").equals("")) ) {
                                 argIndex = Integer.parseInt(parameterElement.getAttribute("index"));
+                            } else {
+                                throw new XmlBeanReaderException("XML Reader Error: An invalid value was entered in index tag.");
                             }
-                        } catch (NumberFormatException e) {
+                        } catch (NumberFormatException | XmlBeanReaderException e) {
                             e.printStackTrace();
                             System.exit(1);
                         }
@@ -297,7 +345,7 @@ public class XmlBeanReader extends BeanReader {
 
                     } else {
                         try {
-                            throw new XmlBeanReaderException("Xml Reader error: A 'param' has both ref and value, or neither of them, in bean " + this.currID + ".");
+                            throw new XmlBeanReaderException("Xml Reader error: A 'param' has an invalid tag combination, in bean " + this.currID + ".");
                         } catch (XmlBeanReaderException e) {
                             e.printStackTrace();
                             System.exit(1);
@@ -314,7 +362,6 @@ public class XmlBeanReader extends BeanReader {
                 }
 
             }
-            //this.beanCreator.registerConstructor();
         }
 
     }
