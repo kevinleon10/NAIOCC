@@ -314,7 +314,7 @@ public class XmlBeanReader extends BeanReader {
                 }
 
             }
-            this.beanCreator.registerConstructor();
+            //this.beanCreator.registerConstructor();
         }
 
     }

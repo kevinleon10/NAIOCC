@@ -66,6 +66,13 @@ public class BeanConstructor {
         return beanInstance;
     }
 
+    /**
+     * Appends a bean parameter to the list.
+     * @param beanParameter
+     */
+    public void append(BeanParameter beanParameter){
+        this.beanParameterList.add(beanParameter);
+    }
     //----------------------------------------------------------------
     // Standard Setters and Getters section
     //----------------------------------------------------------------

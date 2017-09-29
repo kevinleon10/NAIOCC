@@ -61,6 +61,10 @@ public abstract class BeanProperty {
         this.beanFactory = beanFactory;
     }
 
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
+
     public void setValue(Object value) {
         this.value = value;
     }

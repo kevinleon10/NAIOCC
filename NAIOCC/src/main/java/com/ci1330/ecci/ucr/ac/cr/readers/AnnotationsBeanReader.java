@@ -236,7 +236,7 @@ public class AnnotationsBeanReader extends BeanReader {
                     }
 
                 }
-                this.beanCreator.registerConstructor();
+                //this.beanCreator.registerConstructor();
             }
         }
     }
