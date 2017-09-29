@@ -1,5 +1,6 @@
 package com.ci1330.ecci.ucr.ac.cr.bean;
 
+import com.ci1330.ecci.ucr.ac.cr.factory.BeanConstructorModule;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -56,6 +57,7 @@ public class Bean {
 
         //If this is the first instance, autowire the bean
         if (this.beanInstanceStack.size() == 0) {
+            BeanConstructorModule.registerConstructor(this);
             BeanAutowireModule.autowireBean(this);
         }
 

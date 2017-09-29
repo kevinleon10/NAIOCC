@@ -24,11 +24,11 @@ public class Square implements Shape{
         System.out.print("Imprimiendo cuadrado de color: " + this.c.getName());
     }
 
-    public Colour getC() {
+    public Colour getColour() {
         return c;
     }
 
-    public void setC(Colour c) {
+    public void setColour(Colour c) {
         this.c = c;
     }
 }

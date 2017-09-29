@@ -45,36 +45,23 @@ public class AnnotationsBeanReader extends BeanReader {
                 && !reflectClass.isAnnotationPresent(Service.class) && !reflectClass.isAnnotationPresent(Controller.class)) {
 
             this.stereotype = Stereotype.Bean;
-            this.readBeanProperties(reflectClass);
-            this.readBeanConstructor(reflectClass);
-            this.readBeanSetter(reflectClass);
-            this.beanCreator.addBeanToContainer();
 
         } else if(!reflectClass.isAnnotationPresent(Bean.class) && reflectClass.isAnnotationPresent(Repository.class)
                 && !reflectClass.isAnnotationPresent(Service.class) && !reflectClass.isAnnotationPresent(Controller.class)) {
+
             this.stereotype = Stereotype.Repository;
-            this.readBeanProperties(reflectClass);
-            this.readBeanConstructor(reflectClass);
-            this.readBeanSetter(reflectClass);
-            this.beanCreator.addBeanToContainer();
 
         } else if(!reflectClass.isAnnotationPresent(Bean.class) && !reflectClass.isAnnotationPresent(Repository.class)
                 && reflectClass.isAnnotationPresent(Service.class) && !reflectClass.isAnnotationPresent(Controller.class)){
+
             this.stereotype = Stereotype.Service;
-            this.readBeanProperties(reflectClass);
-            this.readBeanConstructor(reflectClass);
-            this.readBeanSetter(reflectClass);
-            this.beanCreator.addBeanToContainer();
 
         } else if(!reflectClass.isAnnotationPresent(Bean.class) && !reflectClass.isAnnotationPresent(Repository.class)
                 && !reflectClass.isAnnotationPresent(Service.class) && reflectClass.isAnnotationPresent(Controller.class)){
-            this.stereotype = Stereotype.Controller;
-            this.readBeanProperties(reflectClass);
-            this.readBeanConstructor(reflectClass);
-            this.readBeanSetter(reflectClass);
-            this.beanCreator.addBeanToContainer();
 
-        } else{
+            this.stereotype = Stereotype.Controller;
+
+        } else {
             try {
                 throw new AnnotationsBeanReaderException("Annotations Reader error: The 'class' " + inputName + " does not have the Stereotype Annotation or has more than a Stereotype");
             } catch (AnnotationsBeanReaderException e) {
@@ -82,6 +69,11 @@ public class AnnotationsBeanReader extends BeanReader {
                 System.exit(1);
             }
         }
+
+        this.readBeanProperties(reflectClass);
+        this.readBeanConstructor(reflectClass);
+        this.readBeanSetter(reflectClass);
+        this.beanCreator.addBeanToContainer();
     }
 
     /**
@@ -123,11 +115,8 @@ public class AnnotationsBeanReader extends BeanReader {
             lazyGeneration = true;
         }
 
-        //The default scope is none
-        AutowireEnum autowire = AutowireEnum.none;
-        if(beanClass.isAnnotationPresent(Autowire.class)){
-            autowire = ((Autowire)(beanClass.getAnnotation(Autowire.class))).value();
-        }
+        //Searches for fields with autowiring
+        this.searchForAutowiring(beanClass);
 
         //Searches for init and destroy
         String initMethod = null;
@@ -165,7 +154,25 @@ public class AnnotationsBeanReader extends BeanReader {
             }
 
         }
-        this.beanCreator.createBean(this.currID, beanClass.getName(), scope, initMethod, destroyMethod,  lazyGeneration, autowire);
+        this.beanCreator.createBean(this.currID, beanClass.getName(), scope, initMethod, destroyMethod,  lazyGeneration, AutowireEnum.none);
+    }
+
+    private void searchForAutowiring(Class beanClass) {
+
+        Field[] classFields = beanClass.getDeclaredFields();
+
+        for (Field classField : classFields) {
+
+            if (classField.isAnnotationPresent(Autowire.class)) {
+
+                if (!classField.isAnnotationPresent(Qualifier.class)) {
+
+                }
+
+            }
+
+        }
+
     }
 
     /**
@@ -229,7 +236,7 @@ public class AnnotationsBeanReader extends BeanReader {
                     }
 
                 }
-                this.beanCreator.registerConstructor();
+                //this.beanCreator.registerConstructor();
             }
         }
     }

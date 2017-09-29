@@ -13,6 +13,7 @@ import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 public abstract class BeanProperty {
 
     private String beanRef; //The beanId that references a bean
+    private Class beanRefType;
     private BeanFactory beanFactory;
     private Object value; //The explicit value, specified by the end-user.
 
@@ -22,8 +23,9 @@ public abstract class BeanProperty {
      * @param beanFactory init value for the property's beanFactory attribute
      * @param value init value for the property's value attribute
      */
-    public BeanProperty(String beanRef, BeanFactory beanFactory, Object value) {
+    public BeanProperty(String beanRef, Class beanRefType, BeanFactory beanFactory, Object value) {
         this.beanRef = beanRef;
+        this.beanRefType = beanRefType;
         this.beanFactory = beanFactory;
         this.value = value;
     }
@@ -34,7 +36,14 @@ public abstract class BeanProperty {
      */
     public Object getInstance () {
         if (this.value == null) {
-            return this.beanFactory.getBean(this.beanRef);
+            Object tempInstance = this.beanFactory.getBean(this.beanRef);
+
+            if (!tempInstance.getClass().equals(this.beanRefType)) {
+                System.err.println("Bean Error: Mismatch in class type defined by the user with the returned class returned by the container");
+                System.exit(1);
+            }
+
+            return tempInstance;
         } else {
             return this.value;
         }
@@ -52,11 +61,19 @@ public abstract class BeanProperty {
         this.beanFactory = beanFactory;
     }
 
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
+
     public void setValue(Object value) {
         this.value = value;
     }
 
     public String getBeanRef() {
-        return beanRef;
+        return this.beanRef;
+    }
+
+    public Class getBeanRefType() {
+        return this.beanRefType;
     }
 }

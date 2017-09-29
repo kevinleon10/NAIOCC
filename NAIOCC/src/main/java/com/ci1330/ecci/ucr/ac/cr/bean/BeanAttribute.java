@@ -24,8 +24,8 @@ public class BeanAttribute extends BeanProperty {
      * @param value init value for the super's value attribute
      * @param setterMethod init value for the bean's setter method
      */
-    public BeanAttribute(String beanRef, BeanFactory beanFactory, Object value, Method setterMethod) {
-        super(beanRef, beanFactory, value);
+    public BeanAttribute(String beanRef, Class beanRefClass, BeanFactory beanFactory, Object value, Method setterMethod) {
+        super(beanRef, beanRefClass, beanFactory, value);
         this.setterMethod = setterMethod;
     }
 
@@ -35,7 +35,7 @@ public class BeanAttribute extends BeanProperty {
      * @param objectToInject
      * @return The object already injected
      */
-    public Object injectDependency(Object objectToInject) {
+    public void injectDependency(Object objectToInject) {
         Object dependency = super.getInstance();
 
         try {
@@ -53,7 +53,6 @@ public class BeanAttribute extends BeanProperty {
             System.exit(1);
         }
 
-        return objectToInject;
     }
 
     //----------------------------------------------------------------
