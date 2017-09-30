@@ -3,11 +3,9 @@ package com.ci1330.ecci.ucr.ac.cr.factory;
 import com.ci1330.ecci.ucr.ac.cr.bean.*;
 import com.ci1330.ecci.ucr.ac.cr.exception.*;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Josue Leon on 13/09/2017
@@ -17,7 +15,7 @@ public class BeanCreator {
     private Bean bean;
     private BeanFactory beanFactory;
     private BeanAttribute attributeClass;
-    private BeanConstructor constructorClass;
+    private BeanConstructor beanConstructorTemp;
 
     /**
      *
@@ -38,45 +36,46 @@ public class BeanCreator {
      * @param autowireEnum
      * @throws RepeatedIdException
      */
-    public void createBean(String id, String beanClass, Scope scope, String initMethodName, String destroyMethodName, boolean lazyGen, AutowireEnum autowireEnum){
+    public void createBean(String id, String beanClass, Scope scope, String initMethodName, String destroyMethodName, boolean lazyGen, AutowireEnum autowireEnum) {
         try {
-            if(this.beanFactory.containsBean(id)){
+            if (this.beanFactory.containsBean(id)) {
                 throw new RepeatedIdException("Creation error: Bean id " + id + " is repeated.");
             }
-            bean = new Bean(this.beanFactory);
-            bean.setId(id);
-            try {
-                bean.setBeanClass(Class.forName(beanClass));
-            } catch (ClassNotFoundException e) {
-                System.out.println("Creation error: bean class not found for bean: " + id + ".");
-                e.printStackTrace();
-                System.exit(1);
-            }
-            bean.setBeanScope(scope);
-            Method initMethod = null;
-            Method destroyMethod = null;
-            Method[] beanMethods = this.bean.getBeanClass().getMethods();
-            for(Method method: beanMethods){
-                if(initMethodName != null && method.getName().contains(initMethodName)){
-                    if(method.getParameterCount() == 0 ){
-                        initMethod = method;
-                    }
-                }
-                if(destroyMethodName != null && method.getName().contains(destroyMethodName)){
-                    if(method.getParameterCount() == 0 ){
-                        destroyMethod = method;
-                    }
-                }
-            }
-            bean.setInitMethod(initMethod);
-            bean.setDestroyMethod(destroyMethod);
-            bean.setLazyGen(lazyGen);
-            bean.setAutowireEnum(autowireEnum);
-            bean.setBeanConstructor(new BeanConstructor(null));
-        }catch (RepeatedIdException r){
+        } catch (RepeatedIdException r) {
             r.printStackTrace();
             System.exit(1);
         }
+
+        bean = new Bean(this.beanFactory);
+        bean.setId(id);
+        try {
+            bean.setBeanClass(Class.forName(beanClass));
+        } catch (ClassNotFoundException e) {
+            System.out.println("Creation error: bean class not found for bean: " + id + ".");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        bean.setBeanScope(scope);
+        Method initMethod = null;
+        Method destroyMethod = null;
+        Method[] beanMethods = this.bean.getBeanClass().getMethods();
+        for (Method method : beanMethods) {
+            if (initMethodName != null && method.getName().contains(initMethodName)) {
+                if (method.getParameterCount() == 0) {
+                    initMethod = method;
+                }
+            }
+            if (destroyMethodName != null && method.getName().contains(destroyMethodName)) {
+                if (method.getParameterCount() == 0) {
+                    destroyMethod = method;
+                }
+            }
+        }
+        bean.setInitMethod(initMethod);
+        bean.setDestroyMethod(destroyMethod);
+        bean.setLazyGen(lazyGen);
+        bean.setAutowireEnum(autowireEnum);
+        this.beanConstructorTemp = new BeanConstructor(null);
     }
 
     private Object obtainValueType(String stringValue) {
@@ -158,7 +157,7 @@ public class BeanCreator {
      * @param stringValue
      * @param beanRef
      */
-    public void registerSetter(String attributeName, String stringValue, String beanRef){
+    public void registerSetter(String attributeName, String stringValue, String beanRef, AutowireEnum atomic_autowire){
         Object value = null;
         if(stringValue != null){
             value = this.obtainValueType(stringValue);
@@ -196,7 +195,7 @@ public class BeanCreator {
             }
         }
 
-        BeanAttribute beanAttribute = new BeanAttribute(beanRef, beanRefType, this.beanFactory, value, setterMethod);
+        BeanAttribute beanAttribute = new BeanAttribute(beanRef, beanRefType, this.beanFactory, value, atomic_autowire, setterMethod);
         bean.appendAttribute(beanAttribute);
     }
 
@@ -207,7 +206,7 @@ public class BeanCreator {
      * @param stringValue
      * @param beanRef
      */
-    public void registerConstructorParameter(String paramType, int index, String stringValue, String beanRef){
+    public void registerConstructorParameter(String paramType, int index, String stringValue, String beanRef, AutowireEnum atomic_autowire){
         Object value = null;
         if(stringValue != null){
             value = this.obtainValueType(stringValue);
@@ -234,19 +233,38 @@ public class BeanCreator {
             }
         }
 
-        BeanParameter beanConstructorParam = new BeanParameter(beanRef, beanRefClass, this.beanFactory, value, index, paramType);
-        bean.getBeanConstructor().append(beanConstructorParam);
+        BeanParameter beanConstructorParam = new BeanParameter(beanRef, beanRefClass, this.beanFactory, value, atomic_autowire, index, paramType);
+        this.beanConstructorTemp.append(beanConstructorParam);
 
+    }
+
+    /**
+     * There is a special case in which an AtomicAutowire annotation is found above a constructor
+     * In this case, the constructor is already known, but the parameters need to be set later.
+     * So the Reader sends the constructor explicitly, and it is added to the current bean.
+     *
+     * The method addBeanToContainer won't interfere in this definition, because if the user didn't
+     * specify another constructor elsewhere, the beanConstructorTemp won't be added to the current bean,
+     * leaving the explicit definition untouched.
+     */
+    public void explicitConstructorDefinition (Constructor constructorMethod) {
+        this.bean.setBeanConstructor(new BeanConstructor(constructorMethod));
     }
 
     /**
      *
      */
     public void addBeanToContainer(){
+        //If there were no parameters specified for the constructor, it is assumed the user didn't
+        //indicate to use constructor injection
+        if (this.beanConstructorTemp.getBeanParameterList().size() > 0) {
+            this.bean.setBeanConstructor(this.beanConstructorTemp);
+        }
+
         this.beanFactory.addBean(this.bean);
         bean = null;
         attributeClass = null;
-        constructorClass = null;
+        beanConstructorTemp = null;
     }
 
     //----------------------------------------------------------------
@@ -275,14 +293,6 @@ public class BeanCreator {
 
     public void setAttributeClass(BeanAttribute attributeClass) {
         this.attributeClass = attributeClass;
-    }
-
-    public BeanConstructor getConstructorClass() {
-        return constructorClass;
-    }
-
-    public void setConstructorClass(BeanConstructor constructorClass) {
-        this.constructorClass = constructorClass;
     }
 
 }

@@ -11,6 +11,7 @@ public enum AutowireEnum {
     byType,
     byName,
     constructor,
-    none;
+    none,
+    annotation;
 
 }

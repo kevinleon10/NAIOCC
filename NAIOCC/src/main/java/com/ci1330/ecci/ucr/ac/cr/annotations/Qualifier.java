@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Qualifier {
 
-    String beanName() default "";
+    String ref() default "";
 
 }

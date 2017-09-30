@@ -21,7 +21,7 @@ public class AnnotationsBeanReader extends BeanReader {
         super(beanFactory);
     }
 
-    public AnnotationsBeanReader(BeanCreator beanCreator) {
+    AnnotationsBeanReader(BeanCreator beanCreator) {
         super(beanCreator);
     }
 
@@ -30,6 +30,7 @@ public class AnnotationsBeanReader extends BeanReader {
      * and calls a method to read it
      * @param inputName
      */
+    @Override
     public void readBeans(String inputName) {
         Class reflectClass = null;
 
@@ -106,7 +107,15 @@ public class AnnotationsBeanReader extends BeanReader {
         //The default scope is singleton
         com.ci1330.ecci.ucr.ac.cr.bean.Scope scope = com.ci1330.ecci.ucr.ac.cr.bean.Scope.Singleton;
         if(beanClass.isAnnotationPresent(Scope.class)){
-            scope = ((Scope)(beanClass.getAnnotation(Scope.class))).value();
+            Scope scopeAnnotation = (Scope)(beanClass.getAnnotation(Scope.class));
+            scope = super.determineScope(scopeAnnotation.value().toLowerCase());
+        }
+
+        //The default class-autowire is none
+        AutowireEnum autowire = AutowireEnum.none;
+        if(beanClass.isAnnotationPresent(Scope.class)){
+            ClassAutowire autowireAnnotation = (ClassAutowire)(beanClass.getAnnotation(ClassAutowire.class));
+            autowire = super.determineClass_Autowire(autowireAnnotation.value().toLowerCase());
         }
 
         //The default lazyGen is false
@@ -114,9 +123,6 @@ public class AnnotationsBeanReader extends BeanReader {
         if(beanClass.isAnnotationPresent(Lazy.class)){
             lazyGeneration = true;
         }
-
-        //Searches for fields with autowiring
-        this.searchForAutowiring(beanClass);
 
         //Searches for init and destroy
         String initMethod = null;
@@ -154,25 +160,7 @@ public class AnnotationsBeanReader extends BeanReader {
             }
 
         }
-        this.beanCreator.createBean(this.currID, beanClass.getName(), scope, initMethod, destroyMethod,  lazyGeneration, AutowireEnum.none);
-    }
-
-    private void searchForAutowiring(Class beanClass) {
-
-        Field[] classFields = beanClass.getDeclaredFields();
-
-        for (Field classField : classFields) {
-
-            if (classField.isAnnotationPresent(Autowire.class)) {
-
-                if (!classField.isAnnotationPresent(Qualifier.class)) {
-
-                }
-
-            }
-
-        }
-
+        this.beanCreator.createBean(this.currID, beanClass.getName(), scope, initMethod, destroyMethod,  lazyGeneration, autowire);
     }
 
     /**
@@ -180,14 +168,13 @@ public class AnnotationsBeanReader extends BeanReader {
      * @param beanClass
      */
     private void readBeanConstructor (Class beanClass) {
-        int matchedConstructorCounter = 0;
+        boolean constructorAlreadyMatched = false;
         for (Constructor constructor : beanClass.getDeclaredConstructors()) {
 
             //If there is @Constructor
             if (constructor.isAnnotationPresent(com.ci1330.ecci.ucr.ac.cr.annotations.Constructor.class)) {
 
-                ++matchedConstructorCounter;
-                if (matchedConstructorCounter > 1) {
+                if (constructorAlreadyMatched) {
                     try {
                         throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Constructor' in the 'bean' " + this.currID + " was not recognized. It has more than a definition");
                     } catch (AnnotationsBeanReaderException e) {
@@ -195,6 +182,7 @@ public class AnnotationsBeanReader extends BeanReader {
                         System.exit(1);
                     }
                 }
+                constructorAlreadyMatched = true;
 
                 //If there is @Parameter
                 if (constructor.isAnnotationPresent(Parameter.class)) {
@@ -220,12 +208,15 @@ public class AnnotationsBeanReader extends BeanReader {
                                 beanRef = null;
                             }
 
-                            //Check if there is value or ref
-                            if ( (value == null && beanRef != null) || (paramType != null && beanRef == null) ) {
-                                this.beanCreator.registerConstructorParameter(paramType, index, value, beanRef);
+                            final boolean refTypeCombination = paramType != null & beanRef != null && value == null;
+                            final boolean valueTypeCombination = paramType != null && value != null && beanRef == null;
+
+                            //Check if the combinations are valid
+                            if ( refTypeCombination || valueTypeCombination ) {
+                                this.beanCreator.registerConstructorParameter(paramType, index, value, beanRef, AutowireEnum.none);
                             } else {
                                 try {
-                                    throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Parameter' was not recognized in the 'bean' " + this.currID + ". It has 'value' and 'ref', or neither.");
+                                    throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Parameter' was not recognized in the 'bean' " + this.currID + ". It has an illegal value, ref and type combination.");
                                 } catch (AnnotationsBeanReaderException e) {
                                     e.printStackTrace();
                                     System.exit(1);
@@ -236,7 +227,21 @@ public class AnnotationsBeanReader extends BeanReader {
                     }
 
                 }
-                //this.beanCreator.registerConstructor();
+            } // if (constructor.isAnnotationPresent(com.ci1330.ecci.ucr.ac.cr.annotations.Constructor.class))
+            else if (constructor.isAnnotationPresent(AtomicAutowire.class)){
+
+                if (constructorAlreadyMatched) {
+                    try {
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Constructor' in the 'bean' " + this.currID + " was not recognized. It has more than a definition");
+                    } catch (AnnotationsBeanReaderException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+                constructorAlreadyMatched = true;
+
+                this.beanCreator.explicitConstructorDefinition(constructor);
+
             }
         }
     }
@@ -264,15 +269,21 @@ public class AnnotationsBeanReader extends BeanReader {
 
                 //Check if there is value or ref
                 if ((ref == null && value != null) || (ref != null && value == null)) {
-                    this.beanCreator.registerSetter(field.getName(), value, ref);
+                    this.beanCreator.registerSetter(field.getName(), value, ref, AutowireEnum.none);
                 } else {
                     try {
-                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Attribute' was not recognized in the 'bean' "+ this.currID + ". It has 'value' and 'ref', or neither.");
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Attribute' was not recognized in the 'bean' "+ this.currID + ". It has an illegal combination of value and ref.");
                     } catch (AnnotationsBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);
                     }
                 }
+            }
+            //The reader will only recognize autowire if an Attribute annotation is not present
+            else if (field.isAnnotationPresent(AtomicAutowire.class)) {
+
+                //It is asummed to be the special annotation autowiring
+                this.beanCreator.registerSetter(field.getName(), null, null, AutowireEnum.annotation);
             }
         }
     }
