@@ -20,8 +20,8 @@ public class BeanParameter extends BeanProperty {
      * @param value init value for the super's value attribute
      * @param index init value for the parameter's index.
      */
-    public BeanParameter(String beanRef, Class beanRefClass, BeanFactory beanFactory, Object value, int index, String explicitTypeName) {
-        super(beanRef, beanRefClass, beanFactory, value);
+    public BeanParameter(String beanRef, Class beanRefClass, BeanFactory beanFactory, Object value, AutowireEnum atomic_autowire, int index, String explicitTypeName) {
+        super(beanRef, beanRefClass, beanFactory, value, atomic_autowire);
         this.index = index;
         this.explicitTypeName = explicitTypeName;
     }

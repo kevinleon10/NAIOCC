@@ -4,7 +4,6 @@ import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 
 /**
  * Created by Elias Calderon on 14/09/2017
@@ -24,18 +23,17 @@ public class BeanAttribute extends BeanProperty {
      * @param value init value for the super's value attribute
      * @param setterMethod init value for the bean's setter method
      */
-    public BeanAttribute(String beanRef, Class beanRefClass, BeanFactory beanFactory, Object value, Method setterMethod) {
-        super(beanRef, beanRefClass, beanFactory, value);
+    public BeanAttribute(String beanRef, Class beanRefClass, BeanFactory beanFactory, Object value, AutowireEnum atomic_autowire, Method setterMethod) {
+        super(beanRef, beanRefClass, beanFactory, value, atomic_autowire);
         this.setterMethod = setterMethod;
     }
 
     /**
      * Receives an object, an injects a dependency to the object.
      * The dependency is fetched by using the super.getInstance method
-     * @param objectToInject
-     * @return The object already injected
+     * @param objectToInject The bean instance without injections
      */
-    public void injectDependency(Object objectToInject) {
+    void injectDependency(Object objectToInject) {
         Object dependency = super.getInstance();
 
         try {

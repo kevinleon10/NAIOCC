@@ -1,6 +1,5 @@
 package com.ci1330.ecci.ucr.ac.cr.bean;
 
-import com.ci1330.ecci.ucr.ac.cr.exception.IdNotFoundException;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 /**
@@ -16,6 +15,7 @@ public abstract class BeanProperty {
     private Class beanRefType;
     private BeanFactory beanFactory;
     private Object value; //The explicit value, specified by the end-user.
+    private AutowireEnum atomic_autowire; //Specifies the atomic autowiring for the property
 
     /**
      * Constructor of the class, initializes the class attributes.
@@ -23,18 +23,19 @@ public abstract class BeanProperty {
      * @param beanFactory init value for the property's beanFactory attribute
      * @param value init value for the property's value attribute
      */
-    public BeanProperty(String beanRef, Class beanRefType, BeanFactory beanFactory, Object value) {
+    BeanProperty(String beanRef, Class beanRefType, BeanFactory beanFactory, Object value, AutowireEnum atomic_autowire) {
         this.beanRef = beanRef;
         this.beanRefType = beanRefType;
         this.beanFactory = beanFactory;
         this.value = value;
+        this.atomic_autowire = atomic_autowire;
     }
 
     /**
      * The bean instance can either be an explicit value, or be fetched from the BeanFactory
-     * @return
+     * @return instance of the value or instance sent by the container for the reference
      */
-    public Object getInstance () {
+    Object getInstance () {
         if (this.value == null) {
             Object tempInstance = this.beanFactory.getBean(this.beanRef);
 
@@ -47,6 +48,10 @@ public abstract class BeanProperty {
         } else {
             return this.value;
         }
+    }
+
+    void autowireProperty () {
+
     }
 
     //----------------------------------------------------------------
