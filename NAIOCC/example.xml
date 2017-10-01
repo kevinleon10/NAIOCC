@@ -1,135 +1,98 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <beans init="defaultInitMethod" destroy="defaultDestroyMethod">
 
-    <bean     id = "triangulo"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle"
-              scope="Singleton"
-              lazy-generation="true"
-                init = "init"
-                destroy="destroy">
+    <bean     id = "triangulo" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle" scope="Singleton"
+              lazy-generation="true" init = "init" destroy="destroy" autowire="constructor">
+
+        <attribute name="triangleCenter" atomic-autowire="byName"/>
 
     </bean>
 
-    <bean     id = "pointA"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-              scope="Singleton">
+    <bean     id = "pointA" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point" scope="Prototype">
 
         <constructor>
 
-            <param type="int"
-                   index="0" value="2"/>
-            <param type="int"
-                   index="1" value="2"/>
-            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-                   index="2" ref="pointB"/>
+            <param type="int" index="0" value="2"/>
+            <param type="int" index="1" value="4"/>
+            <param type="int" index="2" value="6"/>
 
         </constructor>
 
-        <attribute name="y" value="3"/>
+    </bean>
+
+    <bean     id = "pointB" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point" scope="Prototype">
+
+        <attribute name="x" value="6"/>
+        <attribute name="y" value="8"/>
+        <attribute name="z" value="10"/>
 
     </bean>
 
-    <bean     id = "pointB"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-              scope="Singleton">
+    <bean     id = "pointC" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point" scope="Prototype">
 
-        <attribute name="y" value="7"/>
+        <attribute name="x" value="12"/>
+        <attribute name="y" value="14"/>
+        <attribute name="z" value="16"/>
+    </bean>
+
+    <bean     id = "triangleCenter" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point" scope="Prototype">
+
+        <attribute name="x" value="8"/>
+        <attribute name="y" value="8"/>
+        <attribute name="z" value="8"/>
 
     </bean>
 
-    <bean     id = "pointC"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Point"
-              scope="Singleton">
+    <bean     id = "person" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Person" scope="Prototype">
 
-        <attribute name="y" value="11"/>
+        <attribute name="triangle" atomic-autowire="byType"/>
+        <attribute name="bicycle" atomic-autowire="byName"/>
+
+        <constructor>
+
+            <param type="boolean" value="true"/>
+            <param type="java.lang.String" value="costarican"/>
+            <param type="int" value="175489239"/>
+
+        </constructor>
+
+        <attribute name="name" value="Josue"/>
 
     </bean>
 
-    <bean     id = "carro"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Carro"
-              scope="Singleton"
-              lazy-generation="true"
+    <bean     id = "bicycle" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Bicycle" scope="Singleton"
               autowire="byName">
     </bean>
 
-    <bean     id = "uno"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
-              scope="Singleton"
-              lazy-generation="true">
-
-    <attribute name="marca" value="Firestone"/>
+    <bean     id = "firstWheel" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Wheel" scope="Singleton"
+              autowire="byType">
     </bean>
 
-    <bean     id = "dos"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
-              scope="Singleton"
-              lazy-generation="true">
-
-    <attribute name="marca" value="Firestone"/>
-    </bean>
-
-    <bean     id = "tres"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
-              scope="Singleton"
-              lazy-generation="true">
-
-    <attribute name="marca" value="Firestone"/>
-    </bean>
-
-    <bean     id = "cuatro"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Llanta"
-              scope="Singleton"
-              lazy-generation="true">
-
-    <attribute name="marca" value="Firestone"/>
-    </bean>
-
-    <bean     id = "dueno"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Persona"
-              scope="Prototype"
-              lazy-generation="true">
-
-        <attribute name="nombre" value="Josue"/>
+    <bean     id = "secondWheel" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Wheel" scope="Singleton">
 
         <constructor>
 
-            <param type="boolean"
-                   value="true"/>
-            <param type="java.lang.String"
-                   value="costarricense"/>
-            <param type="int"
-                   value="116760597"/>
+            <param type="com.ci1330.ecci.ucr.ac.cr.ejemplos.Rim" atomic-autowire="byType"/>
 
         </constructor>
 
     </bean>
 
-    <bean     id = "square"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Square"
-              scope="Singleton"
-              lazy-generation="true"
-              autowire="byType">
+    <bean     id = "wheelRim" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Rim" scope="Singleton">
 
+        <constructor>
+
+            <param ref="rimBrand" atomic-autowire="byName"/>
+
+        </constructor>
     </bean>
 
-    <bean     id = "colour"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Colour"
-              scope="Singleton"
-              lazy-generation="true"
-                autowire="constructor">
+    <bean     id = "rimBrand" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Brand" scope="Singleton">
+
+        <attribute name="name" value="BMW"/>
     </bean>
 
-    <bean     id = "t"
-              class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Tone"
-              scope="Singleton"
-              lazy-generation="true">
-
-    <attribute name="tonalidad" value="fuerte"/>
-    </bean>
-
-
-
-<!--    <annotationsClasses>
+    <annotationsClasses>
         <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations" />
-    </annotationsClasses>-->
+    </annotationsClasses>
 </beans>

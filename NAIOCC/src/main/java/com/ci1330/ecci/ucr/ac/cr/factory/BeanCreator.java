@@ -76,6 +76,7 @@ public class BeanCreator {
         bean.setLazyGen(lazyGen);
         bean.setAutowireEnum(autowireEnum);
         this.beanConstructorTemp = new BeanConstructor(null);
+        System.out.println("autowire del bean: " + id + "es: " + autowireEnum.toString());
     }
 
     private Object obtainValueType(String stringValue) {
@@ -216,7 +217,7 @@ public class BeanCreator {
         if(stringValue != null){
             value = this.obtainValueType(stringValue);
         }
-        if(value == null && beanRef == null){
+        if(value == null && beanRef == null && paramType == null){
             try {
                 throw new InvalidPropertyException("Bean creation error: parameter's type or reference is invalid for: " + paramType + ".");
             } catch (InvalidPropertyException e) {
@@ -264,8 +265,8 @@ public class BeanCreator {
         //indicate to use constructor injection
         if (this.beanConstructorTemp.getBeanParameterList().size() > 0) {
             this.bean.setBeanConstructor(this.beanConstructorTemp);
+            System.out.println("seteo el constructor: " + this.beanConstructorTemp + " para : " + bean.getId());
         }
-
         this.beanFactory.addBean(this.bean);
         bean = null;
         attributeClass = null;

@@ -211,16 +211,17 @@ public class BeanConstructorModule {
                 break;
             default:
                 //System.out.println("se metio a default con:" + beanParameter.getExplicitTypeName() + " y de parametro del const: " + beanClassConstructorParameter);
-                try {
-                    if (Class.forName(beanParameter.getExplicitTypeName()).equals(beanClassConstructorParameter)) {
+                if(beanParameter.getExplicitTypeName() == null &&
+                        beanParameter.getBeanFactory().findBean(beanParameter.getBeanRef()).getBeanClass().equals(beanClassConstructorParameter)){
+                parametersMatched = true;
+                beanParameter.setIndex(paramIndex);
+            } else try {
+                    if(Class.forName(beanParameter.getExplicitTypeName()).equals(beanClassConstructorParameter)){
                         parametersMatched = true;
-                        //System.out.println("parametro hizo match con default");
                         beanParameter.setIndex(paramIndex);
-                        // System.out.println("indice del parametro tipo: " + beanParameter.getExplicitTypeName() + " = " + paramIndex);
                     }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
-                    System.exit(1);
                 }
                 break;
         }
@@ -234,7 +235,7 @@ public class BeanConstructorModule {
      */
     public static void registerConstructor(Bean bean) {
         Constructor matchedConstructor = null;
-
+        System.out.println("buscando constructor para: " + bean.getId());
         if(!checkParametersIndexes(bean)) { //Checks if at least one parameter doesn't have an index assigned
             int totalParametersOneType = 0;
             int totalParametersMatched = 0;
@@ -301,6 +302,7 @@ public class BeanConstructorModule {
             try {
                 //System.out.println("num parametros:" + this.obtainParametersClassArray().length);
                 matchedConstructor = bean.getBeanClass().getConstructor(obtainParametersClassArray(bean));
+                System.out.println("matched constructor: " + matchedConstructor.toString());
             } catch (NoSuchMethodException e) {
                 System.out.println("Bean creation error: constructor not found for the specified parameters in bean: " + bean.getId() + ".");
                 e.printStackTrace();

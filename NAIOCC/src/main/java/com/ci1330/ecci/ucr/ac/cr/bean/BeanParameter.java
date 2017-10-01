@@ -45,4 +45,5 @@ public class BeanParameter extends BeanProperty {
     public void setExplicitTypeName(String explicitTypeName) {
         this.explicitTypeName = explicitTypeName;
     }
+
 }

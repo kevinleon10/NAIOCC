@@ -24,6 +24,7 @@ public class BeanAutowireModule {
                 autowireByType(bean);
                 break;
             case constructor:
+                System.out.println("-----------------------------------------------");
                 autowireConstructor(bean);
                 break;
             case none:
@@ -132,7 +133,9 @@ public class BeanAutowireModule {
     }
 
     private static void autowireConstructor (Bean bean) {
+        System.out.println("se metio a autowire by constructor con bean: " + bean.getId());
         if (bean.getBeanConstructor() == null) { //If the user already defined the constructor explicitly this process is omitted
+            System.out.println("se metio en el if de  autowire by constructor con bean: " + bean.getId());
             Constructor[] classConstructors = bean.getBeanClass().getDeclaredConstructors();
             BeanFactory beanFactory = bean.getBeanFactory();
 
@@ -144,12 +147,13 @@ public class BeanAutowireModule {
 
             List<BeanParameter> beanParameterList = new ArrayList<>();
             for (Constructor classConstructor : classConstructors) {
+                System.out.println("----------------------------------------------------");
                 if (classConstructor.getParameterCount() > 0) {
                     allParamsMatched = true;
 
                     parameterNames = paranamer.lookupParameterNames(classConstructor);
                     constructorParameters = classConstructor.getParameters();
-
+                    System.out.println("size de paranamers: " + parameterNames.length);
                     for (String  parameter : parameterNames) {
                         if (beanFactory.findBean(parameter) == null) {
                             allParamsMatched = false;
@@ -159,9 +163,11 @@ public class BeanAutowireModule {
 
                     if (allParamsMatched) {
                         if (matchedConstructor == null) {
+                            System.out.println("-------- se llamara a checkparametertypes");
                             allParamsClassesMatched = checkParametersTypes(beanFactory, constructorParameters, parameterNames, beanParameterList);
 
                             if (allParamsClassesMatched) {
+                                System.out.println("--------  MATCHEOooooooooooooooooooo");
                                 matchedConstructor = classConstructor;
                             } else {
                                 try {
@@ -243,7 +249,7 @@ public class BeanAutowireModule {
         Class currBeanClass;
 
         for (Parameter constructorParameter : constuctorParameters) {
-            currBeanClass = beanFactory.getBean(constructorParameterNames[parameterIndex]).getClass();
+            currBeanClass = beanFactory.findBean(constructorParameterNames[parameterIndex]).getBeanClass();
             if ( currBeanClass == constructorParameter.getType()) {
                 beanParameterList.add(new BeanParameter(constructorParameterNames[parameterIndex], currBeanClass, beanFactory, null, AutowireEnum.none, parameterIndex, constructorParameter.getType().toString()));
             } else {

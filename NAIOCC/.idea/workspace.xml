@@ -11,7 +11,106 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="20" column="1" lean-forward="true" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BeanConstructorModule.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="965">
+              <caret line="244" column="0" lean-forward="true" selection-start-line="244" selection-start-column="0" selection-end-line="244" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bean.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/Bean.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="449">
+              <caret line="74" column="50" lean-forward="true" selection-start-line="74" selection-start-column="50" selection-end-line="74" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BeanFactory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="124" column="40" lean-forward="true" selection-start-line="124" selection-start-column="40" selection-end-line="124" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="example.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/example.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="79" column="0" lean-forward="true" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bicycle.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Bicycle.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Wheel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Wheel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Person.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Person.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <folding>
+                <element signature="e#1478#1479#0" expanded="true" />
+                <element signature="e#1510#1511#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Rim.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Rim.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="11" column="5" lean-forward="false" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+              <folding>
+                <element signature="e#183#184#0" expanded="true" />
+                <element signature="e#211#212#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -36,10 +135,12 @@
       <find>beanproper</find>
       <find>atomic</find>
       <find>index</find>
+      <find>examples</find>
     </findStrings>
     <replaceStrings>
       <replace>parameterIndex</replace>
       <replace>beanClassConstructorParameter</replace>
+      <replace>ejemplos</replace>
     </replaceStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -50,9 +151,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Square.java" />
-        <option value="$PROJECT_DIR$/example.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/InvalidValueException.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/BeanReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/Scope.java" />
@@ -61,23 +160,33 @@
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/ClassAutowire.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/AutowireEnum.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/Qualifier.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanParameter.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanAttribute.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanPropertyTypeError.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanConstructor.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanAutowireException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanAutowireModule.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanAtomicAutowireException.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanPropertyTypeErrorException.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanPropertyException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanProperty.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/TestingAnnotations.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/XmlBeanReader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/Bean.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/AnnotationsBeanReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Triangle.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Bicycle.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Brand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Point.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Rim.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Shape.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Wheel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanParameter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanConstructor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/XmlBeanReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanProperty.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanAutowireModule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/Bean.java" />
+        <option value="$PROJECT_DIR$/example.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Person.java" />
       </list>
     </option>
   </component>
@@ -115,8 +224,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -208,8 +319,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -356,41 +465,42 @@
       <workItem from="1506713199794" duration="5107000" />
       <workItem from="1506802213243" duration="19093000" />
       <workItem from="1506834248306" duration="224000" />
+      <workItem from="1506841118788" duration="9231000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41590000" />
+    <option name="totallyTimeSpent" value="50821000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="367" y="-4" width="1311" height="780" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.326572" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6621622" sideWeight="0.5026738" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6621622" sideWeight="0.4973262" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.8103448" sideWeight="0.4973262" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24904507" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882884" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24791667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32732734" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882884" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882884" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -453,39 +563,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Triangle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Point.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="31" lean-forward="true" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Square.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/XMLFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="11" column="3" lean-forward="true" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -569,45 +650,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanParameter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="128" lean-forward="false" selection-start-line="22" selection-start-column="128" selection-end-line="22" selection-end-column="128" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanAttribute.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="128" lean-forward="false" selection-start-line="25" selection-start-column="128" selection-end-line="25" selection-end-column="128" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="235" column="8" lean-forward="false" selection-start-line="235" selection-start-column="8" selection-end-line="235" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanConstructor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="23" column="40" lean-forward="true" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding>
-            <element signature="e#3406#3407#0" expanded="false" />
-            <element signature="e#3446#3447#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/InvalidPropertyException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -649,52 +691,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanProperty.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="150" column="17" lean-forward="true" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanAutowireModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="196" column="18" lean-forward="false" selection-start-line="196" selection-start-column="18" selection-end-line="196" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="203" column="44" lean-forward="true" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanConstructorConflictException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="49" lean-forward="true" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="22" column="34" lean-forward="false" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/TestingAnnotations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -707,22 +707,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/Bean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="97" column="42" lean-forward="false" selection-start-line="97" selection-start-column="42" selection-end-line="97" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/XmlBeanReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="292" column="65" lean-forward="false" selection-start-line="292" selection-start-column="65" selection-end-line="292" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/ClassAutowire.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -731,25 +715,203 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Shape.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+        <state relative-caret-position="34">
+          <caret line="2" column="23" lean-forward="false" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Point.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanParameter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/TestingAnnotations.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="25" column="16" lean-forward="true" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/XMLFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="11" column="3" lean-forward="true" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanProperty.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="64" column="22" lean-forward="true" selection-start-line="64" selection-start-column="22" selection-end-line="64" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanAttribute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="25" column="128" lean-forward="false" selection-start-line="25" selection-start-column="128" selection-end-line="25" selection-end-column="128" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanConstructor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Triangle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="50" column="5" lean-forward="false" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="5" />
           <folding>
-            <element signature="e#3994#3995#0" expanded="false" />
-            <element signature="e#4050#4051#0" expanded="false" />
+            <element signature="e#956#957#0" expanded="true" />
+            <element signature="e#993#994#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4522">
+          <caret line="273" column="5" lean-forward="true" selection-start-line="273" selection-start-column="5" selection-end-line="273" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/XmlBeanReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="224" column="58" lean-forward="true" selection-start-line="224" selection-start-column="58" selection-end-line="224" selection-end-column="58" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/BeanReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+        <state relative-caret-position="193">
+          <caret line="66" column="76" lean-forward="true" selection-start-line="66" selection-start-column="76" selection-end-line="66" selection-end-column="76" />
           <folding>
-            <element signature="method#determineClass_Autowire#0;class#BeanReader#0" expanded="false" />
             <element signature="method#determineScope#0;class#BeanReader#0" expanded="false" />
             <element signature="method#determineLazyGen#0;class#BeanReader#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="124" column="40" lean-forward="true" selection-start-line="124" selection-start-column="40" selection-end-line="124" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/BeanAutowireModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2839">
+          <caret line="178" column="29" lean-forward="true" selection-start-line="178" selection-start-column="29" selection-end-line="178" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="965">
+          <caret line="244" column="0" lean-forward="true" selection-start-line="244" selection-start-column="0" selection-end-line="244" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="79" column="0" lean-forward="true" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/Bean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="74" column="50" lean-forward="true" selection-start-line="74" selection-start-column="50" selection-end-line="74" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Wheel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Bicycle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="1" lean-forward="true" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Rim.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="11" column="5" lean-forward="false" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding>
+            <element signature="e#183#184#0" expanded="true" />
+            <element signature="e#211#212#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Brand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+          <folding>
+            <element signature="e#220#221#0" expanded="true" />
+            <element signature="e#247#248#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Person.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding>
+            <element signature="e#1478#1479#0" expanded="true" />
+            <element signature="e#1510#1511#0" expanded="true" />
           </folding>
         </state>
       </provider>

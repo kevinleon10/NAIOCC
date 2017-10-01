@@ -107,6 +107,7 @@ public class XmlBeanReader extends BeanReader {
                 this.readBeanProperties(beanElement);
                 this.readBeanConstructor(beanElement);
                 this.readBeanAttributes(beanElement);
+                System.out.println("va a agregar al contenedor desde reader:");
                 super.beanCreator.addBeanToContainer();
 
             } else {
@@ -270,7 +271,7 @@ public class XmlBeanReader extends BeanReader {
                     Element parameterElement = (Element) parameterNode;
 
                     //Combination of only type and atomic-autowire tag
-                    final boolean autowireByTypeCombination = parameterElement.hasAttribute(this.typeTag)  && parameterElement.hasAttribute(this.autowireTag)
+                    final boolean autowireByTypeCombination = parameterElement.hasAttribute(this.typeTag)  && parameterElement.hasAttribute(this.atomic_autowireTag)
                             && !(parameterElement.hasAttribute(this.beanRefTag)) && !(parameterElement.hasAttribute(this.valueTag));
 
                     //Combination of only beanRef and atomic-autowire tag

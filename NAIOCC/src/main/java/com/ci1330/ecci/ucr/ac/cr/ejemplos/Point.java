@@ -1,35 +1,24 @@
 package com.ci1330.ecci.ucr.ac.cr.ejemplos;
 
-import java.util.Random;
-
 public class Point {
-
     private int x;
     private int y;
-    private Point z;
+    private int z;
 
-    public Point() {
-        this.x = new Random(100).nextInt();
-        this.y = new Random(100).nextInt();
-    }
+    public Point() {}
 
-    public Point(int x, int y, Point z) {
+    public Point(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        System.out.println("Se creo el punto exitosamente.");
     }
 
     public void defaultInitMethod(){
-        System.out.println("Printing default init method for Point");
+        System.out.println("Printing default init method for test.com.ci1330.ecci.ucr.ac.cr.Point");
     }
 
     public void defaultDestroyMethod(){
-        System.out.println("Printing default destroy method for Point");
-    }
-
-    public Point(int x) {
-        this.x = x;
+        System.out.println("Printing default destroy method for test.com.ci1330.ecci.ucr.ac.cr.Point");
     }
 
     public int getX() {
@@ -48,7 +37,13 @@ public class Point {
         this.y = y;
     }
 
-    public void setZ(Point z) {
+    public int getZ() { return z; }
+
+    public void setZ(int z) {
         this.z = z;
+    }
+
+    public void print() {
+        System.out.println("\n (" + x + "," + y + ")");
     }
 }

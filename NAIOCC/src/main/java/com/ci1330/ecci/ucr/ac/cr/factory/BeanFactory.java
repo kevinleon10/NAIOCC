@@ -71,6 +71,7 @@ public abstract class BeanFactory {
     protected void initContainer(){
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()) {
             Bean currBean = beanEntry.getValue();
+            //System.out.println("constructor del bean antes de autowire: " + currBean.getBeanConstructor().toString());
             currBean.autowire();
             currBean.checkBeanProperties();
         }

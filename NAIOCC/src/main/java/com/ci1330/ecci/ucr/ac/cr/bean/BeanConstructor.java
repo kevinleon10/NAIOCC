@@ -34,10 +34,12 @@ public class BeanConstructor {
         Object beanInstance = null;
         for (BeanParameter currBeanParameter : this.beanParameterList) {
             //System.out.println("indice del parametroo:" + currBeanParameter.getIndex());
+            System.out.println("parametro: " + currBeanParameter.getValue() + "indice del parametro: " + currBeanParameter.getIndex());
             parameterInstances[currBeanParameter.getIndex()] = currBeanParameter.getInstance();
         }
+        System.out.println("salio del for");
         try {
-
+            System.out.println("constructor method a invocar: " + this.constructorMethod);
             beanInstance = this.constructorMethod.newInstance(parameterInstances);
 
         } catch (InstantiationException e) {

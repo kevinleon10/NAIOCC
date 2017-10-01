@@ -4,25 +4,20 @@ import java.util.Random;
 
 public class Triangle implements Shape{
 
-    private Point a;
-    private Point b;
-    private Point c;
+    private Point pointA;
+    private Point pointB;
+    private Point pointC;
+
+    private Point triangleCenter;
+
 
     public Triangle() {
     }
 
     public Triangle(Point pointA, Point pointB, Point pointC) {
-        this.a = pointA;
-        this.b = pointB;
-        this.c = pointC;
-        System.out.println("Se creo el triangulo exitosamente.");
-    }
-
-    @Override
-    public void draw() {
-        a = new Point();
-        b = new Point();
-        c = new Point();
+        this.pointA = pointA;
+        this.pointB = pointB;
+        this.pointC = pointC;
     }
 
     public void init() {
@@ -33,33 +28,25 @@ public class Triangle implements Shape{
         System.out.println("Bean destroy of triangle");
     }
 
-    @Override
-    public void print() {
-            System.out.print("Imprimiendo triangulo.");
+    public void setTriangleCenter(Point triangleCenter) {
+        this.triangleCenter = triangleCenter;
     }
 
-    public Point getA() {
-        return a;
+    public Point getPointA() {
+        return pointA;
     }
 
-    public void setA(Point a) {
-        this.a = a;
+    public Point getPointB() {
+        return pointB;
     }
 
-    public Point getB() {
-        return b;
+    public Point getPointC() {
+        return pointC;
     }
 
-    public void setB(Point b) {
-        this.b = b;
+    public void print(){
     }
-
-    public Point getC() {
-        return c;
+    public Point getTriangleCenter() {
+        return triangleCenter;
     }
-
-    public void setC(Point c) {
-        this.c = c;
-    }
-
 }

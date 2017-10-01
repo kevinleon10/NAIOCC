@@ -180,4 +180,8 @@ public abstract class BeanProperty {
     public Class getBeanRefType() {
         return this.beanRefType;
     }
+
+    public Object getValue() {
+        return value;
+    }
 }
