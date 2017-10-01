@@ -33,12 +33,12 @@ public class Person {
     }
 
     public void print(){
-        System.out.println("Person's information: \n " + "Name: " + name + "\n Nationatily: " + nationality + "\n Civil Status: " + civilStatus
+        System.out.println("\nPerson's information: \n " + "Name: " + name + "\n Nationatily: " + nationality + "\n Civil Status: " + civilStatus
                 + "\n Owner of a triangle with points: ");
         triangle.getPointA().print();
         triangle.getPointB().print();
         triangle.getPointC().print();
-        System.out.println("\n Owner of a bycicle with: " + bicycle.getFirstWheel().getRim().getBrand().getName() + "wheels.");
+        System.out.println("\nOwner of a bycicle with: " + bicycle.getFirstWheel().getRim().getBrand().getName() + " wheels.\n");
     }
 
     public void setName(String name) {

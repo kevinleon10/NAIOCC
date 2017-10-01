@@ -1,7 +1,8 @@
 package com.ci1330.ecci.ucr.ac.cr.exception;
 
 /**
- * Created by lskev on 19-Sep-17.
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
  */
 public class AnnotationsBeanReaderException extends Exception {
     public AnnotationsBeanReaderException() {

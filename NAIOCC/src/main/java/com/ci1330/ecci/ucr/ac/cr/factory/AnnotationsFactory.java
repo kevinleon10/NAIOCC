@@ -1,26 +1,35 @@
 package com.ci1330.ecci.ucr.ac.cr.factory;
 
 import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
-import com.ci1330.ecci.ucr.ac.cr.exception.IdNotFoundException;
 import com.ci1330.ecci.ucr.ac.cr.readers.AnnotationsBeanReader;
 
 import java.util.HashMap;
 
 /**
- * Created by Josue Leon on 13/09/2017
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
  *
+ * AnnotationsFactory class which inherits from BeanFactory
+ * and registers the Annotations classes from which the configuration
+ * must be read and tells the reader to parse it.
  */
 public class AnnotationsFactory extends BeanFactory{
 
-    private AnnotationsBeanReader annotationsBeanReader;
+    private AnnotationsBeanReader annotationsBeanReader;    // Instance of the annotations reader
 
+    /**
+     * Constructor of the class, it initializes the super-class attributes and
+     * also the annotations bean reader.
+     */
     public AnnotationsFactory() {
         super();
         annotationsBeanReader = new AnnotationsBeanReader(this);
     }
 
     /**
-     * Constructor for the case in which the user specifies a configuration class.
+     * Constructor of the class, it initializes the super-class attributes and
+     * also the annotations bean reader. It receives the path of a class which
+     * holds annotations configurations for the reader to parse it.
      * @param classConfig
      */
     public AnnotationsFactory(String classConfig) {
@@ -30,7 +39,9 @@ public class AnnotationsFactory extends BeanFactory{
     }
 
     /**
-     * The user may specify more configuration classes later using this method.
+     * Allows the user to register more configurations
+     * classes later, indicating their path.
+     * @param classConfig
      */
     public void registerConfig(String classConfig){
         annotationsBeanReader.readBeans(classConfig);

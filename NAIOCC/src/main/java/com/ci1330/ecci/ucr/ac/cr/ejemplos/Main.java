@@ -12,10 +12,10 @@ public class Main {
         Person p = (Person) factory.getBean("person");
         p.print();
 
-        AnnotationsFactory annotationsFactory = new AnnotationsFactory("com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations");
+/*       AnnotationsFactory annotationsFactory = new AnnotationsFactory("com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations");
         TestingAnnotations testingAnnotations = (TestingAnnotations) annotationsFactory.getBean("fuck");
         // test.com.ci1330.ecci.ucr.ac.cr.TestingAnnotations testingAnnotations = (test.com.ci1330.ecci.ucr.ac.cr.TestingAnnotations) factory.getBean("fuck");
-        testingAnnotations.fuck();
+        testingAnnotations.fuck();*/
         factory.shutDownHook();
     }
 }

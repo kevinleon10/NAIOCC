@@ -6,7 +6,8 @@ import com.ci1330.ecci.ucr.ac.cr.exception.BeanTypeConflictException;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 /**
- * Created by Elias Calderon on 15/09/2017
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
  *
  * BeanParameter class for NAIOCC Container.
  * Contains the Metadata of a Bean's property. Manages the fetching from the factory, if
@@ -130,7 +131,6 @@ public abstract class BeanProperty {
     public void checkProperty() {
         if (value == null) {
             boolean thereIsProblem = true;
-
             //If the reference is not null and exists a reference for it in the container
             if (this.beanRef != null && this.beanFactory.findBean(this.beanRef) != null) {
 

@@ -6,19 +6,30 @@ import com.ci1330.ecci.ucr.ac.cr.exception.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
 
 /**
- * Created by Josue Leon on 13/09/2017
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
+ *
+ * Module in charge of receiving each bean's metadata
+ * from the reader and creating the bean, with all
+ * the properties it needs for it to be instantiated
+ * later.
  */
 public class BeanCreator {
 
+    // Classes needed to create the bean
     private Bean bean;
     private BeanFactory beanFactory;
     private BeanAttribute attributeClass;
     private BeanConstructor beanConstructorTemp;
 
     /**
-     *
+     * Constructor of the class which receives the beanFactory and
+     * assigns it for later use.
      * @param beanFactory
      */
     public BeanCreator(BeanFactory beanFactory) {
@@ -26,7 +37,8 @@ public class BeanCreator {
     }
 
     /**
-     *
+     * Method which receives the basic IoC properties for the bean
+     * and creates it.
      * @param id
      * @param beanClass
      * @param scope
@@ -34,7 +46,7 @@ public class BeanCreator {
      * @param destroyMethodName
      * @param lazyGen
      * @param autowireEnum
-     * @throws RepeatedIdException
+     * @throws RepeatedIdException // If two beans have the same id
      */
     public void createBean(String id, String beanClass, Scope scope, String initMethodName, String destroyMethodName, boolean lazyGen, AutowireEnum autowireEnum) {
         try {
@@ -49,18 +61,21 @@ public class BeanCreator {
         bean = new Bean(this.beanFactory);
         bean.setId(id);
         try {
-            bean.setBeanClass(Class.forName(beanClass));
+            bean.setBeanClass(Class.forName(beanClass));        // Sets the beans type
         } catch (ClassNotFoundException e) {
-            System.out.println("Creation error: bean class not found for bean: " + id + ".");
+            System.err.println("Creation error: bean class not found for bean: " + id + ".");
             e.printStackTrace();
             System.exit(1);
         }
         bean.setBeanScope(scope);
         Method initMethod = null;
         Method destroyMethod = null;
-        Method[] beanMethods = this.bean.getBeanClass().getMethods();
+        Method[] beanMethods = this.bean.getBeanClass().getDeclaredMethods();
         for (Method method : beanMethods) {
-            if (initMethodName != null && method.getName().contains(initMethodName)) {
+            if(Modifier.isPrivate(method.getModifiers())){
+                method.setAccessible(true);
+            }
+            if (initMethodName != null && method.getName().contains(initMethodName)) {      //Finds the initialization and destruction methods for the bean
                 if (method.getParameterCount() == 0) {
                     initMethod = method;
                 }
@@ -75,16 +90,20 @@ public class BeanCreator {
         bean.setDestroyMethod(destroyMethod);
         bean.setLazyGen(lazyGen);
         bean.setAutowireEnum(autowireEnum);
-        this.beanConstructorTemp = new BeanConstructor(null);
-        System.out.println("autowire del bean: " + id + "es: " + autowireEnum.toString());
+        this.beanConstructorTemp = new BeanConstructor(null);   // Creates a temporary constructor to receive the parameters of the bean
     }
 
+    /**
+     * Method that returns an object after
+     * casting the string value to its real type.
+     * @param stringValue
+     * @return object with respective type
+     */
     private Object obtainValueType(String stringValue) {
         boolean parsed = false;
         Object value = null;
-        System.out.println(stringValue);
         try {
-            value = Integer.valueOf(stringValue);
+            value = Integer.valueOf(stringValue);       // It tries to cast the string to the stated types and if not proceeds to the next one
             parsed = true;
         } catch (NumberFormatException e) {
             //No es un int.
@@ -153,23 +172,38 @@ public class BeanCreator {
     }
 
     /**
-     *
+     * Method to register an attribute of the bean and find
+     * its setter method to be used later when injecting
+     * the bean's dependencies
      * @param attributeName
      * @param stringValue
      * @param beanRef
      */
     public void registerSetter(String attributeName, String stringValue, String beanRef, AutowireEnum atomic_autowire){
+        try {
+            if (this.beanFactory.containsBean(beanRef)) {
+                throw new RepeatedIdException("Creation error: Bean attribute with reference to: " + beanRef + " is repeated.");
+            }
+        } catch (RepeatedIdException r) {
+            r.printStackTrace();
+            System.exit(1);
+        }
+
         Object value = null;
         if(stringValue != null){
             value = this.obtainValueType(stringValue);
         }
 
         Method setterMethod = null;
-        Method[] beanMethods = this.bean.getBeanClass().getMethods();
+        Method[] beanMethods = this.bean.getBeanClass().getDeclaredMethods();
         Class beanRefType = null;
 
         for(Method method: beanMethods){
-            //System.out.println( method.getName().toLowerCase() + " contiene:??? " + attributeName.toLowerCase());
+            if(Modifier.isPrivate(method.getModifiers())){
+                method.setAccessible(true);
+            }
+
+            // Checks if the method is the respective setter for this attribute
             if(method.getName().startsWith("set") && method.getName().toLowerCase().contains(attributeName.toLowerCase())){
                 if(method.getParameterCount() == 1){
                     setterMethod = method;
@@ -190,6 +224,9 @@ public class BeanCreator {
         if(value == null) {
             Field[] beanFields = this.bean.getBeanClass().getDeclaredFields();
             for(Field field: beanFields){
+                if(Modifier.isPrivate(field.getModifiers())){
+                    field.setAccessible(true);
+                }
                 if(field.getName().equals(attributeName)) {
                     beanRefType = field.getType();
                 }
@@ -200,12 +237,12 @@ public class BeanCreator {
         if (beanRef == null && atomic_autowire == AutowireEnum.byName) {
             beanRef = attributeName;
         }
-
         BeanAttribute beanAttribute = new BeanAttribute(beanRef, beanRefType, this.beanFactory, value, atomic_autowire, setterMethod);
         bean.appendAttribute(beanAttribute);
     }
 
     /**
+     * Method which registers a parameter of the bean's constructor
      *
      * @param paramType
      * @param index
@@ -258,14 +295,14 @@ public class BeanCreator {
     }
 
     /**
-     *
+     * Adds the bean to the container and resets all its attributes
+     * for the creator to be ready to read another bean's data
      */
     public void addBeanToContainer(){
         //If there were no parameters specified for the constructor, it is assumed the user didn't
         //indicate to use constructor injection
         if (this.beanConstructorTemp.getBeanParameterList().size() > 0) {
             this.bean.setBeanConstructor(this.beanConstructorTemp);
-            System.out.println("seteo el constructor: " + this.beanConstructorTemp + " para : " + bean.getId());
         }
         this.beanFactory.addBean(this.bean);
         bean = null;

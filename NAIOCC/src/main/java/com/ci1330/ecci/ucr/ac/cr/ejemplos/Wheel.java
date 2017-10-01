@@ -2,7 +2,7 @@ package com.ci1330.ecci.ucr.ac.cr.ejemplos;
 
 public class Wheel {
 
-    private Rim rim;
+    public Rim rim;
 
     public Wheel() {
     }

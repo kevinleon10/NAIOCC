@@ -1,7 +1,8 @@
 package com.ci1330.ecci.ucr.ac.cr.bean;
 
 /**
- * Created by kevinleon10 on 09/09/17.
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
  */
 public enum Scope {
     Singleton,

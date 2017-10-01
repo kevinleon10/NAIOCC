@@ -1,6 +1,5 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <beans init="defaultInitMethod" destroy="defaultDestroyMethod">
-
     <bean     id = "triangulo" class = "com.ci1330.ecci.ucr.ac.cr.ejemplos.Triangle" scope="Singleton"
               lazy-generation="true" init = "init" destroy="destroy" autowire="constructor">
 
@@ -92,7 +91,7 @@
         <attribute name="name" value="BMW"/>
     </bean>
 
-    <annotationsClasses>
+<!--    <annotationsClasses>
         <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations" />
-    </annotationsClasses>
+    </annotationsClasses>-->
 </beans>

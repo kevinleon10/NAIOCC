@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by lskev on 17-Sep-17.
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 17/09/2017
  */
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ClassAutowire {

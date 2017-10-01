@@ -11,7 +11,6 @@ import java.util.List;
  * Bean Constructor for NAIOCC Container.
  * Contains the Metadata of a Bean's constructor, manages the constructor injection.
  */
-
 public class BeanConstructor {
     private Constructor constructorMethod;
     private List<BeanParameter> beanParameterList;
@@ -33,13 +32,9 @@ public class BeanConstructor {
         Object[] parameterInstances = new Object[this.beanParameterList.size()];
         Object beanInstance = null;
         for (BeanParameter currBeanParameter : this.beanParameterList) {
-            //System.out.println("indice del parametroo:" + currBeanParameter.getIndex());
-            System.out.println("parametro: " + currBeanParameter.getValue() + "indice del parametro: " + currBeanParameter.getIndex());
             parameterInstances[currBeanParameter.getIndex()] = currBeanParameter.getInstance();
         }
-        System.out.println("salio del for");
         try {
-            System.out.println("constructor method a invocar: " + this.constructorMethod);
             beanInstance = this.constructorMethod.newInstance(parameterInstances);
 
         } catch (InstantiationException e) {

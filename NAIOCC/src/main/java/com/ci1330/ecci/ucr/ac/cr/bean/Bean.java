@@ -65,7 +65,6 @@ public class Bean {
     public void autowire () {
         //Autowire by constructor or, Atomic-autowire all parameters and register the constructor
         if (this.beanConstructor != null) {
-            System.out.println("se metio en if constructor no nulo");
             List<BeanParameter> beanParameterList = this.beanConstructor.getBeanParameterList();
             if (beanParameterList.size() > 0) {
                 //If the parameter list has parameters, they are autowired (if necessary) and the constructor is registered
@@ -86,7 +85,6 @@ public class Bean {
         }
 
         //Class autowiring
-        System.out.println("-------- ----------------------" );
         BeanAutowireModule.autowireBean(this);
     }
 
@@ -127,7 +125,6 @@ public class Bean {
             }
         }
         else {
-            System.out.println("va a llamar new instance constructor para bean: " + this.getId());
             currInstance = this.beanConstructor.newInstance();
         }
 

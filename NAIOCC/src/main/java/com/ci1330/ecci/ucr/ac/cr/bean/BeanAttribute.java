@@ -35,7 +35,6 @@ public class BeanAttribute extends BeanProperty {
      */
     void injectDependency(Object objectToInject) {
         Object dependency = super.getInstance();
-
         try {
             this.setterMethod.invoke(objectToInject, dependency);
 

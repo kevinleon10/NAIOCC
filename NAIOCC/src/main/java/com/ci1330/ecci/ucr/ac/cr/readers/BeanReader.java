@@ -6,6 +6,10 @@ import com.ci1330.ecci.ucr.ac.cr.exception.XmlBeanReaderException;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
+/**
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
+ */
 public class BeanReader{
 
     /**

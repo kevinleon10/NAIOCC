@@ -12,6 +12,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
+/**
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
+ */
 public class AnnotationsBeanReader extends BeanReader {
 
     private String currID; //The bean ID

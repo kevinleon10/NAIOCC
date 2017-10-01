@@ -13,14 +13,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Josue Leon on 13/09/2017
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
  *
+ * BeanFactory parent class which has the container and manages
+ * the control flow of NAIoCC. User's request for beans via an
+ * instance of this class.
  */
-
 public abstract class BeanFactory {
 
-    protected HashMap<String,Bean> beansMap;
+    protected HashMap<String,Bean> beansMap; // The container in which beans are stored. A map with beans' id as key and the respective Bean as value
 
+    /**
+     * Constructor of the class, initializes the container
+     */
     public BeanFactory(){
         beansMap = new HashMap<>();
     }
@@ -37,7 +43,7 @@ public abstract class BeanFactory {
      * Returns the instance of the bean, already injected. If it is singleton it
      * returns the only instance, otherwise creates a new one (prototype).
      * @param id
-     * @return
+     * @return the requested bean's instance
      */
     public Object getBean(String id) {
         try {
@@ -49,13 +55,13 @@ public abstract class BeanFactory {
             Bean currBean = this.beansMap.get(id);
             if (currBean.getBeanScope() == Scope.Prototype || currBean.getInstance() == null) {
 
-                currBean.createNewInstance(); //agrega la nueva instancia a la lista del bean
+                currBean.createNewInstance(); // Adds the new instance to the bean's list
                 currBean.injectDependencies();
                 currBean.initialize();
 
             }
 
-            return currBean.getInstance(); // devuelve la ultima instancia de la lista
+            return currBean.getInstance(); // Returns the last instance of the bean's list
 
         } catch (IdNotFoundException e) {
             e.printStackTrace();
@@ -66,22 +72,21 @@ public abstract class BeanFactory {
     }
 
     /**
-     * Iterates through all beans and checks if they are Sigleton to initialize and inject its dependencies.
+     * Iterates through all beans and checks their scope to initialize and inject its dependencies.
      */
     protected void initContainer(){
-        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()) {
+        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()) {    // Iterates through the container to autowire dependencies
             Bean currBean = beanEntry.getValue();
-            //System.out.println("constructor del bean antes de autowire: " + currBean.getBeanConstructor().toString());
-            currBean.autowire();
-            currBean.checkBeanProperties();
+            currBean.autowire();                    // Autowires the bean, if indicated as such
+            currBean.checkBeanProperties();         // Checks there are no conflicts in its properties
         }
 
-        cycleDetection();
+        cycleDetection();       // Checks if there a cycles between the dependencies of the beans
 
-        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
+        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){     // Iterates through the container to initialize beans
             Bean currBean = beanEntry.getValue();
 
-            if(currBean.getBeanScope() == Scope.Singleton && !currBean.isLazyGen()
+            if(currBean.getBeanScope() == Scope.Singleton && !currBean.isLazyGen()  // Instantiates the bean only if it is Singleton, without lazy generation and haven't been initialized
                     && currBean.getInstance() == null){
                 currBean.createNewInstance();
                 currBean.injectDependencies();
@@ -96,14 +101,14 @@ public abstract class BeanFactory {
      * Finds a bean by its type for autowiring purposes. If there's no bean
      * with this type in the container or if there are more than one, it returns null.
      * @param beanType
-     * @return
+     * @return the Bean with the type requested, null if not found
      */
     public Bean findBean(Class beanType) throws BeanTypeConflictException {
         Bean bean = null;
 
-        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
+        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){     //Iterates through the container
 
-            if(beanEntry.getValue().getBeanClass().equals(beanType)){
+            if(beanEntry.getValue().getBeanClass().equals(beanType)){       //Checks if it is of the requested type
                 if (bean == null) {
                     bean = beanEntry.getValue();
                 } else {
@@ -117,10 +122,10 @@ public abstract class BeanFactory {
     }
 
     /**
-     * Finds a bean by its name for autowiring purposes. If there's no bean
+     * Finds a bean by its name. If there's no bean
      * with this name in the container, it returns null.
      * @param beanId
-     * @return
+     * @return The bean with the corresponding id, null if it wasn't found
      */
     public Bean findBean(String beanId){
         Bean bean = null;
@@ -133,14 +138,14 @@ public abstract class BeanFactory {
     /**
      * Checks if the specified bean is in the container.
      * @param beanId
-     * @return
+     * @return true if the bean is in the container, false otherwise
      */
     public boolean containsBean(String beanId){
         return this.beansMap.containsKey(beanId);
     }
 
     /**
-     * Destroys all beans of the container.
+     * Destroys all beans' instances of the container.
      */
     public void shutDownHook(){
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){

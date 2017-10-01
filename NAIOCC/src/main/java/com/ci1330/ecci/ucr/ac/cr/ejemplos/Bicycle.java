@@ -4,6 +4,8 @@ public class Bicycle {
     private Wheel firstWheel;
     private Wheel secondWheel;
 
+    public Bicycle(){}
+
     public void setFirstWheel(Wheel firstWheel) {
         this.firstWheel = firstWheel;
     }
@@ -18,5 +20,13 @@ public class Bicycle {
 
     public Wheel getSecondWheel() {
         return secondWheel;
+    }
+
+    public void defaultInitMethod(){
+        System.out.println("Printing default init method for Bicycle");
+    }
+
+    public void defaultDestroyMethod(){
+        System.out.println("Printing default destroy method for Bicycle");
     }
 }

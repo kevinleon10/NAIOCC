@@ -6,10 +6,7 @@ import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +44,10 @@ public class BeanAutowireModule {
         Method currAttributeSetter;
         String currAttributeName;
         Class currAttributeType;
-        for (Field currAttribute: currInstanceClass.getFields()) {
+        for (Field currAttribute: currInstanceClass.getDeclaredFields()) {
+            if(Modifier.isPrivate(currAttribute.getModifiers())){
+                currAttribute.setAccessible(true);
+            }
             currAttributeName = currAttribute.getName();
             currAttributeType = currAttribute.getType();
 
@@ -65,9 +65,11 @@ public class BeanAutowireModule {
         Method[] beanMethods;
         Class[] methodParameterTypes;
 
-        beanMethods = bean.getBeanClass().getMethods();
-
+        beanMethods = bean.getBeanClass().getDeclaredMethods();
         for (Method method : beanMethods) {
+            if(Modifier.isPrivate(method.getModifiers())){
+                method.setAccessible(true);
+            }
             if (method.getName().startsWith("set") && method.getName().toLowerCase().contains(attributeName.toLowerCase())) {
 
                 methodParameterTypes = method.getParameterTypes();
@@ -102,15 +104,16 @@ public class BeanAutowireModule {
         Class currInstanceClass = bean.getBeanClass();
         BeanFactory beanFactory = bean.getBeanFactory();
         List<BeanAttribute> registeredAttributes = bean.getBeanAttributeList();
-
         Method currAttributeSetter;
         String currAttributeName;
         Class currAttributeClass;
 
         Bean typeLikeBean = null;
 
-        for (Field currAttribute: currInstanceClass.getFields()) {
-
+        for (Field currAttribute: currInstanceClass.getDeclaredFields()) {
+            if(Modifier.isPrivate(currAttribute.getModifiers())){
+                currAttribute.setAccessible(true);
+            }
             currAttributeClass = currAttribute.getType();
             try {
                 typeLikeBean = beanFactory.findBean(currAttributeClass);
@@ -120,11 +123,11 @@ public class BeanAutowireModule {
 
             if(typeLikeBean != null){
 
-                currAttributeName = typeLikeBean.getId();
-                currAttributeSetter = findSetter(currAttributeName, currAttribute.getType(), bean);
+                currAttributeName = currAttribute.getName();
+                currAttributeSetter = findSetter(currAttributeName, currAttributeClass, bean);
 
                 if (!attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
-                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, currAttributeClass, beanFactory, null, AutowireEnum.none, currAttributeSetter);
+                    BeanAttribute beanAttribute = new BeanAttribute(typeLikeBean.getId(), currAttributeClass, beanFactory, null, AutowireEnum.none, currAttributeSetter);
                     bean.appendAttribute(beanAttribute);
                 }
 
@@ -133,9 +136,7 @@ public class BeanAutowireModule {
     }
 
     private static void autowireConstructor (Bean bean) {
-        System.out.println("se metio a autowire by constructor con bean: " + bean.getId());
         if (bean.getBeanConstructor() == null) { //If the user already defined the constructor explicitly this process is omitted
-            System.out.println("se metio en el if de  autowire by constructor con bean: " + bean.getId());
             Constructor[] classConstructors = bean.getBeanClass().getDeclaredConstructors();
             BeanFactory beanFactory = bean.getBeanFactory();
 
@@ -147,13 +148,11 @@ public class BeanAutowireModule {
 
             List<BeanParameter> beanParameterList = new ArrayList<>();
             for (Constructor classConstructor : classConstructors) {
-                System.out.println("----------------------------------------------------");
                 if (classConstructor.getParameterCount() > 0) {
                     allParamsMatched = true;
 
                     parameterNames = paranamer.lookupParameterNames(classConstructor);
                     constructorParameters = classConstructor.getParameters();
-                    System.out.println("size de paranamers: " + parameterNames.length);
                     for (String  parameter : parameterNames) {
                         if (beanFactory.findBean(parameter) == null) {
                             allParamsMatched = false;
@@ -163,11 +162,9 @@ public class BeanAutowireModule {
 
                     if (allParamsMatched) {
                         if (matchedConstructor == null) {
-                            System.out.println("-------- se llamara a checkparametertypes");
                             allParamsClassesMatched = checkParametersTypes(beanFactory, constructorParameters, parameterNames, beanParameterList);
 
                             if (allParamsClassesMatched) {
-                                System.out.println("--------  MATCHEOooooooooooooooooooo");
                                 matchedConstructor = classConstructor;
                             } else {
                                 try {

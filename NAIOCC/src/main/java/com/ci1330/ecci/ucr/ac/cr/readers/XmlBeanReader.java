@@ -18,7 +18,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- *
+ * @Author Elias Calderon, Josue Leon, Kevin Leon
+ * @Date 13/09/2017
  */
 public class XmlBeanReader extends BeanReader {
 
@@ -107,7 +108,6 @@ public class XmlBeanReader extends BeanReader {
                 this.readBeanProperties(beanElement);
                 this.readBeanConstructor(beanElement);
                 this.readBeanAttributes(beanElement);
-                System.out.println("va a agregar al contenedor desde reader:");
                 super.beanCreator.addBeanToContainer();
 
             } else {
