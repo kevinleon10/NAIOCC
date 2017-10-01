@@ -91,7 +91,10 @@
         <attribute name="name" value="BMW"/>
     </bean>
 
-<!--    <annotationsClasses>
-        <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.TestingAnnotations" />
-    </annotationsClasses>-->
+    <annotationsClasses>
+        <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.Pod" />
+        <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.Rose"/>
+        <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.Tulip"/>
+        <class path="com.ci1330.ecci.ucr.ac.cr.ejemplos.Leaf"/>
+    </annotationsClasses>
 </beans>

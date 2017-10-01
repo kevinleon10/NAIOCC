@@ -24,6 +24,8 @@ public abstract class BeanFactory {
 
     protected HashMap<String,Bean> beansMap; // The container in which beans are stored. A map with beans' id as key and the respective Bean as value
 
+    private boolean nonFatalCycle;
+
     /**
      * Constructor of the class, initializes the container
      */
@@ -229,9 +231,12 @@ public abstract class BeanFactory {
         List<String> currentTrail = new ArrayList<>(); //The reference trail
 
         for (String beanEntry : referenceMap.keySet()) {
+            this.nonFatalCycle = false;
             if (checkCycle(beanEntry, referenceMap, currentTrail, cycleLessReferences, isConstructorInjection)) {
-                System.err.println("Cycle Detected: A reference or chain of references of " + beanEntry + " causes an invalid cycle.");
+                System.err.println("CYCLE DETECTED: A reference or chain of references of " + beanEntry + " causes an invalid cycle.");
                 System.exit(1);
+            } else if (this.nonFatalCycle) {
+                System.err.println("CYCLE DETECTED (WARNING): The cycle is not fatal! But keep track of the cycles...");
             }
         }
 
@@ -256,6 +261,8 @@ public abstract class BeanFactory {
         } else if (currentTrail.contains(reference)) {
             //If the dependency was already in the trail, there is a cycle
             //But in setter injection, only a pure prototype cycle causes trouble
+            System.err.println("CYCLE DETECTED: Checking if the cycle is fatal...");
+            this.nonFatalCycle = true;
             if (isConstructorInjection) {
                 cycleDetected = true;
             } else {

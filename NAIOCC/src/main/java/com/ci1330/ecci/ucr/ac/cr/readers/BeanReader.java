@@ -19,6 +19,7 @@ public class BeanReader{
 
     /**
      * General constructor that initializes the creator
+     * @param beanFactory the factory that the creator will use
      */
     public BeanReader (BeanFactory beanFactory) {
         this.beanCreator = new BeanCreator(beanFactory);
@@ -26,7 +27,7 @@ public class BeanReader{
 
     /**
      * This constructor receives the bean creator
-     * @param beanCreator
+     * @param beanCreator the creator to use
      */
     public BeanReader (BeanCreator beanCreator) {
         this.beanCreator = beanCreator;
@@ -34,10 +35,16 @@ public class BeanReader{
 
     /**
      * Abstract method, that indicates the name of the input to read
-     * @param inputName
+     * @param inputName the name of the configuration container
      */
     public void readBeans (String inputName) {};
 
+    /**
+     * Determines which type of {@link AutowireEnum} is entered, if not found, throws an exception and exits.
+     * Atomic autowiring, only accepts byName, byType or none.
+     * @param atomic_autowireString the String to match with a type of {@link AutowireEnum}
+     * @return the respective {@link AutowireEnum}
+     */
     protected AutowireEnum determineAtomic_Autowire (String atomic_autowireString) {
 
         final String byNameString = "byname";
@@ -68,6 +75,11 @@ public class BeanReader{
         return atomic_autowire;
     }
 
+    /**
+     * Determines which type of {@link AutowireEnum} is entered, if not found, throws an exception and exits
+     * @param autowireString the String to match with a type of {@link AutowireEnum}
+     * @return the respective {@link AutowireEnum}
+     */
     protected AutowireEnum determineClass_Autowire (String autowireString) {
         final String byNameString = "byname";
         final String bytypeString = "bytype";
@@ -102,6 +114,11 @@ public class BeanReader{
         return autowire;
     }
 
+    /**
+     * Determines which type of {@link Scope} is entered, if not found, throws an exception and exits
+     * @param scopeString the String to match with a type of {@link Scope}
+     * @return the respective {@link Scope}
+     */
     protected Scope determineScope (String scopeString) {
         final String singletonString = "singleton";
         final String prototypeString = "prototype";
@@ -127,6 +144,11 @@ public class BeanReader{
         return scope;
     }
 
+    /**
+     * Determines which value of lazy generation is entered, if not found, throws an exception and exits
+     * @param lazyGenString the String to match with true or false
+     * @return a boolean indicating the lazy generation value
+     */
     protected Boolean determineLazyGen (String lazyGenString) {
         final String trueString = "true";
         final String falseString = "false";

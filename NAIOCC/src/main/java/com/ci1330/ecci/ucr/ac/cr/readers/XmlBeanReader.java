@@ -31,6 +31,7 @@ public class XmlBeanReader extends BeanReader {
     private String defaultDestroyMethod; //The destroy method
     private String currID; //The bean ID
 
+    //Init and destroy method tags
     private final String initTag = "init";
     private final String destroyTag = "destroy";
 
@@ -55,8 +56,10 @@ public class XmlBeanReader extends BeanReader {
     private final String beanRefTag = "ref";
     private final String atomic_autowireTag = "atomic-autowire";
 
+
     /**
-     * Constructor that inits the annotations reader
+     * Constructor, receives the {@link BeanFactory} that created him
+     * @param beanFactory the father {@link BeanFactory}
      */
     public XmlBeanReader(BeanFactory beanFactory){
         super(beanFactory);
@@ -64,9 +67,9 @@ public class XmlBeanReader extends BeanReader {
 
     /**
      * Receives the name of the XML and creates the root
-     *
-     * @param inputName
+     * @param inputName the name of the XML file
      */
+    @Override
     public void readBeans(String inputName) {
 
         final String beanTag = "bean";
@@ -124,8 +127,7 @@ public class XmlBeanReader extends BeanReader {
 
     /**
      * Starts reading the root of the xml
-     *
-     * @param xmlRootFile
+     * @param xmlRootFile the root of the file
      * @return rootElement
      */
     private Element readRoot(Document xmlRootFile) {
@@ -160,9 +162,9 @@ public class XmlBeanReader extends BeanReader {
     }
 
     /**
-     * Reads the properties of a bean from the bean xml node
-     *
-     * @param beanElement
+     * Reads the properties of a bean from the bean xml node, any invalid combination or value, throws an exception
+     * and exits the program.
+     * @param beanElement the XML element of a bean
      */
     private void readBeanProperties(Element beanElement) {
 
@@ -240,9 +242,10 @@ public class XmlBeanReader extends BeanReader {
     }
 
     /**
-     * Reads the constructor of a bean from the constructor xml node
+     * Reads the constructor of a bean from the constructor xml node, any invalid combination or value, throws an exception
+     * and exits the program.
      *
-     * @param beanElement
+     * @param beanElement the XML Element for a bean
      */
     private void readBeanConstructor(Element beanElement) {
 
@@ -305,21 +308,25 @@ public class XmlBeanReader extends BeanReader {
                             System.exit(1);
                         }
 
+                        //If nothing was specified put it to null
                         String type = parameterElement.getAttribute(this.typeTag);
                         if (type.equals("")) {
                             type = null;
                         }
 
+                        //If nothing was specified put it to null
                         String value = parameterElement.getAttribute(this.valueTag);
                         if (value.equals("")) {
                             value = null;
                         }
 
+                        //If nothing was specified put it to null
                         String ref = parameterElement.getAttribute(this.beanRefTag);
                         if (ref.equals("")) {
                             ref = null;
                         }
 
+                        //If nothing was specified put it to none
                         String atomic_autowireString = parameterElement.getAttribute(this.atomic_autowireTag).toLowerCase();
                         if (atomic_autowireString.equals("")) {
                             atomic_autowireString = "none";
@@ -352,9 +359,10 @@ public class XmlBeanReader extends BeanReader {
     }
 
     /**
-     * Reads an attribute of a bean from the attribute xml node
+     * Reads an attribute of a bean from the attribute xml node, any invalid combination or value, throws an exception
+     * and exits the program.
      *
-     * @param beanElement
+     * @param beanElement the XML Element for a bean.
      */
     private void readBeanAttributes(Element beanElement) {
 
@@ -405,6 +413,7 @@ public class XmlBeanReader extends BeanReader {
                         beanRef = null;
                     }
 
+                    //If nothing was specified, put it to none
                     String atomic_autowireString = attributeElement.getAttribute(this.atomic_autowireTag).toLowerCase();
                     if (atomic_autowireString.equals("")) {
                         atomic_autowireString = "none";
@@ -436,7 +445,7 @@ public class XmlBeanReader extends BeanReader {
     }
 
     /**
-     * The method tells the annotationsBeanReader to read a specific class.
+     * The method tells the annotationsBeanReader to read a specific class. If it has more than one tag, exits abnormally.
      *
      * @param beanElement
      */

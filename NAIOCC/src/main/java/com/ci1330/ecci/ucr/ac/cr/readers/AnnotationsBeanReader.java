@@ -15,16 +15,27 @@ import java.lang.reflect.Constructor;
 /**
  * @Author Elias Calderon, Josue Leon, Kevin Leon
  * @Date 13/09/2017
+ *
+ * The reader is given a String, and then tries to map it with a class
+ * and extract the metadata for the BeanCreator
  */
 public class AnnotationsBeanReader extends BeanReader {
 
     private String currID; //The bean ID
-    private Stereotype stereotype;
+    private Stereotype stereotype; //The type of stereotype
 
+
+    /** Constructor, receives the {@link BeanFactory} that created him
+     * @param beanFactory the father {@link BeanFactory}
+     */
     public AnnotationsBeanReader(BeanFactory beanFactory) {
         super(beanFactory);
     }
 
+    /**
+     * Constructor, receives the {@link BeanCreator} that it'll use
+     * @param beanCreator the {@link BeanCreator} to use
+     */
     AnnotationsBeanReader(BeanCreator beanCreator) {
         super(beanCreator);
     }
@@ -32,7 +43,7 @@ public class AnnotationsBeanReader extends BeanReader {
     /**
      * Receives the name of a class and creates the corresponding Class object,
      * and calls a method to read it
-     * @param inputName
+     * @param inputName the name of the class
      */
     @Override
     public void readBeans(String inputName) {
@@ -75,6 +86,7 @@ public class AnnotationsBeanReader extends BeanReader {
             }
         }
 
+        //Now read the rest of the metadata
         this.readBeanProperties(reflectClass);
         this.readBeanConstructor(reflectClass);
         this.readBeanSetter(reflectClass);
@@ -83,7 +95,7 @@ public class AnnotationsBeanReader extends BeanReader {
 
     /**
      * Receives the class and starts to read the annotations, if any.
-     * @param beanClass
+     * @param beanClass the class to search
      */
     private void readBeanProperties (Class beanClass) {
 
@@ -169,7 +181,7 @@ public class AnnotationsBeanReader extends BeanReader {
 
     /**
      * Reads the annotations of a constructor, if any.
-     * @param beanClass
+     * @param beanClass the class to search
      */
     private void readBeanConstructor (Class beanClass) {
         boolean constructorAlreadyMatched = false;
@@ -252,7 +264,7 @@ public class AnnotationsBeanReader extends BeanReader {
 
     /**
      * Reads the annotations of a specific method, if any.
-     * @param beanClass
+     * @param beanClass the class to search
      */
     private void readBeanSetter (Class beanClass) {
         //Travel by every field
@@ -286,7 +298,7 @@ public class AnnotationsBeanReader extends BeanReader {
             //The reader will only recognize autowire if an Attribute annotation is not present
             else if (field.isAnnotationPresent(AtomicAutowire.class)) {
 
-                //It is asummed to be the special annotation autowiring
+                //It is assumed to be the special annotation autowiring
                 this.beanCreator.registerSetter(field.getName(), null, null, AutowireEnum.annotation);
             }
         }
