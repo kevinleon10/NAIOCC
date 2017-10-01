@@ -69,6 +69,12 @@ public abstract class BeanFactory {
      * Iterates through all beans and checks if they are Sigleton to initialize and inject its dependencies.
      */
     protected void initContainer(){
+        for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()) {
+            Bean currBean = beanEntry.getValue();
+            currBean.autowire();
+            currBean.checkBeanProperties();
+        }
+
         cycleDetection();
 
         for(HashMap.Entry<String,Bean> beanEntry: beansMap.entrySet()){
@@ -129,10 +135,7 @@ public abstract class BeanFactory {
      * @return
      */
     public boolean containsBean(String beanId){
-        if(this.beansMap.containsKey(beanId)){
-            return true;
-        }
-        return false;
+        return this.beansMap.containsKey(beanId);
     }
 
     /**
@@ -157,10 +160,6 @@ public abstract class BeanFactory {
             this.insertConstructorReferences(currBean, constructorReferences);
             this.insertSetterReferences(currBean, setterReferences);
         }
-
-        //So we don't waste time, first check that every reference is valid
-        this.checkInvalidReferences(constructorReferences);
-        this.checkInvalidReferences(setterReferences);
 
         //Checks if any of those maps has a cycle
         this.thereIsCycle(constructorReferences, true);
@@ -212,26 +211,6 @@ public abstract class BeanFactory {
         }
 
         setterReferences.put(currBean.getId(), referenceList);
-    }
-
-    /**
-     * Checks if the reference map has an invalid reference, if so, the program exits
-     * @param references
-     */
-    private void checkInvalidReferences (HashMap< String, List<String> > references) {
-
-        for (Map.Entry<String, List<String>> referenceMapEntry : references.entrySet()) {
-
-            for (String reference : referenceMapEntry.getValue()) {
-                //If the container can't find a bean with that ID, the program exits
-                if (this.findBean(reference) == null) {
-                    System.err.println("Bean Reference error: The reference '" + reference + "' has no bean associated to it.");
-                    System.exit(1);
-                }
-            }
-
-        }
-
     }
 
     /**

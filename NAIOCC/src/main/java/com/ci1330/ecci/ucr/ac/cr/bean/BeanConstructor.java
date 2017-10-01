@@ -81,6 +81,10 @@ public class BeanConstructor {
         this.constructorMethod = constructorMethod;
     }
 
+    public Constructor getConstructorMethod() {
+        return constructorMethod;
+    }
+
     public void setBeanParameterList(List<BeanParameter> beanParameterList) {
         this.beanParameterList = beanParameterList;
     }
@@ -88,4 +92,5 @@ public class BeanConstructor {
     public List<BeanParameter> getBeanParameterList() {
         return beanParameterList;
     }
+
 }

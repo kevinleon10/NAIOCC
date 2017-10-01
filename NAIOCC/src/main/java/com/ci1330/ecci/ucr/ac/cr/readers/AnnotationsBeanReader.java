@@ -113,7 +113,7 @@ public class AnnotationsBeanReader extends BeanReader {
 
         //The default class-autowire is none
         AutowireEnum autowire = AutowireEnum.none;
-        if(beanClass.isAnnotationPresent(Scope.class)){
+        if(beanClass.isAnnotationPresent(ClassAutowire.class)){
             ClassAutowire autowireAnnotation = (ClassAutowire)(beanClass.getAnnotation(ClassAutowire.class));
             autowire = super.determineClass_Autowire(autowireAnnotation.value().toLowerCase());
         }
@@ -176,7 +176,7 @@ public class AnnotationsBeanReader extends BeanReader {
 
                 if (constructorAlreadyMatched) {
                     try {
-                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Constructor' in the 'bean' " + this.currID + " was not recognized. It has more than a definition");
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Constructor' in the 'bean' " + this.currID + " was not recognized. The constructor has more than a definition");
                     } catch (AnnotationsBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -232,7 +232,7 @@ public class AnnotationsBeanReader extends BeanReader {
 
                 if (constructorAlreadyMatched) {
                     try {
-                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@Constructor' in the 'bean' " + this.currID + " was not recognized. It has more than a definition");
+                        throw new AnnotationsBeanReaderException("Annotations Reader error: The '@AtomicAutowire' in the 'bean' " + this.currID + " was not recognized. The constructor has more than a definition");
                     } catch (AnnotationsBeanReaderException e) {
                         e.printStackTrace();
                         System.exit(1);

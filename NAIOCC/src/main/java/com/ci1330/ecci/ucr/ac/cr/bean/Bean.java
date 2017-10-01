@@ -55,14 +55,54 @@ public class Bean {
             System.exit(1);
         }
 
-        //If this is the first instance, autowire the bean
-        if (this.beanInstanceStack.size() == 0) {
-            BeanConstructorModule.registerConstructor(this);
-            BeanAutowireModule.autowireBean(this);
-        }
-
         Object currInstance = this.newInstance();
         this.beanInstanceStack.push(currInstance);
+    }
+
+    /**
+     *
+     */
+    public void autowire () {
+
+        //Autowire by constructor or, Atomic-autowire all parameters and register the constructor
+        if (this.beanConstructor != null) {
+            List<BeanParameter> beanParameterList = this.beanConstructor.getBeanParameterList();
+            if (beanParameterList.size() > 0) {
+                //If the parameter list has parameters, they are autowired (if necessary) and the constructor is registered
+                for (BeanParameter beanParameter : beanParameterList) {
+                    beanParameter.autowireProperty();
+                }
+                BeanConstructorModule.registerConstructor(this);
+
+            } else {
+                //If there are no paramters, but the constructor isn't null, it's because the user indicated
+                //autowire by constructor to a single constructor
+                BeanAutowireModule.autowireSingleConstructor(this.beanConstructor, this.beanFactory, this.id);
+            }
+        }
+
+        //Atomic-autowire all attributes
+        for (BeanAttribute beanAttribute : this.beanAttributeList) {
+            beanAttribute.autowireProperty();
+        }
+
+        //Class autowiring
+        BeanAutowireModule.autowireBean(this);
+    }
+
+    /**
+     *
+     */
+    public void checkBeanProperties() {
+        for (BeanAttribute beanAttribute : this.beanAttributeList) {
+            beanAttribute.checkProperty();
+        }
+
+        if (this.beanConstructor != null) {
+            for (BeanParameter beanParameter : this.beanConstructor.getBeanParameterList()) {
+                beanParameter.checkProperty();
+            }
+        }
     }
 
     /**

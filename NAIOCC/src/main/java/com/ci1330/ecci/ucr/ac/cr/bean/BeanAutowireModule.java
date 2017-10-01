@@ -1,8 +1,7 @@
 package com.ci1330.ecci.ucr.ac.cr.bean;
 
-import com.ci1330.ecci.ucr.ac.cr.exception.BeanConstructorConflictException;
+import com.ci1330.ecci.ucr.ac.cr.exception.BeanAutowireException;
 import com.ci1330.ecci.ucr.ac.cr.exception.BeanTypeConflictException;
-import com.ci1330.ecci.ucr.ac.cr.exception.IdNotFoundException;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.Paranamer;
@@ -16,7 +15,7 @@ import java.util.List;
 
 public class BeanAutowireModule {
 
-    public static void autowireBean (Bean bean) {
+    static void autowireBean (Bean bean) {
         switch (bean.getAutowireEnum()) {
             case byName:
                 autowireByName(bean);
@@ -30,8 +29,12 @@ public class BeanAutowireModule {
             case none:
                 break;
             default:
-                System.err.println("Autowire error: Unexpected value.");
-                System.exit(1);
+                try {
+                    throw new BeanAutowireException("Autowire Module Error: Unexpected value recieved while trying to autowire the bean " + bean.getId());
+                } catch (BeanAutowireException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
         }
     }
 
@@ -43,22 +46,16 @@ public class BeanAutowireModule {
         Method currAttributeSetter;
         String currAttributeName;
         Class currAttributeType;
-       // System.out.println("autowireByName de: " +  bean.getId());
-       // System.out.println("obteniendo lista de fields de: " + currInstanceClass.toString() + " tamano: " + currInstanceClass.getFields().length);
         for (Field currAttribute: currInstanceClass.getFields()) {
             currAttributeName = currAttribute.getName();
             currAttributeType = currAttribute.getType();
 
-            //System.out.println("chequeando si atributo: " + currAttributeName + " existe en el mapa");
             if(beanFactory.findBean(currAttributeName) != null){
                 currAttributeSetter = findSetter(currAttributeName, currAttributeType, bean);
-               // System.out.println("chequeando si atributo: " + currAttributeName + " ya fue registrado");
                 if (!attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
-                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, currAttributeType, beanFactory, null, currAttributeSetter);
+                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, currAttributeType, beanFactory, null, AutowireEnum.none, currAttributeSetter);
                     bean.appendAttribute(beanAttribute);
-                   // System.out.println("se agrego el atributo ya autowireado de: " + bean.getId() + " : " + beanAttribute.getBeanRef());
                 }
-
             }
         }
     }
@@ -71,21 +68,23 @@ public class BeanAutowireModule {
 
         for (Method method : beanMethods) {
             if (method.getName().startsWith("set") && method.getName().toLowerCase().contains(attributeName.toLowerCase())) {
+
                 methodParameterTypes = method.getParameterTypes();
-                System.out.println("buscando setter, num params: " + methodParameterTypes.length + "tipo de clase: " + methodParameterTypes[0]);
-                System.out.println("attributeClass: " + attributeClass.toString());
                 if (method.getParameterCount() == 1 && methodParameterTypes[0].equals(attributeClass)) {
-
                     return method;
-
                 }
+
             }
 
         }
 
-        System.err.println("Autowire Error: The field " + attributeName +" of " + bean.getBeanClass().toString() +
-                " matches with autowiring, but no setter method was found for it.");
-        System.exit(1);
+        try {
+            throw new BeanAutowireException("Autowire Module Error: The field " + attributeName +" of " + bean.getBeanClass().toString() +
+                    " matches with autowiring, but no setter method was found for it.");
+        } catch (BeanAutowireException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         return null; //Keep the compiler happy
     }
 
@@ -124,7 +123,7 @@ public class BeanAutowireModule {
                 currAttributeSetter = findSetter(currAttributeName, currAttribute.getType(), bean);
 
                 if (!attributeIsAlreadyRegistered(registeredAttributes, currAttributeName)) {
-                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, currAttributeClass, beanFactory, null, currAttributeSetter);
+                    BeanAttribute beanAttribute = new BeanAttribute(currAttributeName, currAttributeClass, beanFactory, null, AutowireEnum.none, currAttributeSetter);
                     bean.appendAttribute(beanAttribute);
                 }
 
@@ -137,8 +136,8 @@ public class BeanAutowireModule {
             Constructor[] classConstructors = bean.getBeanClass().getDeclaredConstructors();
             BeanFactory beanFactory = bean.getBeanFactory();
 
-            Parameter[] constuctorParameters = null;
-            String[] parameterNames = null;
+            Parameter[] constructorParameters;
+            String[] parameterNames;
             Constructor matchedConstructor = null;
             boolean allParamsMatched, allParamsClassesMatched;
             Paranamer paranamer = new AdaptiveParanamer();
@@ -149,7 +148,7 @@ public class BeanAutowireModule {
                     allParamsMatched = true;
 
                     parameterNames = paranamer.lookupParameterNames(classConstructor);
-                    constuctorParameters = classConstructor.getParameters();
+                    constructorParameters = classConstructor.getParameters();
 
                     for (String  parameter : parameterNames) {
                         if (beanFactory.findBean(parameter) == null) {
@@ -160,14 +159,14 @@ public class BeanAutowireModule {
 
                     if (allParamsMatched) {
                         if (matchedConstructor == null) {
-                            allParamsClassesMatched = checkParametersTypes(bean, constuctorParameters, parameterNames, beanParameterList);
+                            allParamsClassesMatched = checkParametersTypes(beanFactory, constructorParameters, parameterNames, beanParameterList);
 
                             if (allParamsClassesMatched) {
                                 matchedConstructor = classConstructor;
                             } else {
                                 try {
-                                    throw new BeanConstructorConflictException("Bean creation error: parameter types mismatch for autowiring by constructor. Bean: " + bean.getId());
-                                } catch (BeanConstructorConflictException e) {
+                                    throw new BeanAutowireException("Autowire Module Error: parameter types mismatch for autowiring by constructor. Bean: " + bean.getId());
+                                } catch (BeanAutowireException e) {
                                     e.printStackTrace();
                                     System.exit(1);
                                 }
@@ -175,8 +174,8 @@ public class BeanAutowireModule {
 
                         } else {
                             try {
-                                throw new BeanConstructorConflictException("Bean creation error: there are multiple constructors that match in their parameters names, in autowiring by constructor. Bean: " + bean.getId());
-                            } catch (BeanConstructorConflictException e) {
+                                throw new BeanAutowireException("Autowire Module Error: there are multiple constructors that match in their parameters names, in autowiring by constructor. Bean: " + bean.getId());
+                            } catch (BeanAutowireException e) {
                                 e.printStackTrace();
                                 System.exit(1);
                             }
@@ -194,17 +193,59 @@ public class BeanAutowireModule {
         }
 
     }
-    private static boolean checkParametersTypes(Bean bean, Parameter[] constuctorParameters, String[] constructorParameterNames, List<BeanParameter> beanParameterList) {
+
+    public static void autowireSingleConstructor (BeanConstructor beanConstructor, BeanFactory beanFactory, String beanId) {
+        Constructor classConstructor = beanConstructor.getConstructorMethod();
+
+        if (classConstructor.getParameterCount() > 0) {
+            Boolean allParamsMatched = true;
+            Paranamer paranamer = new AdaptiveParanamer();
+
+            String[] parameterNames = paranamer.lookupParameterNames(classConstructor);
+            Parameter[] constructorParameters = classConstructor.getParameters();
+
+            List<BeanParameter> beanParameterList = beanConstructor.getBeanParameterList();
+
+            for (String parameter : parameterNames) {
+                if (beanFactory.findBean(parameter) == null) {
+                    allParamsMatched = false;
+                    break;
+                }
+            }
+
+            if (!allParamsMatched) {
+                try {
+                    throw new BeanAutowireException("Autowire Module Error: One or more constructor parameters names does not match with a bean, in autowiring a single constructor. For bean: " + beanId);
+                } catch (BeanAutowireException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            } else {
+                Boolean allParamsClassesMatched = checkParametersTypes(beanFactory, constructorParameters, parameterNames, beanParameterList);
+
+                if (!allParamsClassesMatched) {
+                    try {
+                        throw new BeanAutowireException("Autowire Module Error: parameter types mismatch for autowiring by constructor. For bean: " + beanId);
+                    } catch (BeanAutowireException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+            }
+
+        }
+    }
+
+    private static boolean checkParametersTypes(BeanFactory beanFactory, Parameter[] constuctorParameters, String[] constructorParameterNames, List<BeanParameter> beanParameterList) {
         boolean allParamsClassesMatched = true;
         int parameterIndex = 0;
-        BeanFactory beanFactory = bean.getBeanFactory();
 
         Class currBeanClass;
 
         for (Parameter constructorParameter : constuctorParameters) {
             currBeanClass = beanFactory.getBean(constructorParameterNames[parameterIndex]).getClass();
             if ( currBeanClass == constructorParameter.getType()) {
-                beanParameterList.add(new BeanParameter(constructorParameterNames[parameterIndex], currBeanClass, beanFactory, null, parameterIndex, constructorParameter.getType().toString()));
+                beanParameterList.add(new BeanParameter(constructorParameterNames[parameterIndex], currBeanClass, beanFactory, null, AutowireEnum.none, parameterIndex, constructorParameter.getType().toString()));
             } else {
                 allParamsClassesMatched = false;
                 break;

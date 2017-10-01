@@ -9,7 +9,7 @@ import com.ci1330.ecci.ucr.ac.cr.bean.AutowireEnum;
 
 
 @Repository("fuck")
-@Scope(com.ci1330.ecci.ucr.ac.cr.bean.Scope.Prototype)
+@Scope(value = "Prototype")
 @Lazy
 public class TestingAnnotations {
     @Attribute("sarkis es puto")

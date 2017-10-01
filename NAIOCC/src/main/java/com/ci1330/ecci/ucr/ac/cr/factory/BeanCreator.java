@@ -185,7 +185,7 @@ public class BeanCreator {
             }
         }
 
-        //If the value is null, the user is using beans, so search for the type that the bean should have
+        //If the value is null, the user is using beans, so search for the type that the attribute should have
         if(value == null) {
             Field[] beanFields = this.bean.getBeanClass().getDeclaredFields();
             for(Field field: beanFields){
@@ -193,6 +193,11 @@ public class BeanCreator {
                     beanRefType = field.getType();
                 }
             }
+        }
+
+        //If the user specified autowire byName at atomic level, the beanRef is the same as the attributeName
+        if (beanRef == null && atomic_autowire == AutowireEnum.byName) {
+            beanRef = attributeName;
         }
 
         BeanAttribute beanAttribute = new BeanAttribute(beanRef, beanRefType, this.beanFactory, value, atomic_autowire, setterMethod);
@@ -222,7 +227,7 @@ public class BeanCreator {
 
         Class beanRefClass = null;
 
-        //If the value is null, the user is using beans, so search for the type that the bean should have
+        //If the value is null, the user is using beans, so search for the type that the parameter should have
         //But because this is a constructor parameter, only search for it if we have at least the type
         if (value == null && paramType != null) {
             try {

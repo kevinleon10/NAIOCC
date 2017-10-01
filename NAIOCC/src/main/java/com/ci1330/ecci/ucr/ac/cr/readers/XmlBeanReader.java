@@ -202,25 +202,22 @@ public class XmlBeanReader extends BeanReader {
             //-----------------------------------------------------------------------------------
 
             //Check the scope value
-            String scopeString = beanElement.getAttribute(this.scopeTag);
+            String scopeString = beanElement.getAttribute(this.scopeTag).toLowerCase();
             if (scopeString.equals("")) {
                 scopeString = defaultScope;
             }
-            scopeString = scopeString.toLowerCase();
 
             //Check the autowire value
-            String autowireString = beanElement.getAttribute(this.autowireTag);
+            String autowireString = beanElement.getAttribute(this.autowireTag).toLowerCase();
             if (autowireString.equals("")) {
                 autowireString = defaultAutowire;
             }
-            autowireString = autowireString.toLowerCase();
 
             //Get the lazy-generation
-            String lazyGenString = beanElement.getAttribute(this.lazyGenerationTag);
+            String lazyGenString = beanElement.getAttribute(this.lazyGenerationTag).toLowerCase();
             if (lazyGenString.equals("")) {
                 lazyGenString = defaultLazyGen;
             }
-            lazyGenString = lazyGenString.toLowerCase();
 
             //-----------------------------------------------------------------------------------
 
@@ -293,12 +290,15 @@ public class XmlBeanReader extends BeanReader {
 
                         int argIndex = -1;
                         try {
-                            //Tries to get the index
-                            if ( !(parameterElement.getAttribute(this.indexTag).equals("")) ) {
-                                argIndex = Integer.parseInt(parameterElement.getAttribute(this.indexTag));
-                            } else {
-                                throw new XmlBeanReaderException("XML Reader Error: An invalid value was entered in index tag.");
+                            //Tries to get the index if it exists
+                            if ( parameterElement.hasAttribute(this.indexTag)) {
+                                if (!parameterElement.getAttribute(this.indexTag).equals("")) {
+                                    argIndex = Integer.parseInt(parameterElement.getAttribute(this.indexTag));
+                                } else {
+                                    throw new XmlBeanReaderException("XML Reader Error: An invalid value was entered in index tag.");
+                                }
                             }
+
                         } catch (NumberFormatException | XmlBeanReaderException e) {
                             e.printStackTrace();
                             System.exit(1);
@@ -320,6 +320,9 @@ public class XmlBeanReader extends BeanReader {
                         }
 
                         String atomic_autowireString = parameterElement.getAttribute(this.atomic_autowireTag).toLowerCase();
+                        if (atomic_autowireString.equals("")) {
+                            atomic_autowireString = "none";
+                        }
                         AutowireEnum atomic_autowire = super.determineAtomic_Autowire(atomic_autowireString);
 
                         this.beanCreator.registerConstructorParameter(type, argIndex, value, ref, atomic_autowire);
@@ -402,6 +405,9 @@ public class XmlBeanReader extends BeanReader {
                     }
 
                     String atomic_autowireString = attributeElement.getAttribute(this.atomic_autowireTag).toLowerCase();
+                    if (atomic_autowireString.equals("")) {
+                        atomic_autowireString = "none";
+                    }
                     AutowireEnum atomic_autowire = super.determineAtomic_Autowire(atomic_autowireString);
 
                     this.beanCreator.registerSetter(name, value, beanRef, atomic_autowire);

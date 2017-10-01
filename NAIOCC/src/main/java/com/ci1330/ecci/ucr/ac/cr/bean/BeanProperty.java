@@ -1,5 +1,8 @@
 package com.ci1330.ecci.ucr.ac.cr.bean;
 
+import com.ci1330.ecci.ucr.ac.cr.exception.BeanAtomicAutowireException;
+import com.ci1330.ecci.ucr.ac.cr.exception.BeanPropertyException;
+import com.ci1330.ecci.ucr.ac.cr.exception.BeanTypeConflictException;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 /**
@@ -37,21 +40,117 @@ public abstract class BeanProperty {
      */
     Object getInstance () {
         if (this.value == null) {
-            Object tempInstance = this.beanFactory.getBean(this.beanRef);
-
-            if (!tempInstance.getClass().equals(this.beanRefType)) {
-                System.err.println("Bean Error: Mismatch in class type defined by the user with the returned class returned by the container");
-                System.exit(1);
-            }
-
-            return tempInstance;
+            return this.beanFactory.getBean(this.beanRef);
         } else {
             return this.value;
         }
     }
 
     void autowireProperty () {
+        switch (this.atomic_autowire) {
+            case byName:
+                //This case is mostly for parameter autowiring, in which the type is known until the container
+                //is fully created
+                this.autowireByName();
+                break;
+            case byType:
+                //This case is for both parameters and attributes.
+                //It searches the container for a bean that matches with its type, if found stores its ID.
+                this.autowireByType();
+                break;
+            case annotation:
+                //This case is exclusive for attributes that were autowired using an annotation.
+                //It first tries to autowire byType, if it fails, tries to autowire byName
+                this.autowireByAnnotation();
+                break;
+        }
+    }
 
+    private void autowireByName () {
+        if (this.beanFactory.findBean(this.beanRef) == null) {
+            try {
+                throw new BeanAtomicAutowireException("Bean Atomic-Autowire Error: At atomic-autowiring byName no bean was found for the beanId " + this.beanRef);
+            } catch (BeanAtomicAutowireException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        } else if (this.beanRefType == null) {
+            //If the beanRefType was null, put it as the type of the recovered bean
+            this.beanRefType = this.beanFactory.findBean(this.beanRef).getBeanClass();
+        }
+    }
+
+    private void autowireByType () {
+        try {
+            if (this.beanFactory.findBean(this.beanRefType) == null) {
+
+                try {
+                    throw new BeanAtomicAutowireException("Bean Atomic-Autowire Error: At atomic-autowiring byType no bean was found for the type " + this.beanRefType);
+                } catch (BeanAtomicAutowireException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+
+            } else {
+                //If a bean exists, store the property's ID
+                this.beanRef = this.beanFactory.findBean(this.beanRefType).getId();
+            }
+        } catch (BeanTypeConflictException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private void autowireByAnnotation () {
+        try {
+            //Sees if there exists a bean with that type (autowire byType)
+            if (this.beanFactory.findBean(this.beanRefType) == null) {
+
+                //Sees if there exists a bean with that reference (autowire byName)
+                if (this.beanFactory.findBean(this.beanRef) == null) {
+                    try {
+                        throw new BeanAtomicAutowireException("Bean Atomic-Autowire Error: At atomic-autowiring byName no bean was found for the beanId " + this.beanRef);
+                    } catch (BeanAtomicAutowireException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+                //We don't have to do anything if the beanRef is valid, because the type is already assign
+                //And the checkProperty method will check that everything matches.
+
+            } else {
+                this.beanRef = this.beanFactory.findBean(this.beanRefType).getId();
+            }
+        } catch (BeanTypeConflictException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void checkProperty() {
+        if (value == null) {
+            boolean thereIsProblem = true;
+
+            //If the reference is not null and exists a reference for it in the container
+            if (this.beanRef != null && this.beanFactory.findBean(this.beanRef) != null) {
+
+                //If the type is not null and the bean returned by the factory matches with the declared type
+                if (this.beanRefType != null && this.beanRefType == this.beanFactory.findBean(this.beanRef).getBeanClass()) {
+
+                    thereIsProblem = false;
+                }
+
+            }
+
+            if (thereIsProblem) {
+                try {
+                    throw new BeanPropertyException("Bean Property Error: There was an unexpected exception with the reference and type of the property " + this.beanRef);
+                } catch (BeanPropertyException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+        }
     }
 
     //----------------------------------------------------------------
