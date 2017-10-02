@@ -8,19 +8,19 @@ import com.ci1330.ecci.ucr.ac.cr.exception.BeanConstructorNotFoundException;
 import java.lang.reflect.Constructor;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 28/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 28/09/2017
  */
 public class BeanConstructorModule {
 
     /**
      * Checks if all parameters have an index assigned. If at least one doesn't, it returns false.
-     * @return
+     * @return true if all indexes were assigned, false if not
      */
     private static boolean checkParametersIndexes(Bean bean){
         boolean allIndexesAssigned = true;
         int paramListIndex = 0;
-        BeanParameter beanParameter = null;
+        BeanParameter beanParameter;
         while(paramListIndex < bean.getBeanConstructor().getBeanParameterList().size()
                 && allIndexesAssigned){
             beanParameter = bean.getBeanConstructor().getBeanParameterList().get(paramListIndex);
@@ -33,10 +33,9 @@ public class BeanConstructorModule {
     }
 
     /**
-     * Returns an array containing the Class types of each parameter
-     * in the bean's constructor.
-     * @param bean
-     * @return
+     * Searches for the Class types of each parameter in the bean's constructor.
+     * @param bean the bean to use
+     * @return an array containing the Class types of each parameter
      */
     private static Class[] obtainParametersClassArray(Bean bean){
         String parameterClass = null;
@@ -97,7 +96,7 @@ public class BeanConstructorModule {
      * @param paramIndex current index of the bean's class constructor parameter
      * @return True if parameters matched
      */
-    public static boolean setBeanParameterIndex(BeanParameter beanParameter, Class beanClassConstructorParameter, int paramIndex){
+    private static boolean setBeanParameterIndex(BeanParameter beanParameter, Class beanClassConstructorParameter, int paramIndex){
         boolean parametersMatched = false;
         String beanParameterType = beanParameter.getExplicitTypeName();
         if(beanParameterType == null){
@@ -225,9 +224,10 @@ public class BeanConstructorModule {
     }
 
     /**
-     *Sets the constructor method and parameters to a bean for it to be ready
+     * Sets the constructor method and parameters to a bean for it to be ready
      * to be autowired and injected. If indexes are not specified, the method checks
      * all constructors of the bean's class to match one.
+     * @param bean the bean to use
      */
     public static void registerConstructor(Bean bean) {
         Constructor matchedConstructor = null;

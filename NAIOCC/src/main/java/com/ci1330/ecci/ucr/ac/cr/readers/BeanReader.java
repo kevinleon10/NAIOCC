@@ -7,8 +7,9 @@ import com.ci1330.ecci.ucr.ac.cr.factory.BeanCreator;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 13/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
+ * The father class for a reader, defines the {@link BeanCreator} to use and the method, readBeans
  */
 public class BeanReader{
 
@@ -37,7 +38,7 @@ public class BeanReader{
      * Abstract method, that indicates the name of the input to read
      * @param inputName the name of the configuration container
      */
-    public void readBeans (String inputName) {};
+    public void readBeans (String inputName) {}
 
     /**
      * Determines which type of {@link AutowireEnum} is entered, if not found, throws an exception and exits.

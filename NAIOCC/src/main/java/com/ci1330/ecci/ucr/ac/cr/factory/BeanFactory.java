@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 13/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
  *
  * BeanFactory parent class which has the container and manages
  * the control flow of NAIoCC. User's request for beans via an
@@ -35,7 +35,7 @@ public abstract class BeanFactory {
 
     /**
      * Adds a bean to the container before initializing it.
-     * @param bean
+     * @param bean the bean to add
      */
     public void addBean(Bean bean){
         this.beansMap.put(bean.getId(), bean);
@@ -44,7 +44,7 @@ public abstract class BeanFactory {
     /**
      * Returns the instance of the bean, already injected. If it is singleton it
      * returns the only instance, otherwise creates a new one (prototype).
-     * @param id
+     * @param id the bean's id
      * @return the requested bean's instance
      */
     public Object getBean(String id) {
@@ -102,7 +102,7 @@ public abstract class BeanFactory {
     /**
      * Finds a bean by its type for autowiring purposes. If there's no bean
      * with this type in the container or if there are more than one, it returns null.
-     * @param beanType
+     * @param beanType the bean's type
      * @return the Bean with the type requested, null if not found
      */
     public Bean findBean(Class beanType) throws BeanTypeConflictException {
@@ -126,7 +126,7 @@ public abstract class BeanFactory {
     /**
      * Finds a bean by its name. If there's no bean
      * with this name in the container, it returns null.
-     * @param beanId
+     * @param beanId the bean's id
      * @return The bean with the corresponding id, null if it wasn't found
      */
     public Bean findBean(String beanId){
@@ -139,7 +139,7 @@ public abstract class BeanFactory {
 
     /**
      * Checks if the specified bean is in the container.
-     * @param beanId
+     * @param beanId the bean's id
      * @return true if the bean is in the container, false otherwise
      */
     public boolean containsBean(String beanId){
@@ -176,8 +176,8 @@ public abstract class BeanFactory {
 
     /**
      * Registers the constructor references for a bean
-     * @param currBean
-     * @param constructorReferences
+     * @param currBean the bean to search
+     * @param constructorReferences a list of the references
      */
     private void insertConstructorReferences(Bean currBean, HashMap< String, List<String> > constructorReferences) {
         List<String> referencesList = new ArrayList<>(); //If there is no dependency the list will be empty
@@ -202,8 +202,8 @@ public abstract class BeanFactory {
 
     /**
      * Registers the setter references for a bean
-     * @param currBean
-     * @param setterReferences
+     * @param currBean the bean to search
+     * @param setterReferences a list of the references
      */
     private void insertSetterReferences(Bean currBean, HashMap< String, List<String> > setterReferences) {
         List<String> referenceList = new ArrayList<>(); //If there is no dependency the list will be empty
@@ -223,8 +223,8 @@ public abstract class BeanFactory {
 
     /**
      * For every entry in the map, checks the cycles, if there is an invalid one, the program exits.
-     * @param referenceMap
-     * @param isConstructorInjection
+     * @param referenceMap all the references for all beans
+     * @param isConstructorInjection indicates if it is checking constructor injection or not.
      */
     private void thereIsCycle(HashMap< String, List<String> > referenceMap, boolean isConstructorInjection) {
         List<String> cycleLessReferences = new ArrayList<>(); //References that were already confirmed as cycle-less
@@ -244,12 +244,12 @@ public abstract class BeanFactory {
 
     /**
      * Recursively check if a chain of references causes a cycle.
-     * @param reference
-     * @param referenceMap
-     * @param currentTrail
-     * @param cycleLessReferences
-     * @param isConstructorInjection
-     * @return
+     * @param reference The reference to check
+     * @param referenceMap Map of all references
+     * @param currentTrail The current trail of the recursive call
+     * @param cycleLessReferences The trail of cycle less references, so we don't repeat searches
+     * @param isConstructorInjection indicates if it's checking constructor injection.
+     * @return true if there was a cycle, false if not.
      */
     private boolean checkCycle(String reference, HashMap< String, List<String> > referenceMap,
                               List<String> currentTrail, List<String> cycleLessReferences, boolean isConstructorInjection) {
@@ -299,8 +299,8 @@ public abstract class BeanFactory {
 
     /**
      * Checks if the cycle has only prototypes
-     * @param trail
-     * @return
+     * @param trail the trail of the recursive call
+     * @return true if illegal cycle, false if not.
      */
     private boolean checkIfInvalid (List<String> trail, String reference) {
         int prototypeCount = 0;

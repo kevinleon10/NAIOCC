@@ -11,8 +11,8 @@ import java.lang.reflect.Modifier;
 import com.ci1330.ecci.ucr.ac.cr.bean.Bean;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 13/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
  *
  * Module in charge of receiving each bean's metadata
  * from the reader and creating the bean, with all
@@ -30,7 +30,7 @@ public class BeanCreator {
     /**
      * Constructor of the class which receives the beanFactory and
      * assigns it for later use.
-     * @param beanFactory
+     * @param beanFactory the factory to add beans
      */
     public BeanCreator(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
@@ -39,14 +39,13 @@ public class BeanCreator {
     /**
      * Method which receives the basic IoC properties for the bean
      * and creates it.
-     * @param id
-     * @param beanClass
-     * @param scope
-     * @param initMethodName
-     * @param destroyMethodName
-     * @param lazyGen
-     * @param autowireEnum
-     * @throws RepeatedIdException // If two beans have the same id
+     * @param id the bean's ID
+     * @param beanClass the bean's class
+     * @param scope the bean's scope
+     * @param initMethodName the bean's init method name
+     * @param destroyMethodName the bean's destroy method name
+     * @param lazyGen the bean's lazy generation value
+     * @param autowireEnum the bean's autowire mode
      */
     public void createBean(String id, String beanClass, Scope scope, String initMethodName, String destroyMethodName, boolean lazyGen, AutowireEnum autowireEnum) {
         try {
@@ -96,7 +95,7 @@ public class BeanCreator {
     /**
      * Method that returns an object after
      * casting the string value to its real type.
-     * @param stringValue
+     * @param stringValue a string that contains the value
      * @return object with respective type
      */
     private Object obtainValueType(String stringValue) {
@@ -172,12 +171,14 @@ public class BeanCreator {
     }
 
     /**
+     *
      * Method to register an attribute of the bean and find
      * its setter method to be used later when injecting
      * the bean's dependencies
-     * @param attributeName
-     * @param stringValue
-     * @param beanRef
+     * @param attributeName the name of the attribute to register
+     * @param stringValue a string with the attribute's value
+     * @param beanRef a string with the attribute's bean reference
+     * @param atomic_autowire the atomic autowiring mode
      */
     public void registerSetter(String attributeName, String stringValue, String beanRef, AutowireEnum atomic_autowire){
         try {
@@ -243,11 +244,10 @@ public class BeanCreator {
 
     /**
      * Method which registers a parameter of the bean's constructor
-     *
-     * @param paramType
-     * @param index
-     * @param stringValue
-     * @param beanRef
+     * @param paramType the name of the parameter's type
+     * @param stringValue a string with the parameter's value
+     * @param beanRef a string with the parameter's bean reference
+     * @param atomic_autowire the atomic autowiring mode
      */
     public void registerConstructorParameter(String paramType, int index, String stringValue, String beanRef, AutowireEnum atomic_autowire){
         Object value = null;
@@ -256,7 +256,7 @@ public class BeanCreator {
         }
         if(value == null && beanRef == null && paramType == null){
             try {
-                throw new InvalidPropertyException("Bean creation error: parameter's type or reference is invalid for: " + paramType + ".");
+                throw new InvalidPropertyException("Bean creation error: parameter's type, reference or value is invalid for a declared bean parameter.");
             } catch (InvalidPropertyException e) {
                 e.printStackTrace();
                 System.exit(1);

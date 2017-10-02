@@ -18,8 +18,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 13/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
+ * The reader is given a String, and then tries to map it with a XML file
+ * and extract the metadata for the BeanCreator
  */
 public class XmlBeanReader extends BeanReader {
 
@@ -342,7 +344,6 @@ public class XmlBeanReader extends BeanReader {
                             e.printStackTrace();
                             System.exit(1);
                         }
-                        System.out.println();
                     }
                 } else {
                     try {
@@ -447,7 +448,7 @@ public class XmlBeanReader extends BeanReader {
     /**
      * The method tells the annotationsBeanReader to read a specific class. If it has more than one tag, exits abnormally.
      *
-     * @param beanElement
+     * @param beanElement the XML Element for a bean
      */
     private void readAnnotationsStatement(Element beanElement) {
 

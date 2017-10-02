@@ -7,8 +7,8 @@ import com.ci1330.ecci.ucr.ac.cr.readers.XmlBeanReader;
 import java.util.HashMap;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 13/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
  *
  * XMLFactory class which inherits from BeanFactory
  * and registers the XML file from which the configuration
@@ -23,7 +23,7 @@ public class XMLFactory extends BeanFactory{
     /**
      * Constructor of the class, it initializes the super-class attributes and
      * also the XML bean reader and the file.
-     * @param xmlFile
+     * @param xmlFile the name of the file
      */
     public XMLFactory(String xmlFile){
         super();
@@ -33,31 +33,34 @@ public class XMLFactory extends BeanFactory{
         super.initContainer();
     }
 
-    //Registers the XML configuration file so that the reader starts parsing
-    public void registerConfig(){
+    //Tells the reader to start parsing
+    private void registerConfig(){
         this.xmlBeanReader.readBeans(this.getXmlFile());
     }
 
-    @Override
-    public HashMap<String, Bean> getBeansMap() {
-        return super.getBeansMap();
-    }
 
-    @Override
-    public void setBeansMap(HashMap<String, Bean> beansMap) {
-        super.setBeansMap(beansMap);
-    }
-
+    /**
+     * Return a bean instance from the super class.
+     * @param id the beanId
+     * @return the bean instance
+     */
     @Override
     public Object getBean(String id) {
         return super.getBean(id);
     }
 
+    /**
+     * Adds a bean to the container
+     * @param bean the {@link Bean} class
+     */
     @Override
     public void addBean(Bean bean) {
         super.addBean(bean);
     }
 
+    /**
+     * Calls the super method for shutDownHook
+     */
     @Override
     public void shutDownHook() {
         super.shutDownHook();
@@ -77,5 +80,15 @@ public class XMLFactory extends BeanFactory{
 
     public void setXmlBeanReader(XmlBeanReader xmlBeanReader) {
         this.xmlBeanReader = xmlBeanReader;
+    }
+
+    @Override
+    public HashMap<String, Bean> getBeansMap() {
+        return super.getBeansMap();
+    }
+
+    @Override
+    public void setBeansMap(HashMap<String, Bean> beansMap) {
+        super.setBeansMap(beansMap);
     }
 }

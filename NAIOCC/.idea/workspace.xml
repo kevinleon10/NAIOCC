@@ -11,7 +11,18 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="AnnotationsBeanReaderException.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/AnnotationsBeanReaderException.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -38,6 +49,9 @@
       <find>examples</find>
       <find>checkProp</find>
       <find>index</find>
+      <find>System</find>
+      <find>System.out</find>
+      <find>System.o</find>
     </findStrings>
     <replaceStrings>
       <replace>parameterIndex</replace>
@@ -89,10 +103,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/Scope.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/Service.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/Repository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/XMLFactory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/AnnotationsFactory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/annotations/Parameter.java" />
         <option value="$PROJECT_DIR$/example.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Rose.java" />
@@ -100,10 +110,14 @@
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Pod.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Leaf.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Tulip.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/AnnotationsBeanReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/BeanReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/XmlBeanReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/AnnotationsFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/XMLFactory.java" />
       </list>
     </option>
   </component>
@@ -175,6 +189,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="cr" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="NAIOCC" type="b2602c69:ProjectViewProjectNode" />
+              <item name="NAIOCC" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="cr" type="462c0819:PsiDirectoryNode" />
+              <item name="exception" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -335,15 +358,16 @@
       <workItem from="1506834248306" duration="224000" />
       <workItem from="1506841118788" duration="9231000" />
       <workItem from="1506874200001" duration="11678000" />
-      <workItem from="1506892047784" duration="7628000" />
+      <workItem from="1506892047784" duration="9401000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70127000" />
+    <option name="totallyTimeSpent" value="71900000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="-4" width="1309" height="772" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -358,7 +382,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24751718" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24751718" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882884" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -458,22 +482,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanAtomicAutowireException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Wheel.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/AnnotationsBeanReaderException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="5" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/bean/Stereotype.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -652,28 +661,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/AnnotationsFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/XMLFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="21" lean-forward="true" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1637#1638#0" expanded="true" />
-            <element signature="e#1673#1674#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/TestingAnnotations.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -698,31 +685,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="296" column="58" lean-forward="true" selection-start-line="296" selection-start-column="58" selection-end-line="296" selection-end-column="58" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="19" column="9" lean-forward="true" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1251">
-          <caret line="92" column="34" lean-forward="true" selection-start-line="92" selection-start-column="34" selection-end-line="92" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -777,16 +744,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/ejemplos/Tulip.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -819,26 +776,96 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/BeanReader.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/AnnotationsBeanReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="39" column="16" lean-forward="false" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
+        <state relative-caret-position="135">
+          <caret line="19" column="47" lean-forward="true" selection-start-line="19" selection-start-column="47" selection-end-line="19" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/AnnotationsBeanReader.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/BeanReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="19" column="30" lean-forward="false" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        <state relative-caret-position="144">
+          <caret line="152" column="4" lean-forward="false" selection-start-line="152" selection-start-column="4" selection-end-line="152" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/readers/XmlBeanReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="499" column="45" lean-forward="true" selection-start-line="499" selection-start-column="45" selection-end-line="499" selection-end-column="47" />
+        <state relative-caret-position="144">
+          <caret line="450" column="52" lean-forward="false" selection-start-line="450" selection-start-column="52" selection-end-line="450" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanConstructorModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="295" column="17" lean-forward="true" selection-start-line="295" selection-start-column="17" selection-end-line="295" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanCreator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="267" column="42" lean-forward="false" selection-start-line="267" selection-start-column="42" selection-end-line="267" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/BeanFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="300" column="16" lean-forward="true" selection-start-line="300" selection-start-column="16" selection-end-line="300" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/AnnotationsFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="69" column="4" lean-forward="false" selection-start-line="69" selection-start-column="4" selection-end-line="71" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2672#2673#0" expanded="true" />
+            <element signature="e#2716#2717#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/factory/XMLFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12">
+          <caret line="60" column="7" lean-forward="true" selection-start-line="60" selection-start-column="7" selection-end-line="60" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1104#1105#0" expanded="true" />
+            <element signature="e#1167#1168#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/BeanAtomicAutowireException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ci1330/ecci/ucr/ac/cr/exception/AnnotationsBeanReaderException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
           <folding />
         </state>
       </provider>

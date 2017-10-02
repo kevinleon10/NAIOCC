@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 13/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
  *
  * The reader is given a String, and then tries to map it with a class
  * and extract the metadata for the BeanCreator
