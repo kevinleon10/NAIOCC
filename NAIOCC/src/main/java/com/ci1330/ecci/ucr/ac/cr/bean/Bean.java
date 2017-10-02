@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * Created by Elias Calderon on 11/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 11/09/2017
  *
  * Bean class for NAIOCC Container.
  * Contains the Metadata of a Bean, manages the creation and destruction,
@@ -60,7 +61,7 @@ public class Bean {
     }
 
     /**
-     *
+     * Autowires all the properties of the bean
      */
     public void autowire () {
         //Autowire by constructor or, Atomic-autowire all parameters and register the constructor
@@ -89,7 +90,7 @@ public class Bean {
     }
 
     /**
-     *
+     * Checks if all the properties of the bean are correct
      */
     public void checkBeanProperties() {
         for (BeanAttribute beanAttribute : this.beanAttributeList) {
@@ -173,7 +174,6 @@ public class Bean {
         while (!this.beanInstanceStack.empty()) {
             currInstance = this.beanInstanceStack.pop();
             if (this.destroyMethod != null) {
-                System.out.println(destroyMethod);
                 try {
 
                     this.destroyMethod.invoke(currInstance);

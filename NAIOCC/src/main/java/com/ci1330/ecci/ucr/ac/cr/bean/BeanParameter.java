@@ -3,8 +3,8 @@ package com.ci1330.ecci.ucr.ac.cr.bean;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 15/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 15/09/2017
  *
  * BeanParameter class for NAIOCC Container.
  * Contains the Metadata of a Bean's constructor's parameter.

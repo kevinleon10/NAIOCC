@@ -6,7 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created by Elias Calderon on 14/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 14/09/2017
  *
  * BeanAttribute class for NAIOCC Container.
  * Contains the Metadata of an attribute and manages the setter injection of a

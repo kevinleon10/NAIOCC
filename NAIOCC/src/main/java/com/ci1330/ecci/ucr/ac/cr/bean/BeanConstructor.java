@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Elias Calderon on 15/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 15/09/2017
  *
  * Bean Constructor for NAIOCC Container.
  * Contains the Metadata of a Bean's constructor, manages the constructor injection.

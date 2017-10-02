@@ -6,8 +6,8 @@ import com.ci1330.ecci.ucr.ac.cr.exception.BeanTypeConflictException;
 import com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 13/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
  *
  * BeanParameter class for NAIOCC Container.
  * Contains the Metadata of a Bean's property. Manages the fetching from the factory, if
@@ -47,6 +47,9 @@ public abstract class BeanProperty {
         }
     }
 
+    /**
+     * According to the value of /atomic_autowire, autowires the property
+     */
     void autowireProperty () {
         switch (this.atomic_autowire) {
             case byName:
@@ -67,6 +70,10 @@ public abstract class BeanProperty {
         }
     }
 
+    /**
+     * Searches for a bean with the name of beanRef, if not found, throws an exception
+     * If found, puts beanRefType (if null) to the type of the recovered bean
+     */
     private void autowireByName () {
         if (this.beanFactory.findBean(this.beanRef) == null) {
             try {
@@ -81,6 +88,10 @@ public abstract class BeanProperty {
         }
     }
 
+    /**
+     * Searches for a bean with the type of beanRefType, if not found, throws an exception
+     * If found, stores the recovered bean's ID
+     */
     private void autowireByType () {
         try {
             if (this.beanFactory.findBean(this.beanRefType) == null) {
@@ -102,6 +113,9 @@ public abstract class BeanProperty {
         }
     }
 
+    /**
+     * Special autowire for annotation, first tries to do autowire byType, if it fails, it does autowire byName
+     */
     private void autowireByAnnotation () {
         try {
             //Sees if there exists a bean with that type (autowire byType)
@@ -128,6 +142,9 @@ public abstract class BeanProperty {
         }
     }
 
+    /**
+     * Checks if the metadata of a bean is correct, if not, throws an exception.
+     */
     public void checkProperty() {
         if (value == null) {
             boolean thereIsProblem = true;

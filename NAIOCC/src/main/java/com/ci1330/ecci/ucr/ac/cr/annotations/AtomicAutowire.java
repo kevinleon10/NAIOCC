@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 17/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 17/09/2017
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.CONSTRUCTOR})
