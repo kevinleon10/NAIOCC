@@ -1,8 +1,11 @@
 package com.ci1330.ecci.ucr.ac.cr.exception;
 
 /**
- * @Author Elias Calderon, Josue Leon, Kevin Leon
- * @Date 18/09/2017
+ * @author Elias Calderon, Josue Leon, Kevin Leon
+ * Date: 13/09/2017
+ *
+ * Indicates an exception when trying to invoke findBean method of {@link com.ci1330.ecci.ucr.ac.cr.factory.BeanFactory}
+ * and there are two beans of the same type.
  */
 public class BeanTypeConflictException extends Exception {
 
